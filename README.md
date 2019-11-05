@@ -1,2 +1,4 @@
-# ma-mbse-metamodel
-Mission Aware Model-Based Systems Engineering (MBSE) Meta-Model
+# Mission Aware MBSE Meta-Model
+
+## Schema
+Defined using [GraphQL](https://graphql.org/learn/schema/)
