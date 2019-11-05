@@ -1,1 +1,1 @@
-![Schema Workflow](images/schema-workflow.png)
+![Schema Workflow](../images/schema-workflow.png)
