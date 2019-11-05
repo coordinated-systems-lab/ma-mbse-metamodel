@@ -1,0 +1,83 @@
+schema {
+    query: Query
+}
+
+type Query {
+    missionAwareSystemModel: MissionAwareSystemModel
+}
+
+type MissionAwareSystemModel {
+    project: Project
+
+    # requirements
+    requirements: [Requirement]
+
+    # architecture
+    components: [Component]
+    interfaces: [Interface]
+    links: [Link]
+
+    # behavior
+    functions: [Function]
+    contexts: [Context]
+    controlActions: [ControlAction]
+    feedback: [Feedback]
+    resources: [Resource]
+
+    # STPA / MA
+    losses: [Loss]
+    hazards: [Hazard]
+    unsafeActions: [UnsafeAction]
+    lossScenarios: [LossScenario]
+    resilientModes: [ResilientMode]
+
+    # test / validation
+    verificationRequirements: [VerificationRequirement]
+    testActivities: [TestActivity]
+}
+type Project {
+    id: ID!
+    name: String!
+    description: String
+    version: String
+}
+type Component {
+    identity: ComponentID!
+    attributes: ComponentATTR
+    parameters: ComponentPARAM
+    relations: ComponentREL
+}
+type ComponentID {
+    id: ID!
+    name: String!
+    number: String!
+}
+type ComponentATTR {
+    description: String
+    type: ComponentType!
+}
+type ComponentREL {
+    specifiedBy: [RequirementID]
+    builtFrom: [ComponentID]
+    builtIn: [ComponentID]
+    connectedTo: [LinkID]
+    joinedTo: [InterfaceID]
+    performs: [FunctionID]
+}
+enum ComponentType {
+    Context
+    External_System
+    Human
+    HW_Element
+    Sentinel
+    Subsystem
+    System
+    SW_Eelement
+    Threat_Simulator
+}
+type Interface {
+    identity: InterfaceID!
+    attributes: InterfaceATTR
+    parameters: InterfacePARAM
+    relations: InterfaceREL
+}
