@@ -10,3 +10,7 @@
 
 * [Overview](https://graphql.org/)
 * [ma-meta-model.graphql](/schema/ma-meta-model.graphql)
+
+## Sample
+
+* [art-004.json](/sample/art-004.json)
