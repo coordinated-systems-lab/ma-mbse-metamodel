@@ -8,4 +8,5 @@
 ## Schema
 <img src="images/graphql.png" width="200">
 
-See: https://graphql.org/
+* [Overview](https://graphql.org/)
+* [ma-meta-model.graphql](/schema/ma-meta-model.graphql)
