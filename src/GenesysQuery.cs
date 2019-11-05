@@ -125,13 +125,13 @@ namespace genesys_graphql
                 {
                     joins = new List<ComponentID>()
                 };
-                foreach (IEntity builtFromEntity in entity.GetRelationshipTargets("joins"))
+                foreach (IEntity joinsEntity in entity.GetRelationshipTargets("joins"))
                 {
                     modelData.data.interfaces[entityIndex].relationships.joins.Add(new ComponentID
                     {
-                        id = builtFromEntity.Id.ToString(),
-                        name = builtFromEntity?.Name ?? null,
-                        number = builtFromEntity.GetAttributeValue("number")?.ToString() ?? null
+                        id = joinsEntity.Id.ToString(),
+                        name = joinsEntity?.Name ?? null,
+                        number = joinsEntity.GetAttributeValue("number")?.ToString() ?? null
                     });
                 }
                 entityIndex++;
