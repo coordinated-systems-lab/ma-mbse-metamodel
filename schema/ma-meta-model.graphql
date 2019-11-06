@@ -1,11 +1,9 @@
 schema {
     query: Query
 }
-
 type Query {
     missionAwareSystemModel: MissionAwareSystemModel
 }
-
 type MissionAwareSystemModel {
     project: Project
 
@@ -56,14 +54,6 @@ type ComponentATTR {
     description: String
     type: ComponentType!
 }
-type ComponentREL {
-    specifiedBy: [RequirementID]
-    builtFrom: [ComponentID]
-    builtIn: [ComponentID]
-    connectedTo: [LinkID]
-    joinedTo: [InterfaceID]
-    performs: [FunctionID]
-}
 enum ComponentType {
     Context
     External_System
@@ -74,6 +64,32 @@ enum ComponentType {
     System
     SW_Eelement
     Threat_Simulator
+}
+type ComponentREL {
+    specifiedBy: [SpecifiedByTarget]
+    builtFrom: [BuiltFromTarget]
+    builtIn: [BuiltInTarget]
+    connectedTo: [ConnectedToTarget]
+    joinedTo: [JoinedToTarget]
+    performs: [PerformsTarget]
+}
+type SpecifiedByTarget {
+    requirementTarget: RequirementID
+}
+type BuiltFromTarget {
+    componentTarget: ComponentID
+}
+type BuiltInTarget {
+    componentTarget: ComponentID
+}
+type ConnectedToTarget {
+    linkTarget: LinkID
+}
+type JoinedToTarget {
+    interfaceTarget: InterfaceID
+}
+type PerformsTarget {
+    functionTarget: FunctionID
 }
 type Interface {
     identity: InterfaceID!

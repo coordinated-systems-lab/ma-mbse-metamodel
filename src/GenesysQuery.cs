@@ -69,35 +69,45 @@ namespace genesys_graphql
                 });
                 modelData.data.components[entityIndex].relationships = new ComponentREL
                 {
-                    builtFrom = new List<ComponentID>(),
-                    builtIn = new List<ComponentID>(),
-                    joinedTo = new List<InterfaceID>()
+                    builtFrom = new List<BuiltFromTarget>(),
+                    builtIn = new List<BuiltInTarget>(),
+                    joinedTo = new List<JoinedToTarget>()
                 };
                 foreach (IEntity builtFromEntity in entity.GetRelationshipTargets("built from"))
                 {
-                    modelData.data.components[entityIndex].relationships.builtFrom.Add(new ComponentID
+                    modelData.data.components[entityIndex].relationships.builtFrom.Add(new BuiltFromTarget
                     {
-                        id = builtFromEntity.Id.ToString(),
-                        name = builtFromEntity?.Name ?? null,
-                        number = builtFromEntity.GetAttributeValue("number")?.ToString() ?? null
+                        componentTarget = new ComponentID
+                        {
+                            id = builtFromEntity.Id.ToString(),
+                            name = builtFromEntity?.Name ?? null,
+                            number = builtFromEntity.GetAttributeValue("number")?.ToString() ?? null
+                        }
+
                     });
                 }
                 foreach (IEntity builtInEntity in entity.GetRelationshipTargets("built in"))
                 {
-                    modelData.data.components[entityIndex].relationships.builtIn.Add(new ComponentID
+                    modelData.data.components[entityIndex].relationships.builtIn.Add(new BuiltInTarget
                     {
-                        id = builtInEntity.Id.ToString(),
-                        name = builtInEntity?.Name ?? null,
-                        number = builtInEntity.GetAttributeValue("number")?.ToString() ?? null
+                        componentTarget = new ComponentID
+                        {
+                            id = builtInEntity.Id.ToString(),
+                            name = builtInEntity?.Name ?? null,
+                            number = builtInEntity.GetAttributeValue("number")?.ToString() ?? null
+                        }
                     });
                 }
                 foreach (IEntity joinedToEntity in entity.GetRelationshipTargets("joined to"))
                 {
-                    modelData.data.components[entityIndex].relationships.joinedTo.Add(new InterfaceID
+                    modelData.data.components[entityIndex].relationships.joinedTo.Add(new JoinedToTarget
                     {
-                        id = joinedToEntity.Id.ToString(),
-                        name = joinedToEntity?.Name ?? null,
-                        number = joinedToEntity.GetAttributeValue("number")?.ToString() ?? null
+                        interfaceTarget = new InterfaceID
+                        {
+                            id = joinedToEntity.Id.ToString(),
+                            name = joinedToEntity?.Name ?? null,
+                            number = joinedToEntity.GetAttributeValue("number")?.ToString() ?? null
+                        }
                     });
                 }
                 entityIndex++;
@@ -123,23 +133,29 @@ namespace genesys_graphql
                 });
                 modelData.data.interfaces[entityIndex].relationships = new InterfaceREL
                 {
-                    joins = new List<ComponentID>()
+                    joins = new List<JoinsTarget>()
                 };
                 foreach (IEntity joinsEntity in entity.GetRelationshipTargets("joins"))
                 {
-                    modelData.data.interfaces[entityIndex].relationships.joins.Add(new ComponentID
+                    modelData.data.interfaces[entityIndex].relationships.joins.Add(new JoinsTarget
                     {
-                        id = joinsEntity.Id.ToString(),
-                        name = joinsEntity?.Name ?? null,
-                        number = joinsEntity.GetAttributeValue("number")?.ToString() ?? null
+                        interfaceTarget = new InterfaceID
+                        {
+                            id = joinsEntity.Id.ToString(),
+                            name = joinsEntity?.Name ?? null,
+                            number = joinsEntity.GetAttributeValue("number")?.ToString() ?? null
+                        }
                     });
                 }
                 entityIndex++;
             }
             // Ouput Links
 
+            // Output as JSON document
             string json = JsonConvert.SerializeObject(modelData, Formatting.Indented);
             Console.WriteLine(json);
+            client.Dispose();
+            System.Environment.Exit(0);
         }
     }
     public class MissionAwareSystemModelData
@@ -179,9 +195,20 @@ namespace genesys_graphql
     }
     public class ComponentREL
     {
-        public IList<ComponentID> builtFrom { get; set; }
-        public IList<ComponentID> builtIn { get; set; }
-        public IList<InterfaceID> joinedTo { get; set; }
+        public IList<BuiltFromTarget> builtFrom { get; set; }
+        public IList<BuiltInTarget> builtIn { get; set; }
+        public IList<JoinedToTarget> joinedTo { get; set; }
+    }
+    public class BuiltFromTarget
+    {
+        public ComponentID componentTarget { get; set; }
+    }
+    public class BuiltInTarget
+    {
+        public ComponentID componentTarget { get; set; }
+    }
+    public class JoinedToTarget{
+        public InterfaceID interfaceTarget { get; set; }
     }
     public class Interface
     {
@@ -201,6 +228,10 @@ namespace genesys_graphql
     }
     public class InterfaceREL
     {
-        public IList<ComponentID> joins { get; set; }
+        public IList<JoinsTarget> joins { get; set; }
+    }
+    public class JoinsTarget
+    {
+        public InterfaceID interfaceTarget { get; set; }
     }
 }

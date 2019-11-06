@@ -20,14 +20,18 @@
         "relationships": {
           "builtFrom": [
             {
-              "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
-              "name": "MA: Mission Aware",
-              "number": "C.2"
+              "componentTarget": {
+                "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+                "name": "MA: Mission Aware",
+                "number": "C.2"
+              }
             },
             {
-              "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-              "name": "OGP: Oil & Gas Pipeline",
-              "number": "C.1"
+              "componentTarget": {
+                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                "name": "OGP: Oil & Gas Pipeline",
+                "number": "C.1"
+              }
             }
           ],
           "builtIn": [],
@@ -48,31 +52,41 @@
           "builtFrom": [],
           "builtIn": [
             {
-              "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
-              "name": "_System Context",
-              "number": "C"
+              "componentTarget": {
+                "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
+                "name": "_System Context",
+                "number": "C"
+              }
             }
           ],
           "joinedTo": [
             {
-              "id": "08067b89-2740-417b-844d-36ce5a46e98e",
-              "name": "PEP: Oil & Gas",
-              "number": "PEP.1"
+              "interfaceTarget": {
+                "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+                "name": "PEP: Oil & Gas",
+                "number": "PEP.1"
+              }
             },
             {
-              "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
-              "name": "MA: Monitor & Control",
-              "number": "MA.1"
+              "interfaceTarget": {
+                "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+                "name": "MA: Monitor & Control",
+                "number": "MA.1"
+              }
             },
             {
-              "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
-              "name": "PE: Local Conditions",
-              "number": "PE.1"
+              "interfaceTarget": {
+                "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+                "name": "PE: Local Conditions",
+                "number": "PE.1"
+              }
             },
             {
-              "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
-              "name": "APT: Attack",
-              "number": "APT.1"
+              "interfaceTarget": {
+                "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+                "name": "APT: Attack",
+                "number": "APT.1"
+              }
             }
           ]
         }
@@ -91,16 +105,20 @@
           "builtFrom": [],
           "builtIn": [
             {
-              "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
-              "name": "_System Context",
-              "number": "C"
+              "componentTarget": {
+                "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
+                "name": "_System Context",
+                "number": "C"
+              }
             }
           ],
           "joinedTo": [
             {
-              "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
-              "name": "MA: Monitor & Control",
-              "number": "MA.1"
+              "interfaceTarget": {
+                "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+                "name": "MA: Monitor & Control",
+                "number": "MA.1"
+              }
             }
           ]
         }
@@ -118,19 +136,25 @@
         "relationships": {
           "builtFrom": [
             {
-              "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
-              "name": "PEP: Pipe End-Point",
-              "number": "X.1"
+              "componentTarget": {
+                "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                "name": "PEP: Pipe End-Point",
+                "number": "X.1"
+              }
             },
             {
-              "id": "9c538421-8949-425a-b099-ed44aefcde28",
-              "name": "APT: Advanced Persistent Threat",
-              "number": "X.3"
+              "componentTarget": {
+                "id": "9c538421-8949-425a-b099-ed44aefcde28",
+                "name": "APT: Advanced Persistent Threat",
+                "number": "X.3"
+              }
             },
             {
-              "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
-              "name": "PE: Physical Environment",
-              "number": "X.2"
+              "componentTarget": {
+                "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+                "name": "PE: Physical Environment",
+                "number": "X.2"
+              }
             }
           ],
           "builtIn": [],
@@ -151,16 +175,20 @@
           "builtFrom": [],
           "builtIn": [
             {
-              "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-              "name": "_External Entities",
-              "number": "X"
+              "componentTarget": {
+                "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
+                "name": "_External Entities",
+                "number": "X"
+              }
             }
           ],
           "joinedTo": [
             {
-              "id": "08067b89-2740-417b-844d-36ce5a46e98e",
-              "name": "PEP: Oil & Gas",
-              "number": "PEP.1"
+              "interfaceTarget": {
+                "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+                "name": "PEP: Oil & Gas",
+                "number": "PEP.1"
+              }
             }
           ]
         }
@@ -179,16 +207,20 @@
           "builtFrom": [],
           "builtIn": [
             {
-              "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-              "name": "_External Entities",
-              "number": "X"
+              "componentTarget": {
+                "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
+                "name": "_External Entities",
+                "number": "X"
+              }
             }
           ],
           "joinedTo": [
             {
-              "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
-              "name": "PE: Local Conditions",
-              "number": "PE.1"
+              "interfaceTarget": {
+                "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+                "name": "PE: Local Conditions",
+                "number": "PE.1"
+              }
             }
           ]
         }
@@ -207,16 +239,20 @@
           "builtFrom": [],
           "builtIn": [
             {
-              "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-              "name": "_External Entities",
-              "number": "X"
+              "componentTarget": {
+                "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
+                "name": "_External Entities",
+                "number": "X"
+              }
             }
           ],
           "joinedTo": [
             {
-              "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
-              "name": "APT: Attack",
-              "number": "APT.1"
+              "interfaceTarget": {
+                "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+                "name": "APT: Attack",
+                "number": "APT.1"
+              }
             }
           ]
         }
@@ -235,14 +271,18 @@
         "relationships": {
           "joins": [
             {
-              "id": "9c538421-8949-425a-b099-ed44aefcde28",
-              "name": "APT: Advanced Persistent Threat",
-              "number": "X.3"
+              "interfaceTarget": {
+                "id": "9c538421-8949-425a-b099-ed44aefcde28",
+                "name": "APT: Advanced Persistent Threat",
+                "number": "X.3"
+              }
             },
             {
-              "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-              "name": "OGP: Oil & Gas Pipeline",
-              "number": "C.1"
+              "interfaceTarget": {
+                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                "name": "OGP: Oil & Gas Pipeline",
+                "number": "C.1"
+              }
             }
           ]
         }
@@ -259,14 +299,18 @@
         "relationships": {
           "joins": [
             {
-              "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-              "name": "OGP: Oil & Gas Pipeline",
-              "number": "C.1"
+              "interfaceTarget": {
+                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                "name": "OGP: Oil & Gas Pipeline",
+                "number": "C.1"
+              }
             },
             {
-              "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
-              "name": "MA: Mission Aware",
-              "number": "C.2"
+              "interfaceTarget": {
+                "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+                "name": "MA: Mission Aware",
+                "number": "C.2"
+              }
             }
           ]
         }
@@ -283,14 +327,18 @@
         "relationships": {
           "joins": [
             {
-              "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
-              "name": "PE: Physical Environment",
-              "number": "X.2"
+              "interfaceTarget": {
+                "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+                "name": "PE: Physical Environment",
+                "number": "X.2"
+              }
             },
             {
-              "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-              "name": "OGP: Oil & Gas Pipeline",
-              "number": "C.1"
+              "interfaceTarget": {
+                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                "name": "OGP: Oil & Gas Pipeline",
+                "number": "C.1"
+              }
             }
           ]
         }
@@ -307,14 +355,18 @@
         "relationships": {
           "joins": [
             {
-              "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-              "name": "OGP: Oil & Gas Pipeline",
-              "number": "C.1"
+              "interfaceTarget": {
+                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                "name": "OGP: Oil & Gas Pipeline",
+                "number": "C.1"
+              }
             },
             {
-              "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
-              "name": "PEP: Pipe End-Point",
-              "number": "X.1"
+              "interfaceTarget": {
+                "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                "name": "PEP: Pipe End-Point",
+                "number": "X.1"
+              }
             }
           ]
         }
