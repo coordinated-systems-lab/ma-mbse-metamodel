@@ -51,8 +51,16 @@ namespace genesys_graphql
             Repository repository = repositoryConfiguration.GetRepository();
             IProject project = repository.GetProject(projectName);
             Console.WriteLine("Project Id: " + project.Id);
+
+
+            return project;
+        }
+        static void CreateSchema(string projectName)
+        {
+            var project = Connect(projectName);
+
             // Write GraphQL Schema header
-            schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\schema.graphql",false);
+            schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\schema.graphql", false);
             schemaFile.WriteLine("schema {");
             schemaFile.WriteLine("  query: Query");
             schemaFile.WriteLine("}");
@@ -71,12 +79,6 @@ namespace genesys_graphql
             classFile.WriteLine("{");
             classFile.WriteLine("  public class MissionAwareSystemModelData");
             classFile.WriteLine("  {");
-
-            return project;
-        }
-        static void CreateSchema(string projectName)
-        {
-            var project = Connect(projectName);
 
             ISchema schema = project.GetSchema();
             IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID
@@ -120,11 +122,27 @@ namespace genesys_graphql
             foreach (String entity in sortedEntityDefinitionList)
             {
                 IEntityDefinition entityDefinition = schema.GetEntityDefinition(entity);
+                schemaFile.WriteLine("#########################################");
+                schemaFile.WriteLine("# " + entityDefinition.Name + " definition");
+                schemaFile.WriteLine("#########################################");
                 schemaFile.WriteLine("type " + entityDefinition.Name + " {");
                 schemaFile.WriteLine("  identity: " + entityDefinition.Name + "ID!");
                 schemaFile.WriteLine("  attributes: " + entityDefinition.Name + "ATTR");
+                if (entityDefinition.GetParameterDefinitions().Count != 0)
+                {
+                    // Entity has Parameters defined
+                    schemaFile.WriteLine("  parameters: " + entityDefinition.Name + "PARAM");
+                }
                 schemaFile.WriteLine("  relations: " + entityDefinition.Name + "REL");
                 schemaFile.WriteLine("}");
+
+                // Output entity identity
+                schemaFile.WriteLine("type " + entityDefinition.Name + "ID {");
+                schemaFile.WriteLine("  id: ID!");
+                schemaFile.WriteLine("  name: String!");
+                schemaFile.WriteLine("  number: String!");
+                schemaFile.WriteLine("}");
+
                 IEntityAttributeDefinitionList entityAttributeDefinitionList = entityDefinition.GetAttributeDefinitions();
                 // Create a sorted list of Attributes for Entity
                 List<String> sortedAttributeDefinitionList = new List<String>();
@@ -133,13 +151,98 @@ namespace genesys_graphql
                     sortedAttributeDefinitionList.Add(entityAttributeDefinition.Name);
                 }
                 sortedAttributeDefinitionList.Sort();
+                
+                schemaFile.WriteLine("type " + entityDefinition.Name + "ATTR {");
+
+                List<String> enumAttributeList = new List<String>();
                 foreach (String entityAttribute in sortedAttributeDefinitionList)
                 {
-                    IAttributeDefinition attributeDefinition = entityDefinition.GetAttributeDefinition(entityAttribute);
-                    Console.WriteLine("   A:" + attributeDefinition.Name + ":" + attributeDefinition.DataType.ToString());
+                    if (entityAttribute == "name" || entityAttribute == "number")
+                    {
+                        continue; // name and number are part of "identity"
+                    }
+                    IEntityAttributeDefinition entityAttributeDefinition = entityDefinition.GetAttributeDefinition(entityAttribute);
+                    DataTypeDefinition entityAttributeType = entityAttributeDefinition.DataType;
+                    if (entityAttributeType.ToString() == "Vitech.Genesys.Common.ScriptSpecTypeDefinition")
+                    {
+                        continue; // Skip script attributes
+                    }
+                    List<string> commentLine = WrapLineComment(entityAttributeDefinition.Description.ToString());
+                    foreach (string line in commentLine)
+                    {
+                        // Component description
+                        schemaFile.WriteLine("  " + line);
+                    }
+
+                    switch (entityAttributeType.ToString())
+                    {
+                        case "Vitech.Genesys.Common.FormattedTextTypeDefinition":
+                        case "Vitech.Genesys.Common.NumberSpecTypeDefinition":
+                        case "Vitech.Genesys.Common.ReferenceSpecTypeDefinition":
+                        case "Vitech.Genesys.Common.StringTypeDefinition":
+                        case "Vitech.Genesys.Common.DateTimeTypeDefinition":
+                        case "Vitech.Genesys.Common.DateTypeDefinition":
+                        case "Vitech.Genesys.Common.HierarchicalNumberTypeDefinition":
+                            schemaFile.WriteLine("  " + entityAttributeDefinition.Name + ": String");
+                            break;
+                        case "Vitech.Genesys.Common.BooleanTypeDefinition":
+                            schemaFile.WriteLine("  " + entityAttributeDefinition.Name + ": Boolean");
+                            break;
+                        case "Vitech.Genesys.Common.FloatTypeDefinition":
+                            schemaFile.WriteLine("  " + entityAttributeDefinition.Name + ": Float");
+                            break;
+                        case "Vitech.Genesys.Common.EnumerationTypeDefinition":
+                            var capEnumAttributeName = Char.ToUpperInvariant(entityAttributeDefinition.Name[0]) + 
+                                entityAttributeDefinition.Name.Substring(1);
+                            // Enum type is: <EntityName><AttributeName> 
+                            schemaFile.WriteLine("  " + entityAttributeDefinition.Name + ": " + entityDefinition.Name + capEnumAttributeName);
+                            enumAttributeList.Add(entityAttributeDefinition.Name);
+                            break;
+                        case "Vitech.Genesys.Common.IntegerTypeDefinition":
+                            schemaFile.WriteLine("  " + entityAttributeDefinition.Name + ": Integer");
+                            break;
+                        case "Vitech.Genesys.Common.CollectionTypeDefinition":
+                            CollectionTypeDefinition collectionDefinition = entityAttributeDefinition.DataType as CollectionTypeDefinition;
+                            switch (collectionDefinition.ValueType.ToString())
+                            {
+                                case "Vitech.Genesys.Common.StringTypeDefinition":
+                                    schemaFile.WriteLine("  " + entityAttributeDefinition.Name + ": [String]");
+                                    break;
+                                default:
+                                    Console.WriteLine("Missing Collection Type!");
+                                    break;
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Missing Type!");
+                            break;
+                    }
+                    schemaFile.WriteLine(""); // leave space between attribute definitions
+                                        
                 }
+                schemaFile.WriteLine("}");
+
+                // Ouput Enum types
+                foreach (String enumAttribute in enumAttributeList)
+                {
+                    var capEnumAttributeName = Char.ToUpperInvariant(enumAttribute[0]) +
+                                enumAttribute.Substring(1);
+                    schemaFile.WriteLine("enum " + entityDefinition.Name + capEnumAttributeName + " {");
+                    IEntityAttributeDefinition entityAttributeDefinition = entityDefinition.GetAttributeDefinition(enumAttribute);
+                    EnumerationTypeDefinition enumDefinition = entityAttributeDefinition.DataType as EnumerationTypeDefinition;
+
+                    EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
+                    for (var i = 0; i< enumPossibleValues.Length; i++)
+                    {
+
+                        String enumValue = enumPossibleValues[i].ToString().Replace("/", "_").Replace(" ", "_").Replace("-", "").Replace("&", "").Replace(":", "");
+                        schemaFile.WriteLine("  " + enumValue);
+                    }
+                    schemaFile.WriteLine("}");
+                }
+
                 IEnumerable<IRelationDefinition> entityRelationshipDefinitionList = entityDefinition.GetRelationDefinitions();
-                // Create a sorted list of Entities for SE Facility
+                // Create a sorted list of Relations for Entity
                 List<String> sortedEntityRelationList = new List<String>();
                 foreach (IRelationDefinition relationDefinition in entityRelationshipDefinitionList)
                 {
