@@ -120,6 +120,18 @@ namespace genesys_graphql
             schemaFile.WriteLine("  version: String");
             schemaFile.WriteLine("}");
 
+            // Ouput Parameter Definition
+            schemaFile.WriteLine("type Parameter {");
+            schemaFile.WriteLine("  name: String!");
+            schemaFile.WriteLine("  description: String");
+            schemaFile.WriteLine("  type: String");
+            schemaFile.WriteLine("  objectvie: String");
+            schemaFile.WriteLine("  threshold: String");
+            schemaFile.WriteLine("  design: String");
+            schemaFile.WriteLine("  observed: String");
+            schemaFile.WriteLine("  units: String");
+            schemaFile.WriteLine("}");
+
             // Output Schema (GraphQL & C#) for each Entity
             foreach (String entity in sortedEntityDefinitionList)
             {
@@ -130,11 +142,7 @@ namespace genesys_graphql
                 schemaFile.WriteLine("type " + entityDefinition.Name + " {");
                 schemaFile.WriteLine("  identity: " + entityDefinition.Name + "ID!");
                 schemaFile.WriteLine("  attributes: " + entityDefinition.Name + "ATTR");
-                if (entityDefinition.GetParameterDefinitions().Count != 0)
-                {
-                    // Entity has Parameters defined
-                    schemaFile.WriteLine("  parameters: " + entityDefinition.Name + "PARAM");
-                }
+                schemaFile.WriteLine("  parameters: [Parameter]");
                 schemaFile.WriteLine("  relations: " + entityDefinition.Name + "REL");
                 schemaFile.WriteLine("}");
 
@@ -145,113 +153,13 @@ namespace genesys_graphql
                 schemaFile.WriteLine("  number: String!");
                 schemaFile.WriteLine("}");
 
-                IEntityAttributeDefinitionList entityAttributeDefinitionList = entityDefinition.GetAttributeDefinitions();
-                // Create a sorted list of Attributes for Entity
-                List<String> sortedAttributeDefinitionList = new List<String>();
-                foreach (IEntityAttributeDefinition entityAttributeDefinition in entityAttributeDefinitionList)
-                {
-                    sortedAttributeDefinitionList.Add(entityAttributeDefinition.Name);
-                }
-                sortedAttributeDefinitionList.Sort();
-                
+                IEnumerable<IAttributeDefinition> attributeDefinitionList = entityDefinition.GetAttributeDefinitions() as IEnumerable<IAttributeDefinition>;
+
+                // Ouput Attributes
                 schemaFile.WriteLine("type " + entityDefinition.Name + "ATTR {");
+                OutputAttribute(attributeDefinitionList, entityDefinition.Name);
 
-                List<String> enumAttributeList = new List<String>();
-                foreach (String entityAttribute in sortedAttributeDefinitionList)
-                {
-                    if (entityAttribute == "name" || entityAttribute == "number")
-                    {
-                        continue; // name and number are part of "identity"
-                    }
-                    IEntityAttributeDefinition entityAttributeDefinition = entityDefinition.GetAttributeDefinition(entityAttribute);
-                    DataTypeDefinition entityAttributeType = entityAttributeDefinition.DataType;
-                    if (entityAttributeType.ToString() == "Vitech.Genesys.Common.ScriptSpecTypeDefinition")
-                    {
-                        continue; // Skip script attributes
-                    }
-                    List<string> commentLine = WrapLineComment(entityAttributeDefinition.Description.ToString());
-                    foreach (string line in commentLine)
-                    {
-                        // Entity description
-                        schemaFile.WriteLine("  " + line);
-                    }
-
-                    string entityAttributeDefinitionName = entityAttributeDefinition.Name.Replace("-","_");
-
-                    switch (entityAttributeType.ToString())
-                    {
-                        case "Vitech.Genesys.Common.FormattedTextTypeDefinition":
-                        case "Vitech.Genesys.Common.NumberSpecTypeDefinition":
-                        case "Vitech.Genesys.Common.ReferenceSpecTypeDefinition":
-                        case "Vitech.Genesys.Common.StringTypeDefinition":
-                        case "Vitech.Genesys.Common.DateTimeTypeDefinition":
-                        case "Vitech.Genesys.Common.DateTypeDefinition":
-                        case "Vitech.Genesys.Common.HierarchicalNumberTypeDefinition":
-                            schemaFile.WriteLine("  " + entityAttributeDefinitionName + ": String");
-                            break;
-                        case "Vitech.Genesys.Common.BooleanTypeDefinition":
-                            schemaFile.WriteLine("  " + entityAttributeDefinitionName + ": Boolean");
-                            break;
-                        case "Vitech.Genesys.Common.FloatTypeDefinition":
-                            schemaFile.WriteLine("  " + entityAttributeDefinitionName + ": Float");
-                            break;
-                        case "Vitech.Genesys.Common.EnumerationTypeDefinition":
-                            EnumerationTypeDefinition enumDefinition = entityAttributeDefinition.DataType as EnumerationTypeDefinition;
-                            var capEnumAttributeName = Char.ToUpperInvariant(entityAttributeDefinitionName[0]) +
-                                entityAttributeDefinitionName.Substring(1);
-                            // Enum type is: <EntityName><AttributeName> 
-                            schemaFile.WriteLine("  " + entityAttributeDefinitionName + ": " + entityDefinition.Name + capEnumAttributeName);
-                            enumAttributeList.Add(entityAttributeDefinition.Name);
-                            break;
-                        case "Vitech.Genesys.Common.IntegerTypeDefinition":
-                            schemaFile.WriteLine("  " + entityAttributeDefinitionName + ": Integer");
-                            break;
-                        case "Vitech.Genesys.Common.CollectionTypeDefinition":
-                            CollectionTypeDefinition collectionDefinition = entityAttributeDefinition.DataType as CollectionTypeDefinition;
-                            switch (collectionDefinition.ValueType.ToString())
-                            {
-                                case "Vitech.Genesys.Common.StringTypeDefinition":
-                                    schemaFile.WriteLine("  " + entityAttributeDefinitionName + ": [String]");
-                                    break;
-                                default:
-                                    Console.WriteLine("Missing Collection Type!");
-                                    break;
-                            }
-                            break;
-                        default:
-                            Console.WriteLine("Missing Type!");
-                            break;
-                    }
-                    schemaFile.WriteLine(""); // leave space between attribute definitions
-                                        
-                }
-                schemaFile.WriteLine("}");
-
-                // Ouput Enum types
-                foreach (String enumAttribute in enumAttributeList)
-                {
-                    var capEnumAttributeName = Char.ToUpperInvariant(enumAttribute[0]) +
-                                enumAttribute.Substring(1);
-                    schemaFile.WriteLine("enum " + entityDefinition.Name + capEnumAttributeName.Replace("-", "_") + " {");
-                    IEntityAttributeDefinition entityAttributeDefinition = entityDefinition.GetAttributeDefinition(enumAttribute);
-                    EnumerationTypeDefinition enumDefinition = entityAttributeDefinition.DataType as EnumerationTypeDefinition;
-
-                    EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
-                    for (var i = 0; i< enumPossibleValues.Length; i++)
-                    {
-
-                        String enumValue = enumPossibleValues[i].ToString().Replace("/", "_").Replace(" ", "_").Replace("-", "").Replace("&", "").Replace(":", "");
-                        if (Char.IsDigit(enumValue.ToString()[0]))
-                        {
-                            // Enum canot begin with a digit - prepend "E_"
-                            enumValue = "E_" + enumValue;
-                        }
-                        schemaFile.WriteLine("  " + enumValue);
-                    }
-                    schemaFile.WriteLine("}");
-                }
-
-                IEnumerable<IRelationDefinition> entityRelationDefinitionList = entityDefinition.GetRelationDefinitions();
+                IEnumerable < IRelationDefinition> entityRelationDefinitionList = entityDefinition.GetRelationDefinitions();
                 // Create a sorted list of Relations for Entity
                 List<String> sortedEntityRelationList = new List<String>();
                 foreach (IRelationDefinition entityRelationDefinition in entityRelationDefinitionList)
@@ -267,47 +175,77 @@ namespace genesys_graphql
 
                     IRelationDefinition relationDefinition = schema.GetRelationDefinition(relationDefinitionName);
 
-                    List<string> commentLine = WrapLineComment(relationDefinition.Description.ToString());
-                    foreach (string line in commentLine)
+                    // Check if at least one of the Targets is part of the selected "Facility"
+                    IEnumerable<IEntityDefinition> targetEntityDefinitionList =
+                        entityDefinition.GetTargetEntityDefinitions(relationDefinition);
+                    Boolean found = false;
+                    foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
                     {
-                        // Relation description
-                        schemaFile.WriteLine("  " + line);
+                        if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
+                        {
+                            found = true;
+                            break;
+                        }
                     }
-                    schemaFile.WriteLine("  " + camelRelationName + ": [" +
-                        Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
-                        Char.ToUpperInvariant(camelRelationName[0]) +
-                        camelRelationName.Substring(1) + "Target]");
+                    if (found == true)
+                    {   // at least one Target found in 'Facility'
+                        List<string> commentLine = WrapLineComment(relationDefinition.Description.ToString());
+                        foreach (string line in commentLine)
+                        {
+                            // Relation description
+                            schemaFile.WriteLine("  " + line);
+                        }
+                        schemaFile.WriteLine("  " + camelRelationName + ": [" +
+                            Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
+                            Char.ToUpperInvariant(camelRelationName[0]) +
+                            camelRelationName.Substring(1) + "Target]");
 
-                    schemaFile.WriteLine(""); // space between relationships
-
+                        schemaFile.WriteLine(""); // space between relationships
+                    }
                 }
                 schemaFile.WriteLine("}");
-
                 // Output Relationship Target
                 foreach (String relationDefinitionName in sortedEntityRelationList)
                 {
                     String camelRelationName = GetCamelCaseRelation(relationDefinitionName);
-
-                    schemaFile.WriteLine("type " +
-                        Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
-                        Char.ToUpperInvariant(camelRelationName[0]) +
-                        camelRelationName.Substring(1) + "Target {");
                     IRelationDefinition relationDefinition = schema.GetRelationDefinition(relationDefinitionName);
-                    IEnumerable<IEntityDefinition> targetEntityDefinitionList = 
+                    IEnumerable<IEntityDefinition> targetEntityDefinitionList =
                         entityDefinition.GetTargetEntityDefinitions(relationDefinition);
-                    foreach( IEntityDefinition targetEntityDefinition in targetEntityDefinitionList )
+                    Boolean found = false;
+                    foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
                     {
                         if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
                         {
-                            // Only include Target if included in selected "Facility"
-                            schemaFile.WriteLine("  " + targetEntityDefinition.Name + "Target: " +
-                                Char.ToUpperInvariant(targetEntityDefinition.Name[0]) +
-                                targetEntityDefinition.Name.Substring(1) + "ID");
+                            found = true;
+                            break;
                         }
                     }
-                    schemaFile.WriteLine("}");
-                }
+                    if (found == true)
+                    {   // at least one Target found in 'Facility'
 
+                        schemaFile.WriteLine("type " +
+                        Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
+                        Char.ToUpperInvariant(camelRelationName[0]) +
+                        camelRelationName.Substring(1) + "Target {");
+
+                        foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
+                        {
+                            if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
+                            {
+                                // Only include Target if included in selected "Facility"
+                                schemaFile.WriteLine("  " + targetEntityDefinition.Name + "Target: " +
+                                    Char.ToUpperInvariant(targetEntityDefinition.Name[0]) +
+                                    targetEntityDefinition.Name.Substring(1) + "ID");
+                            }
+                        }
+
+                        IEnumerable<IAttributeDefinition> relAttributeDefinitionList = relationDefinition.GetAttributeDefinitions() as IEnumerable<IAttributeDefinition>;
+                        // Ouput Relationship Attributes
+                        string camelCaseRelationName = GetCamelCaseRelation(relationDefinition.Name);
+
+                        OutputAttribute(relAttributeDefinitionList, Char.ToUpper(camelCaseRelationName[0]) + camelCaseRelationName.Substring(1));
+                    }
+                }
             }
         }
         static void CreateModel( string projectName, string outFileName)
@@ -440,6 +378,103 @@ namespace genesys_graphql
             // Output as JSON document
             string json = JsonConvert.SerializeObject(modelData, Formatting.Indented);
             Console.WriteLine(json);
+        }
+        // Output Attributes (Entity or Relationship)
+        static void OutputAttribute(IEnumerable<IAttributeDefinition> attributeDefinitionList, string ownerName)
+        {
+            foreach (IAttributeDefinition attributeDefinition in attributeDefinitionList)
+            {
+                if (attributeDefinition.Name == "name" || attributeDefinition.Name == "number")
+                {
+                    continue; // name and number are part of "identity"
+                }
+                DataTypeDefinition entityAttributeType = attributeDefinition.DataType;
+                if (entityAttributeType.ToString() == "Vitech.Genesys.Common.ScriptSpecTypeDefinition")
+                {
+                    continue; // Skip script attributes
+                }
+                List<string> commentLine = WrapLineComment(attributeDefinition.Description.ToString());
+                foreach (string line in commentLine)
+                {
+                    // Entity description
+                    schemaFile.WriteLine("  " + line);
+                }
+
+                string attributeDefinitionName = attributeDefinition.Name.Replace("-", "_");
+
+                switch (entityAttributeType.ToString())
+                {
+                    case "Vitech.Genesys.Common.FormattedTextTypeDefinition":
+                    case "Vitech.Genesys.Common.NumberSpecTypeDefinition":
+                    case "Vitech.Genesys.Common.ReferenceSpecTypeDefinition":
+                    case "Vitech.Genesys.Common.StringTypeDefinition":
+                    case "Vitech.Genesys.Common.DateTimeTypeDefinition":
+                    case "Vitech.Genesys.Common.DateTypeDefinition":
+                    case "Vitech.Genesys.Common.HierarchicalNumberTypeDefinition":
+                        schemaFile.WriteLine("  " + attributeDefinitionName + ": String");
+                        break;
+                    case "Vitech.Genesys.Common.BooleanTypeDefinition":
+                        schemaFile.WriteLine("  " + attributeDefinitionName + ": Boolean");
+                        break;
+                    case "Vitech.Genesys.Common.FloatTypeDefinition":
+                        schemaFile.WriteLine("  " + attributeDefinitionName + ": Float");
+                        break;
+                    case "Vitech.Genesys.Common.EnumerationTypeDefinition":
+                        EnumerationTypeDefinition enumDefinition = attributeDefinition.DataType as EnumerationTypeDefinition;
+                        var capEnumAttributeName = Char.ToUpperInvariant(attributeDefinitionName[0]) +
+                            attributeDefinitionName.Substring(1);
+                        // Enum type is: <EntityName><AttributeName> 
+                        schemaFile.WriteLine("  " + attributeDefinitionName + ": " + ownerName + capEnumAttributeName);
+                        break;
+                    case "Vitech.Genesys.Common.IntegerTypeDefinition":
+                        schemaFile.WriteLine("  " + attributeDefinitionName + ": Integer");
+                        break;
+                    case "Vitech.Genesys.Common.CollectionTypeDefinition":
+                        CollectionTypeDefinition collectionDefinition = attributeDefinition.DataType as CollectionTypeDefinition;
+                        switch (collectionDefinition.ValueType.ToString())
+                        {
+                            case "Vitech.Genesys.Common.StringTypeDefinition":
+                                schemaFile.WriteLine("  " + attributeDefinitionName + ": [String]");
+                                break;
+                            default:
+                                Console.WriteLine("Missing Collection Type!");
+                                break;
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Missing Type!");
+                        break;
+                }
+                schemaFile.WriteLine(""); // leave space between attribute definitions
+
+            }
+            schemaFile.WriteLine("}");
+
+            // Ouput Enum types
+            foreach (IAttributeDefinition attributeDefinition in attributeDefinitionList)
+            {
+                DataTypeDefinition attributeType = attributeDefinition.DataType;
+                if (attributeType.ToString() == "Vitech.Genesys.Common.EnumerationTypeDefinition")
+                {
+                    var capEnumAttributeName = Char.ToUpperInvariant(attributeDefinition.Name[0]) +
+                        attributeDefinition.Name.Substring(1);
+                    schemaFile.WriteLine("enum " + ownerName + capEnumAttributeName.Replace("-", "_") + " {");
+
+                    EnumerationTypeDefinition enumDefinition = attributeDefinition.DataType as EnumerationTypeDefinition;
+                    EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
+                    for (var i = 0; i < enumPossibleValues.Length; i++)
+                    {
+                        String enumValue = enumPossibleValues[i].ToString().Replace("/", "_").Replace(" ", "_").Replace("-", "").Replace("&", "").Replace(":", "");
+                        if (Char.IsDigit(enumValue.ToString()[0]))
+                        {
+                            // Enum canot begin with a digit - prepend "E_"
+                            enumValue = "E_" + enumValue;
+                        }
+                        schemaFile.WriteLine("  " + enumValue);
+                    }
+                    schemaFile.WriteLine("}");
+                }
+            }
         }
         // CamelCase Relation Name
         static string GetCamelCaseRelation(string relation)

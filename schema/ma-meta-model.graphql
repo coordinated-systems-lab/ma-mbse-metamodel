@@ -39,10 +39,20 @@ type Project {
     description: String
     version: String
 }
+type Parameter {
+    name: String!
+    description: String
+    type: String
+    objective: String
+    threshold: String
+    design: String
+    observed: String
+    units: String
+}
 type Component {
     identity: ComponentID!
     attributes: ComponentATTR
-    parameters: ComponentPARAM
+    parameters: [Parameter]
     relations: ComponentREL
 }
 type ComponentID {
@@ -94,6 +104,6 @@ type PerformsTarget {
 type Interface {
     identity: InterfaceID!
     attributes: InterfaceATTR
-    parameters: InterfacePARAM
+    parameters: [Parameter]
     relations: InterfaceREL
 }
