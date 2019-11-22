@@ -63,7 +63,7 @@ namespace genesys_graphql
             Console.WriteLine("Facility: " + facility.Name + "  :" + facility.Id);
 
             // Write GraphQL Schema header
-            schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\schema.graphql", false);
+            schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\ma-meta-model.graphql", false);
             schemaFile.WriteLine("schema {");
             schemaFile.WriteLine("  query: Query");
             schemaFile.WriteLine("}");
@@ -243,7 +243,9 @@ namespace genesys_graphql
                         // Ouput Relationship Attributes
                         string camelCaseRelationName = GetCamelCaseRelation(relationDefinition.Name);
 
-                        OutputAttribute(relAttributeDefinitionList, Char.ToUpper(camelCaseRelationName[0]) + camelCaseRelationName.Substring(1));
+                        // Relationship Attribute Type name is: <Component>_<Relationship><EnumName>
+                        OutputAttribute(relAttributeDefinitionList, entityDefinition.Name + "_" +
+                            Char.ToUpper(camelCaseRelationName[0]) + camelCaseRelationName.Substring(1));
                     }
                 }
             }
@@ -423,11 +425,11 @@ namespace genesys_graphql
                         EnumerationTypeDefinition enumDefinition = attributeDefinition.DataType as EnumerationTypeDefinition;
                         var capEnumAttributeName = Char.ToUpperInvariant(attributeDefinitionName[0]) +
                             attributeDefinitionName.Substring(1);
-                        // Enum type is: <EntityName><AttributeName> 
+                        // Enum type is: <OwnerName><AttributeName> 
                         schemaFile.WriteLine("  " + attributeDefinitionName + ": " + ownerName + capEnumAttributeName);
                         break;
                     case "Vitech.Genesys.Common.IntegerTypeDefinition":
-                        schemaFile.WriteLine("  " + attributeDefinitionName + ": Integer");
+                        schemaFile.WriteLine("  " + attributeDefinitionName + ": Int");
                         break;
                     case "Vitech.Genesys.Common.CollectionTypeDefinition":
                         CollectionTypeDefinition collectionDefinition = attributeDefinition.DataType as CollectionTypeDefinition;
@@ -464,7 +466,9 @@ namespace genesys_graphql
                     EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
                     for (var i = 0; i < enumPossibleValues.Length; i++)
                     {
-                        String enumValue = enumPossibleValues[i].ToString().Replace("/", "_").Replace(" ", "_").Replace("-", "").Replace("&", "").Replace(":", "");
+                        String enumValue = enumPossibleValues[i].ToString().Replace("/", "_").
+                            Replace(" ", "_").Replace("-", "").Replace("&", "").
+                            Replace(":", "").Replace("(", "").Replace(")", "");
                         if (Char.IsDigit(enumValue.ToString()[0]))
                         {
                             // Enum canot begin with a digit - prepend "E_"
