@@ -1,4 +1,4 @@
-# MBSE Meta-Model
+# Mission Aware MBSE Meta-Model
 
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-systemigraph.png)
