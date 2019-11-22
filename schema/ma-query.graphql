@@ -1,0 +1,66 @@
+{
+  missionAwareDataModel {
+    project {
+      id
+      name
+      description
+      version
+    }
+    category {
+      identity {
+        id
+        name
+        number
+      }
+      attributes {
+        description
+      }
+      parameters {
+        name
+        description
+        type
+        objective
+        threshold
+        design
+        observed
+        units
+      }
+      relations {
+        categorizes {
+          definedTermTarget {
+            id
+            name
+            number
+          }
+          documentTarget {
+            id
+            name
+            number
+          }
+        }
+        hasComments {
+          noteTarget {
+            id
+            name
+            number
+          }
+        }
+        includedIn {
+          categoryTarget {
+            id
+            name
+            number
+          }
+        }
+        includes {
+          categoryTarget {
+            id
+            name
+            number
+          }
+        }
+      }
+    }
+  }
+}
+

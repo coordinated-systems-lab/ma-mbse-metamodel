@@ -2,9 +2,13 @@
 
 namespace genesys_graphql
 {
+    public class MissionAwareSystemModelTop
+    {
+        public MissionAwareSystemModelData data { get; set; }
+    }
     public class MissionAwareSystemModelData
     {
-        public MissionAwareSystemModel data { get; set; }
+        public MissionAwareSystemModel missionAwareSystemModel { get; set; }
     }
     public class MissionAwareSystemModel
     {

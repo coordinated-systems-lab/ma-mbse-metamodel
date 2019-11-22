@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Vitech.Genesys.Client;
@@ -12,12 +11,6 @@ namespace genesys_graphql
     {
         static ClientModel client;
         static System.IO.StreamWriter schemaFile;
-        static System.IO.StreamWriter classFile;
-        static readonly Dictionary<string, string> _pluralTable = new Dictionary<string, string>
-        {
-            {"category", "categories"},
-            {"loss", "losses"}
-        };
 
         static void Main(string[] args)
         {
@@ -35,7 +28,6 @@ namespace genesys_graphql
             }
             client.Dispose();
             schemaFile.Close();
-            classFile.Close();
             System.Environment.Exit(0);
         }
         static IProject Connect(string projectName)
@@ -51,7 +43,6 @@ namespace genesys_graphql
             Repository repository = repositoryConfiguration.GetRepository();
             IProject project = repository.GetProject(projectName);
             Console.WriteLine("Project Id: " + project.Id);
-
 
             return project;
         }
@@ -76,16 +67,7 @@ namespace genesys_graphql
             schemaFile.WriteLine("  project: Project");
             schemaFile.WriteLine("");
 
-            // Write C# Class header
-            classFile = new System.IO.StreamWriter(@"..\..\DataModel.cs");
-            classFile.WriteLine("using System.Collections.Generic;");
-            classFile.WriteLine("namespace genesys_graphql");
-            classFile.WriteLine("{");
-            classFile.WriteLine("  public class MissionAwareSystemModelData");
-            classFile.WriteLine("  {");
-
-
-            IFacilityEntityDefinitionList facilityEntityDefinitionList = facility.EntityDefinitions;
+             IFacilityEntityDefinitionList facilityEntityDefinitionList = facility.EntityDefinitions;
             IEnumerator<IEntityDefinition> entityDefinitionList = facilityEntityDefinitionList.GetEnumerator();
 
             // Create a sorted list of Entities for SE Facility
@@ -107,7 +89,7 @@ namespace genesys_graphql
                     schemaFile.WriteLine("  " + line);
                 }
                 // lowercase first character of Component and make plural variable name
-                schemaFile.WriteLine("  " + GetPlural(Char.ToLowerInvariant(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1)) +
+                schemaFile.WriteLine("  " + Char.ToLower(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) +
                     ": [" + entityDefinition.Name + "]");
                 schemaFile.WriteLine("");
             }
@@ -197,7 +179,7 @@ namespace genesys_graphql
                         }
                         schemaFile.WriteLine("  " + camelRelationName + ": [" +
                             Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
-                            Char.ToUpperInvariant(camelRelationName[0]) +
+                            Char.ToUpper(camelRelationName[0]) +
                             camelRelationName.Substring(1) + "Target]");
 
                         schemaFile.WriteLine(""); // space between relationships
@@ -225,7 +207,7 @@ namespace genesys_graphql
 
                         schemaFile.WriteLine("type " +
                         Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
-                        Char.ToUpperInvariant(camelRelationName[0]) +
+                        Char.ToUpper(camelRelationName[0]) +
                         camelRelationName.Substring(1) + "Target {");
 
                         foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
@@ -233,8 +215,9 @@ namespace genesys_graphql
                             if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
                             {
                                 // Only include Target if included in selected "Facility"
-                                schemaFile.WriteLine("  " + targetEntityDefinition.Name + "Target: " +
-                                    Char.ToUpperInvariant(targetEntityDefinition.Name[0]) +
+                                schemaFile.WriteLine("  " + Char.ToLower(targetEntityDefinition.Name[0]) + 
+                                    targetEntityDefinition.Name.Substring(1) + "Target: " +
+                                    Char.ToUpper(targetEntityDefinition.Name[0]) +
                                     targetEntityDefinition.Name.Substring(1) + "ID");
                             }
                         }
@@ -253,133 +236,7 @@ namespace genesys_graphql
         static void CreateModel( string projectName, string outFileName)
         {
             var project = Connect(projectName);
-            MissionAwareSystemModelData modelData = new MissionAwareSystemModelData
-            {
-                data = new MissionAwareSystemModel
-                {
-                    project = new Project
-                    {
-                        id = project.Id.ToString(),
-                        name = project.Name,
-                        description = project.Description?.PlainText.Replace(Environment.NewLine, "\n") ?? null,
-                        version = project.Version?.ToString() ?? null
-                    }
-                }
-            };
-            modelData.data.components = new List<Component>();
-            modelData.data.interfaces = new List<Interface>();
-            ISortBlock numericSortBlock = project.GetSortBlock(SortBlockConstants.Numeric);
-            int entityIndex;
-            IFolder folder;
-            IEnumerable<IEntity> entityList;
-
-            // Output Components
-            folder = project.GetFolder("Component");
-            entityList = folder.GetAllEntities();
-            entityIndex = 0;
-            foreach (IEntity entity in numericSortBlock.SortEntities(entityList))
-            {
-                modelData.data.components.Add(new Component
-                {
-                    identity = new ComponentID
-                    {
-                        id = entity.Id.ToString(),
-                        name = entity?.Name ?? null,
-                        number = entity.GetAttribute("number")?.ToString() ?? null
-                    },
-                    attributes = new ComponentATTR
-                    {
-                        description = entity.GetAttribute("description")?.ToString().Replace(Environment.NewLine, "\n") ?? null,
-                        type = entity.GetAttribute("type").ToString().Replace(" ", "_")
-                    }
-                });
-                modelData.data.components[entityIndex].relationships = new ComponentREL
-                {
-                    builtFrom = new List<BuiltFromTarget>(),
-                    builtIn = new List<BuiltInTarget>(),
-                    joinedTo = new List<JoinedToTarget>()
-                };
-                foreach (IEntity builtFromEntity in entity.GetRelationshipTargets("built from"))
-                {
-                    modelData.data.components[entityIndex].relationships.builtFrom.Add(new BuiltFromTarget
-                    {
-                        componentTarget = new ComponentID
-                        {
-                            id = builtFromEntity.Id.ToString(),
-                            name = builtFromEntity?.Name ?? null,
-                            number = builtFromEntity.GetAttributeValue("number")?.ToString() ?? null
-                        }
-
-                    });
-                }
-                foreach (IEntity builtInEntity in entity.GetRelationshipTargets("built in"))
-                {
-                    modelData.data.components[entityIndex].relationships.builtIn.Add(new BuiltInTarget
-                    {
-                        componentTarget = new ComponentID
-                        {
-                            id = builtInEntity.Id.ToString(),
-                            name = builtInEntity?.Name ?? null,
-                            number = builtInEntity.GetAttributeValue("number")?.ToString() ?? null
-                        }
-                    });
-                }
-                foreach (IEntity joinedToEntity in entity.GetRelationshipTargets("joined to"))
-                {
-                    modelData.data.components[entityIndex].relationships.joinedTo.Add(new JoinedToTarget
-                    {
-                        interfaceTarget = new InterfaceID
-                        {
-                            id = joinedToEntity.Id.ToString(),
-                            name = joinedToEntity?.Name ?? null,
-                            number = joinedToEntity.GetAttributeValue("number")?.ToString() ?? null
-                        }
-                    });
-                }
-                entityIndex++;
-            }
-            // Output Interfaces
-            folder = project.GetFolder("Interface");
-            entityList = folder.GetAllEntities();
-            entityIndex = 0;
-            foreach (IEntity entity in numericSortBlock.SortEntities(entityList))
-            {
-                modelData.data.interfaces.Add(new Interface
-                {
-                    identity = new InterfaceID
-                    {
-                        id = entity.Id.ToString(),
-                        name = entity?.Name ?? null,
-                        number = entity.GetAttribute("number")?.ToString() ?? null
-                    },
-                    attributes = new InterfaceATTR
-                    {
-                        description = entity.GetAttribute("description")?.ToString().Replace(Environment.NewLine, "\n") ?? null,
-                    }
-                });
-                modelData.data.interfaces[entityIndex].relationships = new InterfaceREL
-                {
-                    joins = new List<JoinsTarget>()
-                };
-                foreach (IEntity joinsEntity in entity.GetRelationshipTargets("joins"))
-                {
-                    modelData.data.interfaces[entityIndex].relationships.joins.Add(new JoinsTarget
-                    {
-                        interfaceTarget = new InterfaceID
-                        {
-                            id = joinsEntity.Id.ToString(),
-                            name = joinsEntity?.Name ?? null,
-                            number = joinsEntity.GetAttributeValue("number")?.ToString() ?? null
-                        }
-                    });
-                }
-                entityIndex++;
-            }
-            // Ouput Links
-
-            // Output as JSON document
-            string json = JsonConvert.SerializeObject(modelData, Formatting.Indented);
-            Console.WriteLine(json);
+ 
         }
         // Output Attributes (Entity or Relationship)
         static void OutputAttribute(IEnumerable<IAttributeDefinition> attributeDefinitionList, string ownerName)
@@ -423,7 +280,7 @@ namespace genesys_graphql
                         break;
                     case "Vitech.Genesys.Common.EnumerationTypeDefinition":
                         EnumerationTypeDefinition enumDefinition = attributeDefinition.DataType as EnumerationTypeDefinition;
-                        var capEnumAttributeName = Char.ToUpperInvariant(attributeDefinitionName[0]) +
+                        var capEnumAttributeName = Char.ToUpper(attributeDefinitionName[0]) +
                             attributeDefinitionName.Substring(1);
                         // Enum type is: <OwnerName><AttributeName> 
                         schemaFile.WriteLine("  " + attributeDefinitionName + ": " + ownerName + capEnumAttributeName);
@@ -458,7 +315,7 @@ namespace genesys_graphql
                 DataTypeDefinition attributeType = attributeDefinition.DataType;
                 if (attributeType.ToString() == "Vitech.Genesys.Common.EnumerationTypeDefinition")
                 {
-                    var capEnumAttributeName = Char.ToUpperInvariant(attributeDefinition.Name[0]) +
+                    var capEnumAttributeName = Char.ToUpper(attributeDefinition.Name[0]) +
                         attributeDefinition.Name.Substring(1);
                     schemaFile.WriteLine("enum " + ownerName + capEnumAttributeName.Replace("-", "_") + " {");
 
@@ -493,24 +350,13 @@ namespace genesys_graphql
                 }
                 else
                 {
-                    camelRelationName += Char.ToUpperInvariant(relationNameParts[i][0]) +
+                    camelRelationName += Char.ToUpper(relationNameParts[i][0]) +
                         relationNameParts[i].Substring(1);
                 }
             }
             return camelRelationName;
         }
-        // Find Plural
-        static string GetPlural(string word)
-        {
-            try
-            {
-                return (_pluralTable[word]);
-            }
-            catch
-            {
-                return (word + "s");
-            }
-        }
+
         // Wrap multiline comments
         static List<string> WrapLineComment(string text)
         {

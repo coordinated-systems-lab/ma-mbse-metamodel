@@ -11,153 +11,153 @@ type MissionAwareSystemModel {
 
   # A category groups related entities. Specifically used for formal documentation
   # to group non-functional requirements by subject matter.
-  categories: [Category]
+  category: [Category]
 
   # A Change Request Package captures the basic information and relationships to
   # identify a formal change request.
-  changeRequestPackages: [ChangeRequestPackage]
+  changeRequestPackage: [ChangeRequestPackage]
 
   # A component is an abstract term that represents the physical or logical entity
   # that performs a specific function or functions.
-  components: [Component]
+  component: [Component]
 
   # The ConstraintDefinition entity captures the definition of the parametric
   # constraint as an Expression, identifying the independent variable(s) and the
   # dependent variable in the definition.
-  constraintDefinitions: [ConstraintDefinition]
+  constraintDefinition: [ConstraintDefinition]
 
   # A defined term identifies a word, phrase, or acronym used in a document. The
   # formal documentation scripts treat the entity name as the acronym meaning or the
   # term, Acronym as the acronym, and Description as the term definition.
-  definedTerms: [DefinedTerm]
+  definedTerm: [DefinedTerm]
 
   # A document identifies either the source/authorization for information entered
   # into the system description database, a specification/document generated from
   # the contents of the database, or an applicable or reference document for a
   # specification/document generated from the contents of the database.
-  documents: [Document]
+  document: [Document]
 
   # A domain set defines the number of iterations or replications in a control
   # structure.
-  domainSets: [DomainSet]
+  domainSet: [DomainSet]
 
   # An occurrence that may cause a state transition. Event types include an explicit
   # signal from outside the system, an invocation from inside the system, the
   # passage of a designated period of time, or a designated condition becoming true.
-  events: [Event]
+  event: [Event]
 
   # An exit identifies a possible path to follow when a processing unit completes.
-  exits: [Exit]
+  exit: [Exit]
 
   # An external file references non-database text or graphics to augment an entity’s
   # definition. The file content must be MS-Word compatible and is automatically
   # included in formal reports.
-  externalFiles: [ExternalFile]
+  externalFile: [ExternalFile]
 
   # A full port is a structural feature of a Component that specifies the boundary
   # to the component and the features associated with the port.
-  fullPorts: [FullPort]
+  fullPort: [FullPort]
 
   # A Function is a transformation that accepts one or more inputs (items) and
   # transforms them into outputs (items).
-  functions: [Function]
+  function: [Function]
 
   # A hazard is a system state or set of conditions that, together with a particular
   # set of worst-case environmental conditions, will lead to a loss
-  hazards: [Hazard]
+  hazard: [Hazard]
 
   # An interface describes the logical connections between parts of an architecture.
-  interfaces: [Interface]
+  interface: [Interface]
 
   # A concern identifies a problem (as well as its resolution) with a requirement or
   # system entity in a system design or specification. The primary application is to
   # problems such as achievability, correctness, completeness, consistency,
   # testability, etc.
-  issues: [Issue]
+  issue: [Issue]
 
   # Items represent flows within and between functions. An item is an input to or an
   # output from a function.
-  items: [Item]
+  item: [Item]
 
   # A link is the physical implementation of an interface.
-  links: [Link]
+  link: [Link]
 
   # A loss involves something of value to stakeholders. Losses may include a loss of
   # human life or human injury, property damage, environmental pollution, loss of
   # mission, loss of reputation, loss or leak of sensitive information, or any other
   # loss that is unacceptable to the stakeholders.
-  losses: [Loss]
+  loss: [Loss]
 
   # A loss scenario describes the causal factors that can lead to the unsafe control
   # and to hazards.    Two types of loss scenarios must be considered:  a) Why would
   # Unsafe Control Actions occur?  b) Why would control actions be improperly
   # executed or not executed, leading to hazards?
-  lossScenarios: [LossScenario]
+  lossScenario: [LossScenario]
 
   # An indicator applied to a set of entities, which represents a distinct and
   # separate method of operation of a component, device, system, etc. In another
   # words, an optional change to a device's method of operation.
-  modes: [Mode]
+  mode: [Mode]
 
   # A note provides additional information or a query regarding the characteristics
   # of a particular entity.
-  notes: [Note]
+  note: [Note]
 
   # A package groups related entities, specifically for organizational and
   # navigation purposes.
-  packages: [Package]
+  package: [Package]
 
   # A port definition describes a set of behavioral features related to the full
   # port.
-  portDefinitions: [PortDefinition]
+  portDefinition: [PortDefinition]
 
   # Proxy Port defines the boundary on a Component by specifying which features of
   # the owning component are visible through the external connector.
-  proxyPorts: [ProxyPort]
+  proxyPort: [ProxyPort]
 
   # A Requirement is either an originating requirement extracted from source
   # documentation for a system, a refinement of a higher-level requirement, a
   # derived characteristic of the system or one of its subcomponents, or a design
   # decision.
-  requirements: [Requirement]
+  requirement: [Requirement]
 
   # A Resource is something (e.g., power, MIPS, interceptors, etc.) that the system
   # uses, captures, or generates while it is operating.
-  resources: [Resource]
+  resource: [Resource]
 
   # A Risk is the uncertainty of attaining/achieving a product or program milestone.
-  risks: [Risk]
+  risk: [Risk]
 
   # A ServiceSpecification contains the information prepared for or taken from a
   # specification defining network services.
-  serviceSpecifications: [ServiceSpecification]
+  serviceSpecification: [ServiceSpecification]
 
   # A State entity identifies a state of a component.
-  states: [State]
+  state: [State]
 
   # A Text entity allows the inclusion of additional text and any associated
   # external file content in a document following the description of the augmented
   # entity.
-  texts: [Text]
+  text: [Text]
 
   # Transition is the process or period of changing from one state or condition to
   # another.
-  transitions: [Transition]
+  transition: [Transition]
 
   # An Unsafe Control Action (UCA) is a control action that, in a particular context
   # and worst-case environment, will lead to a hazard.
-  unsafeActions: [UnsafeAction]
+  unsafeAction: [UnsafeAction]
 
   # A use case entity identifies a piece of the functionality of a system in terms
   # of how the users use the system to achieve their goals. Use cases are high-level
   # descriptions of behavior under a specific set of conditions. These high-level
   # descriptions can then be elaborated to define the system behavior.
-  useCases: [UseCase]
+  useCase: [UseCase]
 
   # A VerificationRequirement describes what is to be proved (i.e., requirements),
   # at what level the verification will occur, which method of verification should
   # be used, and the current verification status.
-  verificationRequirements: [VerificationRequirement]
+  verificationRequirement: [VerificationRequirement]
 
 }
 type Project {
@@ -211,17 +211,17 @@ type CategoryREL {
 
 }
 type Category_CategorizesTarget {
-  DefinedTermTarget: DefinedTermID
-  DocumentTarget: DocumentID
+  definedTermTarget: DefinedTermID
+  documentTarget: DocumentID
 }
 type Category_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Category_IncludedInTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Category_IncludesTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 #########################################
 # ChangeRequestPackage definition
@@ -335,56 +335,56 @@ type ChangeRequestPackageREL {
 
 }
 type ChangeRequestPackage_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type ChangeRequestPackage_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type ChangeRequestPackage_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type ChangeRequestPackage_GeneratedByTarget {
-  DocumentTarget: DocumentID
-  RequirementTarget: RequirementID
-  ProxyPortTarget: ProxyPortID
-  InterfaceTarget: InterfaceID
-  ComponentTarget: ComponentID
-  FullPortTarget: FullPortID
-  UseCaseTarget: UseCaseID
-  LinkTarget: LinkID
-  VerificationRequirementTarget: VerificationRequirementID
-  FunctionTarget: FunctionID
-  ResourceTarget: ResourceID
-  StateTarget: StateID
+  documentTarget: DocumentID
+  requirementTarget: RequirementID
+  proxyPortTarget: ProxyPortID
+  interfaceTarget: InterfaceID
+  componentTarget: ComponentID
+  fullPortTarget: FullPortID
+  useCaseTarget: UseCaseID
+  linkTarget: LinkID
+  verificationRequirementTarget: VerificationRequirementID
+  functionTarget: FunctionID
+  resourceTarget: ResourceID
+  stateTarget: StateID
 }
 type ChangeRequestPackage_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type ChangeRequestPackage_IdentifiedByTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type ChangeRequestPackage_ImpactsTarget {
-  DocumentTarget: DocumentID
-  InterfaceTarget: InterfaceID
-  RequirementTarget: RequirementID
-  FullPortTarget: FullPortID
-  ProxyPortTarget: ProxyPortID
-  ModeTarget: ModeID
-  UseCaseTarget: UseCaseID
-  ResourceTarget: ResourceID
-  StateTarget: StateID
+  documentTarget: DocumentID
+  interfaceTarget: InterfaceID
+  requirementTarget: RequirementID
+  fullPortTarget: FullPortID
+  proxyPortTarget: ProxyPortID
+  modeTarget: ModeID
+  useCaseTarget: UseCaseID
+  resourceTarget: ResourceID
+  stateTarget: StateID
 }
 type ChangeRequestPackage_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type ChangeRequestPackage_ResultsInTarget {
-  RequirementTarget: RequirementID
-  FunctionTarget: FunctionID
+  requirementTarget: RequirementID
+  functionTarget: FunctionID
 }
 #########################################
 # Component definition
@@ -577,15 +577,15 @@ type ComponentREL {
 
 }
 type Component_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Component_BuiltFromTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
   # Whole Multiplicity indicates if the component is distinct and separable
   # (wholeMultiplicity = 0; also termed composition) or whether the component is
   # distinct and not separable (wholeMultiplicity = 1; also termed aggregation).
@@ -605,7 +605,7 @@ enum Component_BuiltFromWholeMultiplicity {
   E_1
 }
 type Component_BuiltInTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
   # Whole Multiplicity indicates if the component is distinct and separable
   # (wholeMultiplicity = 0; also termed composition) or whether the component is
   # distinct and not separable (wholeMultiplicity = 1; also termed aggregation).
@@ -625,42 +625,42 @@ enum Component_BuiltInWholeMultiplicity {
   E_1
 }
 type Component_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Component_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Component_ConnectedToTarget {
-  LinkTarget: LinkID
+  linkTarget: LinkID
   # Port ID provides a unique identification for the port that is used between the
   # Link and the Component.
   portID: String
 
 }
 type Component_ConstrainedByTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings show how the parameter maps to the variable used.
   mappings: [String]
 
 }
 type Component_ContainsTarget {
-  ModeTarget: ModeID
+  modeTarget: ModeID
 }
 type Component_DescribedByTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
 }
 type Component_DocumentedByTarget {
-  ServiceSpecificationTarget: ServiceSpecificationID
-  DocumentTarget: DocumentID
+  serviceSpecificationTarget: ServiceSpecificationID
+  documentTarget: DocumentID
 }
 type Component_EnablesDetectionOfTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
 }
 type Component_ExhibitsTarget {
-  StateTarget: StateID
+  stateTarget: StateID
   # Behavior Type classifies the mapping between the source and destination
   # entities.
   behaviorType: Component_ExhibitsBehaviorType
@@ -671,8 +671,8 @@ enum Component_ExhibitsBehaviorType {
   Integrated_Root
 }
 type Component_ExposesTarget {
-  FullPortTarget: FullPortID
-  ProxyPortTarget: ProxyPortID
+  fullPortTarget: FullPortID
+  proxyPortTarget: ProxyPortID
   # PortMultiplicity is the potential number of connections available on this port.
   # This can be specified as zero, a whole number, or a range from a lower bound to
   # an upper bound.
@@ -686,7 +686,7 @@ type Component_ExposesTarget {
 
 }
 type Component_GeneralizationOfTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
   # Type classifies the nature of the generalization / specialization relationship.
   # Inheritance indicates that the specialization shares the properties of the
   # generalization. Instance indicates that the specialization also shares the
@@ -699,16 +699,16 @@ enum Component_GeneralizationOfType {
   Instance
 }
 type Component_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Component_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Component_JoinedToTarget {
-  InterfaceTarget: InterfaceID
+  interfaceTarget: InterfaceID
 }
 type Component_KindOfTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
   # Type classifies the nature of the generalization / specialization relationship.
   # Inheritance indicates that the specialization shares the properties of the
   # generalization. Instance indicates that the specialization also shares the
@@ -721,10 +721,10 @@ enum Component_KindOfType {
   Instance
 }
 type Component_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Component_ParameterUsedInTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings identifies the parameters associated with the uses parameter from
   # relationship. The mappings relationship attribute shows how the parameter maps
   # to the variable used.
@@ -732,10 +732,10 @@ type Component_ParameterUsedInTarget {
 
 }
 type Component_ParticipatesInTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
 }
 type Component_PerformsTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
   # Behavior Type classifies the mapping of the processing unit to the
   # implementation unit.
   behaviorType: Component_PerformsBehaviorType
@@ -747,19 +747,19 @@ enum Component_PerformsBehaviorType {
   Thread
 }
 type Component_PrecipitatesTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
 }
 type Component_ProtectsAgainstTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
 }
 type Component_ReportedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Component_SimulatesTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
 }
 type Component_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -833,24 +833,24 @@ type ConstraintDefinitionREL {
 
 }
 type ConstraintDefinition_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type ConstraintDefinition_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type ConstraintDefinition_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type ConstraintDefinition_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type ConstraintDefinition_IncludedInConstraintDefinitionTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # : Mappings identifies the parameters associated with the included constraint
   # definition relationship. The mappings relationship attribute shows how the
   # parameter maps to the variable used.
@@ -858,7 +858,7 @@ type ConstraintDefinition_IncludedInConstraintDefinitionTarget {
 
 }
 type ConstraintDefinition_IncludesConstraintDefinitionTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # : Mappings identifies the parameters associated with the included constraint
   # definition relationship. The mappings relationship attribute shows how the
   # parameter maps to the variable used.
@@ -866,7 +866,7 @@ type ConstraintDefinition_IncludesConstraintDefinitionTarget {
 
 }
 type ConstraintDefinition_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # DefinedTerm definition
@@ -910,19 +910,19 @@ type DefinedTermREL {
 
 }
 type DefinedTerm_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type DefinedTerm_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type DefinedTerm_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type DefinedTerm_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type DefinedTerm_UsedInTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 #########################################
 # Document definition
@@ -1110,49 +1110,49 @@ type DocumentREL {
 
 }
 type Document_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Document_DocumentsTarget {
-  NoteTarget: NoteID
-  DefinedTermTarget: DefinedTermID
+  noteTarget: NoteID
+  definedTermTarget: DefinedTermID
 }
 type Document_GeneratesTarget {
-  ChangeRequestPackageTarget: ChangeRequestPackageID
+  changeRequestPackageTarget: ChangeRequestPackageID
 }
 type Document_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Document_ImpactedByTarget {
-  RiskTarget: RiskID
-  ChangeRequestPackageTarget: ChangeRequestPackageID
+  riskTarget: RiskID
+  changeRequestPackageTarget: ChangeRequestPackageID
 }
 type Document_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Document_ReferencedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Document_ReferencesTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Document_RefinedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Document_RefinesTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Document_ReportsOnTarget {
-  InterfaceTarget: InterfaceID
-  VerificationRequirementTarget: VerificationRequirementID
+  interfaceTarget: InterfaceID
+  verificationRequirementTarget: VerificationRequirementID
 }
 type Document_TracedFromTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Document_TracesToTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Document_UsesTarget {
-  DefinedTermTarget: DefinedTermID
+  definedTermTarget: DefinedTermID
 }
 #########################################
 # DomainSet definition
@@ -1198,24 +1198,24 @@ type DomainSetREL {
 
 }
 type DomainSet_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type DomainSet_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type DomainSet_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type DomainSet_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type DomainSet_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # Event definition
@@ -1284,30 +1284,30 @@ type EventREL {
 
 }
 type Event_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Event_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Event_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Event_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Event_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Event_ResponsibleForTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
 }
 type Event_TriggersTarget {
-  TransitionTarget: TransitionID
+  transitionTarget: TransitionID
   # Queue Type specifies how the triggering entities should queue up at the
   # receiving processing unit.
   queueType: Event_TriggersQueueType
@@ -1359,24 +1359,24 @@ type ExitREL {
 
 }
 type Exit_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Exit_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Exit_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Exit_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Exit_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # ExternalFile definition
@@ -1433,14 +1433,14 @@ type ExternalFileREL {
 
 }
 type ExternalFile_AugmentsTarget {
-  TextTarget: TextID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type ExternalFile_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 #########################################
 # FullPort definition
@@ -1535,25 +1535,25 @@ type FullPortREL {
 
 }
 type FullPort_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type FullPort_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type FullPort_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type FullPort_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type FullPort_ExposesTarget {
-  FullPortTarget: FullPortID
-  ProxyPortTarget: ProxyPortID
+  fullPortTarget: FullPortID
+  proxyPortTarget: ProxyPortID
   # PortMultiplicity is the potential number of connections available on this port.
   # This can be specified as zero, a whole number, or a range from a lower bound to
   # an upper bound.
@@ -1567,7 +1567,7 @@ type FullPort_ExposesTarget {
 
 }
 type FullPort_GeneralizationOfTarget {
-  FullPortTarget: FullPortID
+  fullPortTarget: FullPortID
   # Type classifies the nature of the generalization / specialization relationship.
   # Inheritance indicates that the specialization shares the properties of the
   # generalization. Instance indicates that the specialization also shares the
@@ -1580,14 +1580,14 @@ enum FullPort_GeneralizationOfType {
   Instance
 }
 type FullPort_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type FullPort_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type FullPort_IsPortForTarget {
-  ComponentTarget: ComponentID
-  FullPortTarget: FullPortID
+  componentTarget: ComponentID
+  fullPortTarget: FullPortID
   # PortMultiplicity is the potential number of connections available on this port.
   # This can be specified as zero, a whole number, or a range from a lower bound to
   # an upper bound.
@@ -1601,7 +1601,7 @@ type FullPort_IsPortForTarget {
 
 }
 type FullPort_KindOfTarget {
-  FullPortTarget: FullPortID
+  fullPortTarget: FullPortID
   # Type classifies the nature of the generalization / specialization relationship.
   # Inheritance indicates that the specialization shares the properties of the
   # generalization. Instance indicates that the specialization also shares the
@@ -1614,16 +1614,16 @@ enum FullPort_KindOfType {
   Instance
 }
 type FullPort_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type FullPort_ProvidesTarget {
-  PortDefinitionTarget: PortDefinitionID
+  portDefinitionTarget: PortDefinitionID
 }
 type FullPort_RequiresTarget {
-  PortDefinitionTarget: PortDefinitionID
+  portDefinitionTarget: PortDefinitionID
 }
 type FullPort_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -1790,7 +1790,7 @@ type FunctionREL {
 
 }
 type Function_AllocatedToTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
   # Behavior Type classifies the mapping of the processing unit to the
   # implementation unit.
   behaviorType: Function_AllocatedToBehaviorType
@@ -1802,18 +1802,18 @@ enum Function_AllocatedToBehaviorType {
   Thread
 }
 type Function_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Function_BasedOnTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type Function_CapturesTarget {
-  ResourceTarget: ResourceID
+  resourceTarget: ResourceID
   # Acquire Available indicates whether or not the associated processing unit will
   # acquire any available resources while waiting for the full amount required for
   # execution.
@@ -1824,19 +1824,19 @@ type Function_CapturesTarget {
 
 }
 type Function_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Function_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Function_ConstrainedByTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings show how the parameter maps to the variable used.
   mappings: [String]
 
 }
 type Function_ConsumesTarget {
-  ResourceTarget: ResourceID
+  resourceTarget: ResourceID
   # Amount indicates how much of the resource is consumed by the processing unit.
   amount: String
 
@@ -1847,16 +1847,16 @@ type Function_ConsumesTarget {
 
 }
 type Function_DecomposedByTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Function_DecomposesTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Function_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Function_ElaboratesTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
   # Flow type indicates if this elaboration represents the primary flow or alternate
   # flow.
   flowType: Function_ElaboratesFlowType
@@ -1867,13 +1867,13 @@ enum Function_ElaboratesFlowType {
   Primary
 }
 type Function_EnablesDetectionOfTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
 }
 type Function_ExitsByTarget {
-  ExitTarget: ExitID
+  exitTarget: ExitID
   # Selection Probability indicates the likelihood of exiting the processing unit
   # via this exit. Note that the selection probability need not be normalized (i.e.,
   # the sum of probabilities for all exits does not have to be 1.0). Normalization
@@ -1890,13 +1890,13 @@ enum Function_ExitsByType {
   Timeout
 }
 type Function_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Function_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Function_IncorporatedByTarget {
-  StateTarget: StateID
+  stateTarget: StateID
   # Behavior Type classifies the mapping between the source and destination
   # entities.
   behaviorType: Function_IncorporatedByBehaviorType
@@ -1909,10 +1909,10 @@ enum Function_IncorporatedByBehaviorType {
   Exit
 }
 type Function_InputsTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
 }
 type Function_ManagesTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
   # The management action type for the resilient mode.
   actionType: Function_ManagesActionType
 
@@ -1924,13 +1924,13 @@ enum Function_ManagesActionType {
   selfTest
 }
 type Function_OutputsTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
 }
 type Function_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Function_ParameterUsedInTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings identifies the parameters associated with the uses parameter from
   # relationship. The mappings relationship attribute shows how the parameter maps
   # to the variable used.
@@ -1938,29 +1938,29 @@ type Function_ParameterUsedInTarget {
 
 }
 type Function_ProducesTarget {
-  ResourceTarget: ResourceID
+  resourceTarget: ResourceID
   # Amount indicates how much of the resource is produced by the processing unit.
   amount: String
 
 }
 type Function_ReflectedInTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Function_ReflectsTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Function_RelatesToTarget {
-  DomainSetTarget: DomainSetID
+  domainSetTarget: DomainSetID
 }
 type Function_ResultOfTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Function_ServicesTarget {
-  TransitionTarget: TransitionID
-  LinkTarget: LinkID
+  transitionTarget: TransitionID
+  linkTarget: LinkID
 }
 type Function_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -1968,7 +1968,7 @@ type Function_SpecifiedByTarget {
 
 }
 type Function_TriggeredByTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
   # Queue Type specifies how the triggering entities should queue up at the
   # receiving processing unit.
   queueType: Function_TriggeredByQueueType
@@ -1981,7 +1981,7 @@ enum Function_TriggeredByQueueType {
   Reverse_Priority
 }
 type Function_VerifiedByTarget {
-  VerificationRequirementTarget: VerificationRequirementID
+  verificationRequirementTarget: VerificationRequirementID
 }
 #########################################
 # Hazard definition
@@ -2033,33 +2033,33 @@ type HazardREL {
 
 }
 type Hazard_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Hazard_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Hazard_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Hazard_ElicitsTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type Hazard_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Hazard_IsCausedByTarget {
-  UnsafeActionTarget: UnsafeActionID
+  unsafeActionTarget: UnsafeActionID
 }
 type Hazard_LeadsToTarget {
-  LossTarget: LossID
+  lossTarget: LossID
 }
 type Hazard_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # Interface definition
@@ -2138,48 +2138,48 @@ type InterfaceREL {
 
 }
 type Interface_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Interface_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Interface_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Interface_ComprisedOfTarget {
-  LinkTarget: LinkID
+  linkTarget: LinkID
 }
 type Interface_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Interface_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Interface_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Interface_IncludedInTarget {
-  InterfaceTarget: InterfaceID
+  interfaceTarget: InterfaceID
 }
 type Interface_IncludesTarget {
-  InterfaceTarget: InterfaceID
+  interfaceTarget: InterfaceID
 }
 type Interface_JoinsTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
 }
 type Interface_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Interface_ReportedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Interface_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -2285,54 +2285,54 @@ type IssueREL {
 
 }
 type Issue_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Issue_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Issue_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Issue_GeneratedByTarget {
-  RequirementTarget: RequirementID
-  ProxyPortTarget: ProxyPortID
-  InterfaceTarget: InterfaceID
-  ComponentTarget: ComponentID
-  FullPortTarget: FullPortID
-  UseCaseTarget: UseCaseID
-  LinkTarget: LinkID
-  VerificationRequirementTarget: VerificationRequirementID
-  FunctionTarget: FunctionID
-  ResourceTarget: ResourceID
-  StateTarget: StateID
+  requirementTarget: RequirementID
+  proxyPortTarget: ProxyPortID
+  interfaceTarget: InterfaceID
+  componentTarget: ComponentID
+  fullPortTarget: FullPortID
+  useCaseTarget: UseCaseID
+  linkTarget: LinkID
+  verificationRequirementTarget: VerificationRequirementID
+  functionTarget: FunctionID
+  resourceTarget: ResourceID
+  stateTarget: StateID
 }
 type Issue_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Issue_IdentifiedByTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Issue_ImpactsTarget {
-  InterfaceTarget: InterfaceID
-  RequirementTarget: RequirementID
-  FullPortTarget: FullPortID
-  ProxyPortTarget: ProxyPortID
-  ModeTarget: ModeID
-  UseCaseTarget: UseCaseID
-  ResourceTarget: ResourceID
-  StateTarget: StateID
+  interfaceTarget: InterfaceID
+  requirementTarget: RequirementID
+  fullPortTarget: FullPortID
+  proxyPortTarget: ProxyPortID
+  modeTarget: ModeID
+  useCaseTarget: UseCaseID
+  resourceTarget: ResourceID
+  stateTarget: StateID
 }
 type Issue_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Issue_ResultsInTarget {
-  RequirementTarget: RequirementID
-  FunctionTarget: FunctionID
+  requirementTarget: RequirementID
+  functionTarget: FunctionID
 }
 #########################################
 # Item definition
@@ -2464,57 +2464,57 @@ type ItemREL {
 
 }
 type Item_AssignedToTarget {
-  EventTarget: EventID
+  eventTarget: EventID
 }
 type Item_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Item_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Item_ConstrainedByTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings show how the parameter maps to the variable used.
   mappings: [String]
 
 }
 type Item_DecomposedByTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
 }
 type Item_DecomposesTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
 }
 type Item_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Item_EnablesDetectionOfTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
 }
 type Item_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Item_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Item_InputToTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Item_OutputFromTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Item_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Item_ParameterUsedInTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings identifies the parameters associated with the uses parameter from
   # relationship. The mappings relationship attribute shows how the parameter maps
   # to the variable used.
@@ -2522,7 +2522,7 @@ type Item_ParameterUsedInTarget {
 
 }
 type Item_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -2530,10 +2530,10 @@ type Item_SpecifiedByTarget {
 
 }
 type Item_TransferredByTarget {
-  LinkTarget: LinkID
+  linkTarget: LinkID
 }
 type Item_TriggersTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
   # Queue Type specifies how the triggering entities should queue up at the
   # receiving processing unit.
   queueType: Item_TriggersQueueType
@@ -2656,61 +2656,61 @@ type LinkREL {
 
 }
 type Link_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Link_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Link_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Link_ComprisesTarget {
-  InterfaceTarget: InterfaceID
+  interfaceTarget: InterfaceID
 }
 type Link_ConnectsToTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
   # Port ID provides a unique identification for the port that is used between the
   # Link and the Component.
   portID: String
 
 }
 type Link_ConstrainedByTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings show how the parameter maps to the variable used.
   mappings: [String]
 
 }
 type Link_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Link_EnablesDetectionOfTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
 }
 type Link_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Link_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Link_IncludedInTarget {
-  LinkTarget: LinkID
+  linkTarget: LinkID
 }
 type Link_IncludesTarget {
-  LinkTarget: LinkID
+  linkTarget: LinkID
 }
 type Link_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Link_ParameterUsedInTarget {
-  ConstraintDefinitionTarget: ConstraintDefinitionID
+  constraintDefinitionTarget: ConstraintDefinitionID
   # Mappings identifies the parameters associated with the uses parameter from
   # relationship. The mappings relationship attribute shows how the parameter maps
   # to the variable used.
@@ -2718,10 +2718,10 @@ type Link_ParameterUsedInTarget {
 
 }
 type Link_ServicedByTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Link_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -2729,7 +2729,7 @@ type Link_SpecifiedByTarget {
 
 }
 type Link_TransfersTarget {
-  ItemTarget: ItemID
+  itemTarget: ItemID
 }
 #########################################
 # Loss definition
@@ -2786,27 +2786,27 @@ type LossREL {
 
 }
 type Loss_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Loss_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Loss_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Loss_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Loss_IsCausedByTarget {
-  HazardTarget: HazardID
+  hazardTarget: HazardID
 }
 type Loss_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # LossScenario definition
@@ -2906,46 +2906,46 @@ type LossScenarioREL {
 
 }
 type LossScenario_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type LossScenario_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type LossScenario_DetectedByMonitoringTarget {
-  ItemTarget: ItemID
-  ResourceTarget: ResourceID
-  ComponentTarget: ComponentID
-  FunctionTarget: FunctionID
-  LinkTarget: LinkID
+  itemTarget: ItemID
+  resourceTarget: ResourceID
+  componentTarget: ComponentID
+  functionTarget: FunctionID
+  linkTarget: LinkID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
 }
 type LossScenario_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type LossScenario_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type LossScenario_IsPrecipitatedByTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
 }
 type LossScenario_IsProtectedByTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
 }
 type LossScenario_IsSimulatedByTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
 }
 type LossScenario_LeadsToTarget {
-  UnsafeActionTarget: UnsafeActionID
+  unsafeActionTarget: UnsafeActionID
 }
 type LossScenario_ManagedByTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
   # The management action type for the resilient mode.
   actionType: LossScenario_ManagedByActionType
 
@@ -2957,7 +2957,7 @@ enum LossScenario_ManagedByActionType {
   selfTest
 }
 type LossScenario_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # Mode definition
@@ -3019,33 +3019,33 @@ type ModeREL {
 
 }
 type Mode_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Mode_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Mode_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Mode_EncompassesTarget {
-  StateTarget: StateID
+  stateTarget: StateID
 }
 type Mode_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Mode_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Mode_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Mode_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -3108,13 +3108,13 @@ type NoteREL {
 
 }
 type Note_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Note_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Note_IdentifiesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 #########################################
 # Package definition
@@ -3151,17 +3151,17 @@ type PackageREL {
 
 }
 type Package_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Package_IncludedInTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Package_IncludesTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Package_PackagesTarget {
-  DefinedTermTarget: DefinedTermID
-  DocumentTarget: DocumentID
+  definedTermTarget: DefinedTermID
+  documentTarget: DocumentID
 }
 #########################################
 # PortDefinition definition
@@ -3216,30 +3216,30 @@ type PortDefinitionREL {
 
 }
 type PortDefinition_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type PortDefinition_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type PortDefinition_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type PortDefinition_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type PortDefinition_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type PortDefinition_ProvidedByTarget {
-  FullPortTarget: FullPortID
+  fullPortTarget: FullPortID
 }
 type PortDefinition_RequiredByTarget {
-  FullPortTarget: FullPortID
+  fullPortTarget: FullPortID
 }
 #########################################
 # ProxyPort definition
@@ -3297,31 +3297,31 @@ type ProxyPortREL {
 
 }
 type ProxyPort_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type ProxyPort_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type ProxyPort_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type ProxyPort_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type ProxyPort_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type ProxyPort_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type ProxyPort_IsPortForTarget {
-  ComponentTarget: ComponentID
-  FullPortTarget: FullPortID
+  componentTarget: ComponentID
+  fullPortTarget: FullPortID
   # PortMultiplicity is the potential number of connections available on this port.
   # This can be specified as zero, a whole number, or a range from a lower bound to
   # an upper bound.
@@ -3335,10 +3335,10 @@ type ProxyPort_IsPortForTarget {
 
 }
 type ProxyPort_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type ProxyPort_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -3504,58 +3504,58 @@ type RequirementREL {
 
 }
 type Requirement_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Requirement_BasisOfTarget {
-  VerificationRequirementTarget: VerificationRequirementID
-  FunctionTarget: FunctionID
-  UseCaseTarget: UseCaseID
+  verificationRequirementTarget: VerificationRequirementID
+  functionTarget: FunctionID
+  useCaseTarget: UseCaseID
 }
 type Requirement_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Requirement_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Requirement_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Requirement_ElicitedByTarget {
-  HazardTarget: HazardID
-  UnsafeActionTarget: UnsafeActionID
-  UseCaseTarget: UseCaseID
+  hazardTarget: HazardID
+  unsafeActionTarget: UnsafeActionID
+  useCaseTarget: UseCaseID
 }
 type Requirement_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Requirement_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Requirement_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Requirement_RefinedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type Requirement_RefinesTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type Requirement_ResultOfTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Requirement_SpecifiesTarget {
-  ItemTarget: ItemID
-  FunctionTarget: FunctionID
-  ModeTarget: ModeID
-  InterfaceTarget: InterfaceID
-  StateTarget: StateID
-  FullPortTarget: FullPortID
-  ProxyPortTarget: ProxyPortID
+  itemTarget: ItemID
+  functionTarget: FunctionID
+  modeTarget: ModeID
+  interfaceTarget: InterfaceID
+  stateTarget: StateID
+  fullPortTarget: FullPortID
+  proxyPortTarget: ProxyPortID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -3563,7 +3563,7 @@ type Requirement_SpecifiesTarget {
 
 }
 type Requirement_VerifiedByTarget {
-  VerificationRequirementTarget: VerificationRequirementID
+  verificationRequirementTarget: VerificationRequirementID
 }
 #########################################
 # Resource definition
@@ -3634,36 +3634,36 @@ type ResourceREL {
 
 }
 type Resource_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Resource_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Resource_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Resource_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Resource_EnablesDetectionOfTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
 }
 type Resource_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Resource_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type Resource_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # Risk definition
@@ -3804,55 +3804,55 @@ type RiskREL {
 
 }
 type Risk_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Risk_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Risk_CausedByTarget {
-  ProxyPortTarget: ProxyPortID
-  ResourceTarget: ResourceID
-  InterfaceTarget: InterfaceID
-  VerificationRequirementTarget: VerificationRequirementID
-  FullPortTarget: FullPortID
-  FunctionTarget: FunctionID
-  UseCaseTarget: UseCaseID
-  LinkTarget: LinkID
-  RequirementTarget: RequirementID
-  ComponentTarget: ComponentID
+  proxyPortTarget: ProxyPortID
+  resourceTarget: ResourceID
+  interfaceTarget: InterfaceID
+  verificationRequirementTarget: VerificationRequirementID
+  fullPortTarget: FullPortID
+  functionTarget: FunctionID
+  useCaseTarget: UseCaseID
+  linkTarget: LinkID
+  requirementTarget: RequirementID
+  componentTarget: ComponentID
 }
 type Risk_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Risk_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Risk_IdentifiedByTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Risk_ImpactsTarget {
-  ModeTarget: ModeID
-  RequirementTarget: RequirementID
-  UseCaseTarget: UseCaseID
-  ResourceTarget: ResourceID
-  InterfaceTarget: InterfaceID
-  ServiceSpecificationTarget: ServiceSpecificationID
-  ProxyPortTarget: ProxyPortID
-  DocumentTarget: DocumentID
-  FullPortTarget: FullPortID
-  StateTarget: StateID
+  modeTarget: ModeID
+  requirementTarget: RequirementID
+  useCaseTarget: UseCaseID
+  resourceTarget: ResourceID
+  interfaceTarget: InterfaceID
+  serviceSpecificationTarget: ServiceSpecificationID
+  proxyPortTarget: ProxyPortID
+  documentTarget: DocumentID
+  fullPortTarget: FullPortID
+  stateTarget: StateID
 }
 type Risk_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Risk_ResultsInTarget {
-  RequirementTarget: RequirementID
-  FunctionTarget: FunctionID
+  requirementTarget: RequirementID
+  functionTarget: FunctionID
 }
 #########################################
 # ServiceSpecification definition
@@ -3946,30 +3946,30 @@ type ServiceSpecificationREL {
 
 }
 type ServiceSpecification_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type ServiceSpecification_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type ServiceSpecification_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type ServiceSpecification_DocumentsTarget {
-  ComponentTarget: ComponentID
+  componentTarget: ComponentID
 }
 type ServiceSpecification_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type ServiceSpecification_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type ServiceSpecification_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # State definition
@@ -4047,42 +4047,42 @@ type StateREL {
 
 }
 type State_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type State_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type State_DecomposedByTarget {
-  StateTarget: StateID
+  stateTarget: StateID
 }
 type State_DecomposesTarget {
-  StateTarget: StateID
+  stateTarget: StateID
 }
 type State_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type State_EncompassedByTarget {
-  ModeTarget: ModeID
+  modeTarget: ModeID
 }
 type State_EnteredByTarget {
-  TransitionTarget: TransitionID
+  transitionTarget: TransitionID
 }
 type State_ExitedByTarget {
-  TransitionTarget: TransitionID
+  transitionTarget: TransitionID
 }
 type State_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type State_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type State_IncorporatesTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
   # Behavior Type classifies the mapping between the source and destination
   # entities.
   behaviorType: State_IncorporatesBehaviorType
@@ -4095,10 +4095,10 @@ enum State_IncorporatesBehaviorType {
   Exit
 }
 type State_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type State_SpecifiedByTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
@@ -4134,14 +4134,14 @@ type TextREL {
 
 }
 type Text_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
+  externalFileTarget: ExternalFileID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Text_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 #########################################
 # Transition definition
@@ -4207,36 +4207,36 @@ type TransitionREL {
 
 }
 type Transition_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type Transition_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type Transition_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type Transition_EntersTarget {
-  StateTarget: StateID
+  stateTarget: StateID
 }
 type Transition_ExitsTarget {
-  StateTarget: StateID
+  stateTarget: StateID
 }
 type Transition_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type Transition_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type Transition_ServicedByTarget {
-  FunctionTarget: FunctionID
+  functionTarget: FunctionID
 }
 type Transition_TriggeredByTarget {
-  EventTarget: EventID
+  eventTarget: EventID
   # Queue Type specifies how the triggering entities should queue up at the
   # receiving processing unit.
   queueType: Transition_TriggeredByQueueType
@@ -4311,33 +4311,33 @@ type UnsafeActionREL {
 
 }
 type UnsafeAction_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type UnsafeAction_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type UnsafeAction_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type UnsafeAction_ElicitsTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type UnsafeAction_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type UnsafeAction_IsCausedByTarget {
-  LossScenarioTarget: LossScenarioID
+  lossScenarioTarget: LossScenarioID
 }
 type UnsafeAction_LeadsToTarget {
-  HazardTarget: HazardID
+  hazardTarget: HazardID
 }
 type UnsafeAction_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # UseCase definition
@@ -4440,44 +4440,44 @@ type UseCaseREL {
 
 }
 type UseCase_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type UseCase_BasedOnTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type UseCase_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type UseCase_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type UseCase_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type UseCase_ElicitsTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type UseCase_ExtendedByTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
   # Extension point is the point at which the extending use case extends the base
   # use case functionality.
   extensionPoint: String
 
 }
 type UseCase_ExtendsTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
   # Extension point is the point at which the extending use case extends the base
   # use case functionality.
   extensionPoint: String
 
 }
 type UseCase_GeneralizationOfTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
   # Type classifies the nature of the generalization / specialization relationship.
   # Inheritance indicates that the specialization shares the properties of the
   # generalization. Instance indicates that the specialization also shares the
@@ -4490,19 +4490,19 @@ enum UseCase_GeneralizationOfType {
   Instance
 }
 type UseCase_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type UseCase_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type UseCase_IncludedInTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
 }
 type UseCase_IncludesTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
 }
 type UseCase_KindOfTarget {
-  UseCaseTarget: UseCaseID
+  useCaseTarget: UseCaseID
   # Type classifies the nature of the generalization / specialization relationship.
   # Inheritance indicates that the specialization shares the properties of the
   # generalization. Instance indicates that the specialization also shares the
@@ -4515,7 +4515,7 @@ enum UseCase_KindOfType {
   Instance
 }
 type UseCase_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 #########################################
 # VerificationRequirement definition
@@ -4624,38 +4624,38 @@ type VerificationRequirementREL {
 
 }
 type VerificationRequirement_AugmentedByTarget {
-  ExternalFileTarget: ExternalFileID
-  TextTarget: TextID
+  externalFileTarget: ExternalFileID
+  textTarget: TextID
   # Position is used to order the use of external files and text associated with an
   # entity.
   position: Int
 
 }
 type VerificationRequirement_BasedOnTarget {
-  RequirementTarget: RequirementID
+  requirementTarget: RequirementID
 }
 type VerificationRequirement_CategorizedByTarget {
-  CategoryTarget: CategoryID
+  categoryTarget: CategoryID
 }
 type VerificationRequirement_CausesTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type VerificationRequirement_DocumentedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type VerificationRequirement_HasCommentsTarget {
-  NoteTarget: NoteID
+  noteTarget: NoteID
 }
 type VerificationRequirement_ImpactedByTarget {
-  RiskTarget: RiskID
+  riskTarget: RiskID
 }
 type VerificationRequirement_PackagedByTarget {
-  PackageTarget: PackageID
+  packageTarget: PackageID
 }
 type VerificationRequirement_ReportedByTarget {
-  DocumentTarget: DocumentID
+  documentTarget: DocumentID
 }
 type VerificationRequirement_VerifiesTarget {
-  FunctionTarget: FunctionID
-  RequirementTarget: RequirementID
+  functionTarget: FunctionID
+  requirementTarget: RequirementID
 }
