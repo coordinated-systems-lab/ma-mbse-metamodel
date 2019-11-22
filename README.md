@@ -1,7 +1,7 @@
-<img src="images/ma-logo.png" width="500">
-
 # MBSE Meta-Model
 
+## Mission Aware Inputs
+![MA-Systemigraph](/images/ma-systemigraph.png)
 ## Overview
 ![MA Model](/images/ma-mbse.png)
 
