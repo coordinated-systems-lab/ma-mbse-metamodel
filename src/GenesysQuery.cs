@@ -11,23 +11,29 @@ namespace genesys_graphql
     {
         static ClientModel client;
         static System.IO.StreamWriter schemaFile;
+        static System.IO.StreamWriter dataFile;
+        static int indent = 0;
+        static List<String> sortedEntityDefinitionList = new List<String>();
+        static ISchema schema;
+        static string facilityName;
 
         static void Main(string[] args)
         {
             if (args.Length == 2 && args[0] == "-s")
             {
                 CreateSchema(args[1]);
+                schemaFile.Close();
             }
             else if (args.Length == 3 && args[0] == "-m")
             {
                 CreateModel(args[1], args[2]);
+                dataFile.Close();
             }
             else
             {
                 Console.WriteLine("Usage: -s #create schema <schema: project name>, -m #create model <model: project name> <model: output file>");
             }
             client.Dispose();
-            schemaFile.Close();
             System.Environment.Exit(0);
         }
         static IProject Connect(string projectName)
@@ -44,14 +50,28 @@ namespace genesys_graphql
             IProject project = repository.GetProject(projectName);
             Console.WriteLine("Project Id: " + project.Id);
 
+            schema = project.GetSchema();
+            IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID
+            Console.WriteLine("Facility: " + facility.Name + "  :" + facility.Id);
+            facilityName = facility.Name;
+
+            IFacilityEntityDefinitionList facilityEntityDefinitionList = facility.EntityDefinitions;
+            IEnumerator<IEntityDefinition> entityDefinitionList = facilityEntityDefinitionList.GetEnumerator();
+
+            // Create a sorted list of Entities for SE Facility
+            sortedEntityDefinitionList = new List<String>();
+            for (var i = 0; i < facilityEntityDefinitionList.Count; i++)
+            {
+                entityDefinitionList.MoveNext();
+                sortedEntityDefinitionList.Add(entityDefinitionList.Current.Name);
+            }
+            sortedEntityDefinitionList.Sort();
+
             return project;
         }
         static void CreateSchema(string projectName)
         {
             var project = Connect(projectName);
-            ISchema schema = project.GetSchema();
-            IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID
-            Console.WriteLine("Facility: " + facility.Name + "  :" + facility.Id);
 
             // Write GraphQL Schema header
             schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\ma-meta-model.graphql", false);
@@ -59,7 +79,7 @@ namespace genesys_graphql
             schemaFile.WriteLine("  query: Query");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type Query {");
-            schemaFile.WriteLine("  # System Model for: '" + facility.Name + "' Facility");
+            schemaFile.WriteLine("  # System Model for: '" + facilityName + "' Facility");
             schemaFile.WriteLine("  missionAwareSystemModel: MissionAwareSystemModel");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type MissionAwareSystemModel {");
@@ -67,18 +87,7 @@ namespace genesys_graphql
             schemaFile.WriteLine("  project: Project");
             schemaFile.WriteLine("");
 
-             IFacilityEntityDefinitionList facilityEntityDefinitionList = facility.EntityDefinitions;
-            IEnumerator<IEntityDefinition> entityDefinitionList = facilityEntityDefinitionList.GetEnumerator();
-
-            // Create a sorted list of Entities for SE Facility
-            List<String> sortedEntityDefinitionList = new List<String>();
-            for (var i = 0; i < facilityEntityDefinitionList.Count; i++)
-            {
-                entityDefinitionList.MoveNext();
-                sortedEntityDefinitionList.Add(entityDefinitionList.Current.Name);
-            }
-            sortedEntityDefinitionList.Sort();
-            // Output Schema (GraphQL & C#) for each Entity
+            // Output Schema for each Entity
             foreach (String entity in sortedEntityDefinitionList)
             {
                 IEntityDefinition entityDefinition = schema.GetEntityDefinition(entity);
@@ -141,7 +150,7 @@ namespace genesys_graphql
                 schemaFile.WriteLine("type " + entityDefinition.Name + "ATTR {");
                 OutputAttribute(attributeDefinitionList, entityDefinition.Name);
 
-                IEnumerable < IRelationDefinition> entityRelationDefinitionList = entityDefinition.GetRelationDefinitions();
+                IEnumerable<IRelationDefinition> entityRelationDefinitionList = entityDefinition.GetRelationDefinitions();
                 // Create a sorted list of Relations for Entity
                 List<String> sortedEntityRelationList = new List<String>();
                 foreach (IRelationDefinition entityRelationDefinition in entityRelationDefinitionList)
@@ -215,7 +224,7 @@ namespace genesys_graphql
                             if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
                             {
                                 // Only include Target if included in selected "Facility"
-                                schemaFile.WriteLine("  " + Char.ToLower(targetEntityDefinition.Name[0]) + 
+                                schemaFile.WriteLine("  " + Char.ToLower(targetEntityDefinition.Name[0]) +
                                     targetEntityDefinition.Name.Substring(1) + "Target: " +
                                     Char.ToUpper(targetEntityDefinition.Name[0]) +
                                     targetEntityDefinition.Name.Substring(1) + "ID");
@@ -233,11 +242,225 @@ namespace genesys_graphql
                 }
             }
         }
-        static void CreateModel( string projectName, string outFileName)
+        static void CreateModel(string projectName, string outFileName)
         {
             var project = Connect(projectName);
- 
+            // Write Project header
+            dataFile = new System.IO.StreamWriter(@"..\..\..\sample\ma.json", false);
+            dataFile.WriteLine("".PadLeft(indent) + "{");
+            indent += 2;
+            dataFile.WriteLine("".PadLeft(indent) + @"""data"": {");
+            indent += 2;
+            dataFile.WriteLine("".PadLeft(indent) + @"""missionAwareSystemModel"": {");
+            indent += 2;
+            dataFile.WriteLine("".PadLeft(indent) + @"""project"": {");
+            indent += 2;
+            dataFile.WriteLine("".PadLeft(indent) + @"""id"": """ + project.Id.ToString() + @""",");
+            dataFile.WriteLine("".PadLeft(indent) + @"""name"": """ + project.Name + @""",");
+            dataFile.WriteLine("".PadLeft(indent) + @"""description"": """ +
+                (project.Description?.PlainText.Replace(Environment.NewLine, "\n") ?? null) + @""",");
+            dataFile.WriteLine("".PadLeft(indent) + @"""version"": """ + (project.Version?.ToString() ?? null) + @"""");
+            indent -= 2;
+            dataFile.WriteLine("".PadLeft(indent) + "},");
+
+            int currentEntityType = 0;
+            int totalEntityType = sortedEntityDefinitionList.Count;
+
+            foreach (String entityType in sortedEntityDefinitionList)
+            {
+                String entityAlias = schema.GetEntityDefinition(entityType).Alias ?? entityType;
+                IFolder folder = project.GetFolder(entityAlias);
+                currentEntityType += 1;
+
+                // Output Entity Type
+                if (folder.EntityCount == 0)
+                {
+                    if (currentEntityType == totalEntityType)
+                    {   // last in list - no ,
+                        dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": []");
+                    }
+                    else
+                    {
+                        dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": [],");
+                    }
+                }
+                else
+                {
+                    dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": [");
+                    indent += 2;
+                    IEnumerable<IEntity> entityList = folder.GetAllEntities();
+                    int currentEntity = 0;
+                    int totalEntity = folder.EntityCount;
+                    ISortBlock numericSortBlock = project.GetSortBlock(SortBlockConstants.Numeric);
+                    // Output Entity Instance
+                    foreach (IEntity entity in numericSortBlock.SortEntities(entityList))
+                    {
+                        currentEntity += 1;
+                        // Ouput identity
+                        dataFile.WriteLine("".PadLeft(indent) + "{");
+                        indent += 2;
+                        dataFile.WriteLine("".PadLeft(indent) + @"""identity"": {");
+                        indent += 2;
+                        dataFile.WriteLine("".PadLeft(indent) + @"""id"": """ + entity.Id.ToString() + @""",");
+                        dataFile.WriteLine("".PadLeft(indent) + @"""name"": """ + (entity?.Name ?? null) + @""",");
+                        dataFile.WriteLine("".PadLeft(indent) + @"""number"": """ +
+                            (entity.GetAttribute("number")?.ToString() ?? null) + @"""");
+                        indent -= 2;
+                        dataFile.WriteLine("".PadLeft(indent) + "},");
+
+                        // Output attributes
+                        dataFile.WriteLine("".PadLeft(indent) + @"""attributes"": {");
+                        indent += 2;
+                        int attrCount = 0;
+                        string attributeLine = "";
+                        IEntityAttributeList attributeList = entity.Attributes;
+                        foreach (IAttributeValue attribute in attributeList)
+                        {
+                            if (attribute.AttributeDefinition.Name == "name" ||
+                                    attribute.AttributeDefinition.Name == "number")
+                            {
+                                continue; // name and number are part of "identity"
+                            }
+                            DataTypeDefinition attributeType = attribute.AttributeDefinition.DataType;
+                            if (attributeType.ToString() == "Vitech.Genesys.Common.ScriptSpecTypeDefinition")
+                            {
+                                continue; // Skip script attributes
+                            }
+                            attrCount++;
+                            if (attrCount > 1)
+                            {
+                                attributeLine += @",";
+                                dataFile.WriteLine(attributeLine);
+                                attributeLine = "";
+                            }
+                            string attributeName = attribute.AttributeDefinition.Name.Replace("-", "_");
+                            if (attributeType.ToString() == "Vitech.Genesys.Common.BooleanTypeDefinition")
+                            {
+                                if (attribute.GetValueString() == "True")
+                                {
+                                    attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                                        @""": " + "true";
+                                }
+                                else
+                                {
+                                    attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                                        @""": " + "false";
+                                }
+
+                            }
+                            else if (attributeType.ToString() == "Vitech.Genesys.Common.FloatTypeDefinition" ||
+                                        attributeType.ToString() == "Vitech.Genesys.Common.IntegerTypeDefinition")
+                            {
+                                attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                                    @""": " + (attribute.GetValue() ?? "null");
+                            }
+                            else if (attributeType.ToString() == "Vitech.Genesys.Common.EnumerationTypeDefinition")
+                            {
+                                attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                                @""": """ + AdjustEnumValue(attribute.GetValueString()) + @"""";
+                            }
+                            else if (attributeType.ToString() == "Vitech.Genesys.Common.CollectionTypeDefinition")
+                            {
+                                attributeLine = "".PadLeft(indent) + @"""" + attributeName + @""": [";
+                                indent += 2;
+
+                                if (attribute.GetValue() is Array attrSet)
+                                {
+                                    bool firstAttrInSet = true;
+                                    foreach (var attr in attrSet)
+                                    {
+                                        if (firstAttrInSet != true)
+                                        {
+                                            attributeLine += @",";
+                                        }
+                                        firstAttrInSet = false;
+                                        attributeLine += Environment.NewLine + "".PadLeft(indent) + @"""" + attr + @"""";
+                                    }
+                                    indent -= 2;
+                                    attributeLine += Environment.NewLine + "".PadLeft(indent) + @"]";
+                                }
+                                else
+                                {
+                                    attributeLine += @"]";
+                                    indent -= 2;
+                                }
+
+                            }
+                            else if (attributeType.ToString() == "Vitech.Genesys.Common.FormattedTextTypeDefinition")
+                            {
+                                if (!(attribute?.GetValue() is Text attributeValue))
+                                {
+                                    attributeLine = "".PadLeft(indent) + @"""" + attributeName + @""": " + "null";
+                                }
+                                else
+                                {
+                                    String attributeString = attributeValue?.PlainText.Replace(Environment.NewLine, "::") ?? null;
+                                    attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                                        @""": """ + attributeString + @"""";
+                                }
+                            }
+                            else
+                            {
+                                // All other are String
+                                if (attribute.GetValueString() == "")
+                                {
+                                    attributeLine = "".PadLeft(indent) + @"""" + attributeName + @""": " + "null";
+                                }
+                                else
+                                {
+                                    attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                                        @""": """ + attribute.GetValueString() + @"""";
+                                }
+                            }
+                        }
+                        if (attrCount > 0)
+                        {
+                            dataFile.WriteLine(attributeLine);
+                        }
+                        indent -= 2;
+                        dataFile.WriteLine("".PadLeft(indent) + "},");
+                        // Output params
+                        dataFile.WriteLine("".PadLeft(indent) + @"""parameters"": {");
+                        indent += 2;
+
+                        indent -= 2;
+                        dataFile.WriteLine("".PadLeft(indent) + "},");
+                        // Output relations
+                        dataFile.WriteLine("".PadLeft(indent) + @"""relations"": {");
+                        indent += 2;
+
+                        indent -= 2;
+                        dataFile.WriteLine("".PadLeft(indent) + "}");
+
+                        indent -= 2;
+                        if (currentEntity == totalEntity)
+                        {   // last in list - no ,
+                            dataFile.WriteLine("".PadLeft(indent) + "}");
+                        }
+                        else
+                        {
+                            dataFile.WriteLine("".PadLeft(indent) + "},");
+                        }
+                    }
+                    indent -= 2;
+                    if (currentEntityType == totalEntityType)
+                    {   // last in list - no ,
+                        dataFile.WriteLine("".PadLeft(indent) + "]");
+                    }
+                    else
+                    {
+                        dataFile.WriteLine("".PadLeft(indent) + "],");
+                    }
+                }
+            }
+            indent -= 2;  // missionAware: close
+            dataFile.WriteLine("".PadLeft(indent) + "}");
+            indent -= 2; // data: close
+            dataFile.WriteLine("".PadLeft(indent) + "}");
+            indent -= 2; // file: close
+            dataFile.WriteLine("".PadLeft(indent) + "}");
         }
+
         // Output Attributes (Entity or Relationship)
         static void OutputAttribute(IEnumerable<IAttributeDefinition> attributeDefinitionList, string ownerName)
         {
@@ -323,20 +546,27 @@ namespace genesys_graphql
                     EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
                     for (var i = 0; i < enumPossibleValues.Length; i++)
                     {
-                        String enumValue = enumPossibleValues[i].ToString().Replace("/", "_").
-                            Replace(" ", "_").Replace("-", "").Replace("&", "").
-                            Replace(":", "").Replace("(", "").Replace(")", "");
-                        if (Char.IsDigit(enumValue.ToString()[0]))
-                        {
-                            // Enum canot begin with a digit - prepend "E_"
-                            enumValue = "E_" + enumValue;
-                        }
+                        String enumValue = AdjustEnumValue(enumPossibleValues[i].ToString());
                         schemaFile.WriteLine("  " + enumValue);
                     }
                     schemaFile.WriteLine("}");
                 }
             }
         }
+        // Adjust Enum value to remove sepcial characters and spaces
+        static string AdjustEnumValue(string input)
+        {
+            String enumValue = input.Replace("/", "_").
+                           Replace(" ", "_").Replace("-", "").Replace("&", "").
+                           Replace(":", "").Replace("(", "").Replace(")", "");
+            if (Char.IsDigit(enumValue[0]))
+            {
+                // Enum canot begin with a digit - prepend "E_"
+                enumValue = "E_" + enumValue;
+            }
+            return enumValue;
+        }
+
         // CamelCase Relation Name
         static string GetCamelCaseRelation(string relation)
         {
@@ -355,6 +585,10 @@ namespace genesys_graphql
                 }
             }
             return camelRelationName;
+        }
+        static string LowerFirst(string input)
+        {
+            return Char.ToLower(input[0]) + input.Substring(1);
         }
 
         // Wrap multiline comments
@@ -383,16 +617,3 @@ namespace genesys_graphql
         }
     }
 }
-
-
-// Console.WriteLine(typeof(Project).AssemblyQualifiedName);
-// const string objectToInst = "genesys_graphql.Project,genesys-graphql";
-
-// var objectType = Type.GetType(objectToInst);
-// Console.WriteLine(objectType);
-
-// dynamic instObject = Activator.CreateInstance(objectType);
-// instObject.version = "123";
-// Console.WriteLine(instObject.version);
-// string json1 = JsonConvert.SerializeObject(instObject, Formatting.Indented);
-// Console.WriteLine(json1);
