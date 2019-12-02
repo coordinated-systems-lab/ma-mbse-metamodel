@@ -117,7 +117,6 @@ namespace genesys_graphql
             schemaFile.WriteLine("type Parameter {");
             schemaFile.WriteLine("  name: String!");
             schemaFile.WriteLine("  description: String");
-            schemaFile.WriteLine("  type: String");
             schemaFile.WriteLine("  objective: String");
             schemaFile.WriteLine("  threshold: String");
             schemaFile.WriteLine("  design: String");
@@ -331,10 +330,64 @@ namespace genesys_graphql
                         dataFile.WriteLine("".PadLeft(indent) + "},");
 
                         // Output params
-                        dataFile.WriteLine("".PadLeft(indent) + @"""parameters"": {");
+                        dataFileLine = "";
+                        dataFileLine += "".PadLeft(indent) + @"""parameters"": [";
                         indent += 2;
+                        IEnumerable<IEntityParameterValue> parameterList = entity.Parameters;
+                        int paramCount = 0;
+                        if (parameterList.Any())
+                        {
+                            foreach (IEntityParameterValue parameter in parameterList)
+                            {
+                                paramCount++;
+                                if (paramCount > 1)
+                                {
+                                    dataFileLine += @",";
+                                }
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"{";
+                                indent += 2;
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) +
+                                    @"""name"": """ + parameter.DisplayName + @""",";
+
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""description"": ";
+                                dataFileLine += parameter.AttributeDefinition.Description != null ?
+                                    @"""" + parameter.AttributeDefinition.Description.
+                                        ToString().Replace(Environment.NewLine, "::") + @"""," : "null,";
+
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""objective"": ";
+                                dataFileLine += parameter.Objective != null ?
+                                     @"""" + parameter.Objective.ToString() + @"""," : "null,";
+  
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""threshold"": ";
+                                dataFileLine += parameter.Threshold != null ?
+                                     @"""" + parameter.Threshold.ToString() + @"""," : "null,";
+
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""design"": ";
+                                dataFileLine += parameter.Design != null ?
+                                    @"""" + parameter.Design.ToString() + @"""," : "null,";
+
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""observed"": ";
+                                dataFileLine += parameter.Observed != null ?
+                                    @"""" + parameter.Observed.ToString() + @"""," : "null,";
+
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""units"": ";
+                                dataFileLine += parameter.Units != null ?
+                                    @"""" + parameter.Units.ToString() + @"""" : "null";
+                                
+                                indent -= 2;
+                                dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"}";
+                            }
+                        }
                         indent -= 2;
-                        dataFile.WriteLine("".PadLeft(indent) + "},");
+                        if (paramCount > 0)
+                        {
+                            dataFileLine += Environment.NewLine + "".PadLeft(indent) + "],";
+                        }
+                        else
+                        {   // no params
+                            dataFileLine += "],";
+                        }
+                        dataFile.WriteLine(dataFileLine);
 
                         // Output relations
                         dataFile.WriteLine("".PadLeft(indent) + @"""relations"": {");

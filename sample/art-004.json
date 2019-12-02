@@ -20,9 +20,7 @@
             "type": "Context",
             "clin": null,
             "mission": null,
-            "operations": [
-              "Test1"
-            ],
+            "operations": [],
             "puid": null,
             "purpose": "“Black Monday” Scenario - Attack on Oil Pipeline Pumps::::Russia’s largeness in natural gas and oil exporter by volume has impending economic downturn, causing rise in unsteadiness and leading to malicious cyberattacks to gain more control in NG and oil export.::::There is a cyberattack on Saudi Aramco Riyadh & Yanbu Baiji and SPC refineries: 1) Reports false flow rates, pressure, temperature. 2) Russia offers world‐class cyber security services to all three countries, but installs backdoor measures.::::Short term effects show yield of oil decrease by 6.2M b/d, with overall 10% decrease in global oil market for 3 years and price of oil skyrockets.::::Long term has covert cyber control over OPEC control systems.",
             "cost": null,
@@ -31,8 +29,7 @@
             "title": null,
             "description": "The system context identifies the physical context (the environment and external systems your system interacts with) enabling you to specify the system boundary."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [
@@ -112,8 +109,26 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [
+            {
+              "name": "resilience",
+              "description": "The ability to provide and maintain an acceptable level of service in the face of faults and challenges to normal operation. ",
+              "objective": null,
+              "threshold": null,
+              "design": null,
+              "observed": null,
+              "units": null
+            },
+            {
+              "name": "availability",
+              "description": "The proportion of time a system is in a functioning condition.  Ratio of Uptime / (Uptime + Downtime) or MTBF/(MTBF+MTTR).",
+              "objective": "99.99",
+              "threshold": "99.95",
+              "design": null,
+              "observed": null,
+              "units": "%"
+            }
+          ],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [],
@@ -293,8 +308,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [],
@@ -381,8 +395,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [
@@ -472,8 +485,7 @@
             "title": null,
             "description": "Pipeline End-Point - may be a supplier and/or consumer to/from the pipeline."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [],
@@ -568,8 +580,7 @@
             "title": null,
             "description": "The physical environment includes land, air, water, plants and animals, buildings and other infrastructure."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [],
@@ -656,8 +667,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "builtFrom": [],
@@ -740,8 +750,7 @@
             "count": "100",
             "description": "The maximum number of supported pipeline routes."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -771,8 +780,7 @@
             "title": null,
             "description": "Top level behavior for system context and external."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [],
             "augmentedBy": [],
@@ -837,8 +845,7 @@
             "title": null,
             "description": "Top-level behavior model for ART-004 Pipeline Metrics Project."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -970,8 +977,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1038,8 +1044,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1106,8 +1111,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1174,8 +1178,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1242,8 +1245,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1310,8 +1312,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1378,8 +1379,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1446,8 +1446,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1514,8 +1513,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1619,8 +1617,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1687,8 +1684,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1755,8 +1751,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1823,8 +1818,7 @@
             "title": null,
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "allocatedTo": [
               {
@@ -1887,8 +1881,7 @@
           "attributes": {
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -1938,8 +1931,7 @@
           "attributes": {
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -1975,8 +1967,7 @@
           "attributes": {
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2009,8 +2000,7 @@
             "puid": null,
             "description": "Advanced Persistent Threat simulation interface."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2061,8 +2051,7 @@
             "puid": null,
             "description": "Mission Aware Monitor and Control Interface."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2113,8 +2102,7 @@
             "puid": null,
             "description": "Environmental Conditions Interface."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2165,8 +2153,7 @@
             "puid": null,
             "description": "Pipeline Endpoint Interface - Supply & Sink."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2226,8 +2213,7 @@
             "capacityUnits": null,
             "description": "Advanced Persistent Threat simulation link."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2289,8 +2275,7 @@
             "capacityUnits": null,
             "description": "Mission Aware Monitor and Control Link."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2352,8 +2337,7 @@
             "capacityUnits": null,
             "description": "Environmental Conditions Link."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2415,8 +2399,7 @@
             "capacityUnits": null,
             "description": "Pipeline Endpoint Link - Supply & Sink."
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2474,8 +2457,7 @@
             "priority": "E_1",
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2503,8 +2485,7 @@
             "priority": "E_1",
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2532,8 +2513,7 @@
             "priority": "E_1",
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
@@ -2568,8 +2548,7 @@
             "priority": "E_1",
             "description": null
           },
-          "parameters": {
-          },
+          "parameters": [],
           "relations": {
             "augmentedBy": [],
             "categorizedBy": [],
