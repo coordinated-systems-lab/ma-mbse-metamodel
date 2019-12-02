@@ -9,6 +9,9 @@
 ## Mission Aware Meta-Model
 ![MA Model](/images/ma-mbse.png)
 
+### References
+* [SERC Overview Slides](/presentation/MissionAwareOverview.pdf)
+
 ## Mission-Aware Schema
 <img src="images/graphql.png" width="200">
 
