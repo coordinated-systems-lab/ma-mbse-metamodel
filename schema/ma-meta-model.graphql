@@ -169,8 +169,7 @@ type Project {
 type Parameter {
   name: String!
   description: String
-  type: String
-  objectvie: String
+  objective: String
   threshold: String
   design: String
   observed: String
