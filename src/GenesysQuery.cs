@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
 using Vitech.Genesys.Client;
 using Vitech.Genesys.Common;
 using Vitech.Genesys.Client.Schema;
@@ -16,6 +17,7 @@ namespace genesys_graphql
         static List<String> sortedEntityDefinitionList = new List<String>();
         static ISchema schema;
         static string facilityName;
+        static string dataFileLine;
 
         static void Main(string[] args)
         {
@@ -71,7 +73,7 @@ namespace genesys_graphql
         }
         static void CreateSchema(string projectName)
         {
-            var project = Connect(projectName);
+            Connect(projectName);
 
             // Write GraphQL Schema header
             schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\ma-meta-model.graphql", false);
@@ -116,7 +118,7 @@ namespace genesys_graphql
             schemaFile.WriteLine("  name: String!");
             schemaFile.WriteLine("  description: String");
             schemaFile.WriteLine("  type: String");
-            schemaFile.WriteLine("  objectvie: String");
+            schemaFile.WriteLine("  objective: String");
             schemaFile.WriteLine("  threshold: String");
             schemaFile.WriteLine("  design: String");
             schemaFile.WriteLine("  observed: String");
@@ -246,7 +248,7 @@ namespace genesys_graphql
         {
             var project = Connect(projectName);
             // Write Project header
-            dataFile = new System.IO.StreamWriter(@"..\..\..\sample\ma.json", false);
+            dataFile = new System.IO.StreamWriter(@"..\..\..\sample\" + outFileName, false);
             dataFile.WriteLine("".PadLeft(indent) + "{");
             indent += 2;
             dataFile.WriteLine("".PadLeft(indent) + @"""data"": {");
@@ -319,25 +321,27 @@ namespace genesys_graphql
                         dataFile.WriteLine("".PadLeft(indent) + "},");
 
                         // Output attributes
-                        NewMethod();
+                        dataFile.WriteLine("".PadLeft(indent) + @"""attributes"": {");
                         indent += 2;
                         IEnumerable<IAttributeValue> attributeList = entity.Attributes as IEnumerable<IAttributeValue>;
+                        GenesysQuery.dataFileLine = "";
                         OutputAttributeValue(attributeList);
-
+                        dataFile.WriteLine(GenesysQuery.dataFileLine);
                         indent -= 2;
                         dataFile.WriteLine("".PadLeft(indent) + "},");
+
                         // Output params
                         dataFile.WriteLine("".PadLeft(indent) + @"""parameters"": {");
                         indent += 2;
-
                         indent -= 2;
                         dataFile.WriteLine("".PadLeft(indent) + "},");
+
                         // Output relations
                         dataFile.WriteLine("".PadLeft(indent) + @"""relations"": {");
                         indent += 2;
 
                         int relCount = 0;
-                        string relLine = "";
+                        dataFileLine = "";
                         foreach (String relation in sortedEntityRelationList)
                         {
                             IRelationDefinition relationDefinition = schema.GetRelationDefinition(relation);
@@ -359,11 +363,11 @@ namespace genesys_graphql
                                 relCount++;
                                 if (relCount > 1)
                                 {
-                                    relLine += @",";
-                                    dataFile.WriteLine(relLine);
-                                    relLine = "";
+                                    dataFileLine += @",";
+                                    dataFile.WriteLine(dataFileLine);
+                                    dataFileLine = "";
                                 }
-                                relLine += "".PadLeft(indent) + @"""" + GetCamelCaseRelation(relation) + @""": [";
+                                dataFileLine += "".PadLeft(indent) + @"""" + GetCamelCaseRelation(relation) + @""": [";
                                 int relTargetCount = 0;
                                 indent += 2;
 
@@ -377,42 +381,48 @@ namespace genesys_graphql
                                         relTargetCount++;
                                         if (relTargetCount > 1)
                                         {
-                                            relLine += @",";
+                                            dataFileLine += @",";
                                         }
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + "{";
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + "{";
                                         indent += 2;
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + @"""" +
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""" +
                                             LowerFirst(relationTarget.GetEntityDefinition().Name) + @"Target"": {";
                                         indent += 2;
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + @"""id"": """ + relationTarget.Id + @""",";
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + @"""name"": """ + relationTarget.Name + @""",";
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + @"""number"": """ +
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""id"": """ + relationTarget.Id + @""",";
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""name"": """ + relationTarget.Name + @""",";
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""number"": """ +
                                             relationTarget.GetAttributeValueString("number") + @"""";
                                         indent -= 2;
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + "}";
-                                        indent -= 2;
-                                        relLine += Environment.NewLine + "".PadLeft(indent) + "}";
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + "}";
 
                                         // Ouput Relationship Attributes
                                         IEnumerable<IAttributeValue> relationAttributeList = relationship.GetAttributes();
-                                        OutputAttributeValue(relationAttributeList);
+                                        if (relationAttributeList.Any())
+                                        {
+                                            dataFileLine += "," + Environment.NewLine;
+                                            OutputAttributeValue(relationAttributeList);
+                                        }
+
+                                        indent -= 2;
+                                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + "}";
                                     }
+
                                 }
                                
                                 indent -= 2;
                                 if (relTargetCount > 0)
                                 {
-                                    relLine += Environment.NewLine + "".PadLeft(indent) + "]";
+                                    dataFileLine += Environment.NewLine + "".PadLeft(indent) + "]";
                                 }
                                 else
                                 {   // no targets
-                                    relLine += "]";
+                                    dataFileLine += "]";
                                 }
                             }
                         }
                         if (relCount > 0)
                         {
-                            dataFile.WriteLine(relLine);
+                            dataFile.WriteLine(dataFileLine);
                         }
                         indent -= 2;
                         dataFile.WriteLine("".PadLeft(indent) + "}");
@@ -446,16 +456,10 @@ namespace genesys_graphql
             dataFile.WriteLine("".PadLeft(indent) + "}");
         }
 
-        private static void NewMethod()
-        {
-            dataFile.WriteLine("".PadLeft(indent) + @"""attributes"": {");
-        }
-
         // Output Attribute Values (Entity or Relationship)
         static void OutputAttributeValue(IEnumerable<IAttributeValue> attributeList)
         {
             int attrCount = 0;
-            string attributeLine = "";
             foreach (IAttributeValue attribute in attributeList)
             {
                 if (attribute.AttributeDefinition.Name == "name" ||
@@ -471,21 +475,20 @@ namespace genesys_graphql
                 attrCount++;
                 if (attrCount > 1)
                 {
-                    attributeLine += @",";
-                    dataFile.WriteLine(attributeLine);
-                    attributeLine = "";
+                    dataFileLine += @",";
+                    dataFileLine += Environment.NewLine;
                 }
                 string attributeName = attribute.AttributeDefinition.Name.Replace("-", "_");
                 if (attributeType.ToString() == "Vitech.Genesys.Common.BooleanTypeDefinition")
                 {
                     if (attribute.GetValueString() == "True")
                     {
-                        attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                        dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                             @""": " + "true";
                     }
                     else
                     {
-                        attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                        dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                             @""": " + "false";
                     }
 
@@ -493,17 +496,17 @@ namespace genesys_graphql
                 else if (attributeType.ToString() == "Vitech.Genesys.Common.FloatTypeDefinition" ||
                             attributeType.ToString() == "Vitech.Genesys.Common.IntegerTypeDefinition")
                 {
-                    attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                    dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                         @""": " + (attribute.GetValue() ?? "null");
                 }
                 else if (attributeType.ToString() == "Vitech.Genesys.Common.EnumerationTypeDefinition")
                 {
-                    attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                    dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                     @""": """ + AdjustEnumValue(attribute.GetValueString()) + @"""";
                 }
                 else if (attributeType.ToString() == "Vitech.Genesys.Common.CollectionTypeDefinition")
                 {
-                    attributeLine = "".PadLeft(indent) + @"""" + attributeName + @""": [";
+                    dataFileLine += "".PadLeft(indent) + @"""" + attributeName + @""": [";
                     indent += 2;
 
                     if (attribute.GetValue() is Array attrSet)
@@ -513,17 +516,17 @@ namespace genesys_graphql
                         {
                             if (firstAttrInSet != true)
                             {
-                                attributeLine += @",";
+                                dataFileLine += @",";
                             }
                             firstAttrInSet = false;
-                            attributeLine += Environment.NewLine + "".PadLeft(indent) + @"""" + attr + @"""";
+                            dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"""" + attr + @"""";
                         }
                         indent -= 2;
-                        attributeLine += Environment.NewLine + "".PadLeft(indent) + @"]";
+                        dataFileLine += Environment.NewLine + "".PadLeft(indent) + @"]";
                     }
                     else
                     {
-                        attributeLine += @"]";
+                        dataFileLine += @"]";
                         indent -= 2;
                     }
 
@@ -532,12 +535,12 @@ namespace genesys_graphql
                 {
                     if (!(attribute?.GetValue() is Text attributeValue))
                     {
-                        attributeLine = "".PadLeft(indent) + @"""" + attributeName + @""": " + "null";
+                        dataFileLine += "".PadLeft(indent) + @"""" + attributeName + @""": " + "null";
                     }
                     else
                     {
                         String attributeString = attributeValue?.PlainText.Replace(Environment.NewLine, "::") ?? null;
-                        attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                        dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                             @""": """ + attributeString + @"""";
                     }
                 }
@@ -546,18 +549,14 @@ namespace genesys_graphql
                     // All other are String
                     if (attribute.GetValueString() == "")
                     {
-                        attributeLine = "".PadLeft(indent) + @"""" + attributeName + @""": " + "null";
+                        dataFileLine += "".PadLeft(indent) + @"""" + attributeName + @""": " + "null";
                     }
                     else
                     {
-                        attributeLine = "".PadLeft(indent) + @"""" + attributeName +
+                        dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                             @""": """ + attribute.GetValueString() + @"""";
                     }
                 }
-            }
-            if (attrCount > 0)
-            {
-                dataFile.WriteLine(attributeLine);
             }
         }
         // Output Attributes (Entity or Relationship)

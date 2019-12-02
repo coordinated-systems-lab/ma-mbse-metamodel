@@ -1,376 +1,2623 @@
 {
   "data": {
-    "project": {
-      "id": "6381a6ea-f300-4fa9-a50e-5d9e6017d599",
-      "name": "ART-004: Pipeline - Metrics Project",
-      "description": "Advanced Persistent Threat - Mission Aware Metrics Project.",
-      "version": "0.1"
-    },
-    "components": [
-      {
-        "identity": {
-          "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
-          "name": "_System Context",
-          "number": "C"
-        },
-        "attributes": {
-          "description": "The system context identifies the physical context (the environment and external systems your system interacts with) enabling you to specify the system boundary.",
-          "type": "Context"
-        },
-        "relationships": {
-          "builtFrom": [
-            {
-              "componentTarget": {
-                "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
-                "name": "MA: Mission Aware",
-                "number": "C.2"
-              }
-            },
-            {
-              "componentTarget": {
-                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-                "name": "OGP: Oil & Gas Pipeline",
-                "number": "C.1"
-              }
-            }
-          ],
-          "builtIn": [],
-          "joinedTo": []
-        }
+    "missionAwareSystemModel": {
+      "project": {
+        "id": "6381a6ea-f300-4fa9-a50e-5d9e6017d599",
+        "name": "ART-004: Pipeline - Metrics Project",
+        "description": "Advanced Persistent Threat - Mission Aware Metrics Project.",
+        "version": "0.1"
       },
-      {
-        "identity": {
-          "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-          "name": "OGP: Oil & Gas Pipeline",
-          "number": "C.1"
+      "category": [],
+      "changeRequestPackage": [],
+      "component": [
+        {
+          "identity": {
+            "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
+            "name": "_System Context",
+            "number": "C"
+          },
+          "attributes": {
+            "type": "Context",
+            "clin": null,
+            "mission": null,
+            "operations": [
+              "Test1"
+            ],
+            "puid": null,
+            "purpose": "“Black Monday” Scenario - Attack on Oil Pipeline Pumps::::Russia’s largeness in natural gas and oil exporter by volume has impending economic downturn, causing rise in unsteadiness and leading to malicious cyberattacks to gain more control in NG and oil export.::::There is a cyberattack on Saudi Aramco Riyadh & Yanbu Baiji and SPC refineries: 1) Reports false flow rates, pressure, temperature. 2) Russia offers world‐class cyber security services to all three countries, but installs backdoor measures.::::Short term effects show yield of oil decrease by 6.2M b/d, with overall 10% decrease in global oil market for 3 years and price of oil skyrockets.::::Long term has covert cyber control over OPEC control systems.",
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": "The system context identifies the physical context (the environment and external systems your system interacts with) enabling you to specify the system boundary."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [
+              {
+                "componentTarget": {
+                  "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+                  "name": "MA: Mission Aware",
+                  "number": "C.2"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              }
+            ],
+            "builtIn": [],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "functionTarget": {
+                  "id": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+                  "name": "_Perform System Context Functions",
+                  "number": "C"
+                },
+                "behaviorType": "Integrated_Root"
+              }
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
         },
-        "attributes": {
-          "description": "",
-          "type": "System"
+        {
+          "identity": {
+            "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+            "name": "OGP: Oil & Gas Pipeline",
+            "number": "C.1"
+          },
+          "attributes": {
+            "type": "System",
+            "clin": null,
+            "mission": null,
+            "operations": [],
+            "puid": null,
+            "purpose": null,
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [],
+            "builtIn": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              }
+            ],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [
+              {
+                "linkTarget": {
+                  "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "38191d12-14cb-4770-b830-41febf0db843",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+                  "name": "PEP: Gas & Oil",
+                  "number": "PEP.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [
+              {
+                "interfaceTarget": {
+                  "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+                  "name": "PEP: Oil & Gas",
+                  "number": "PEP.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                }
+              }
+            ],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
         },
-        "relationships": {
-          "builtFrom": [],
-          "builtIn": [
-            {
-              "componentTarget": {
-                "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
-                "name": "_System Context",
-                "number": "C"
+        {
+          "identity": {
+            "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+            "name": "MA: Mission Aware",
+            "number": "C.2"
+          },
+          "attributes": {
+            "type": "System",
+            "clin": null,
+            "mission": null,
+            "operations": [],
+            "puid": null,
+            "purpose": null,
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [],
+            "builtIn": [
+              {
+                "componentTarget": {
+                  "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+                  "name": "MA: Mission Aware",
+                  "number": "C.2"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
               }
-            }
-          ],
-          "joinedTo": [
-            {
-              "interfaceTarget": {
-                "id": "08067b89-2740-417b-844d-36ce5a46e98e",
-                "name": "PEP: Oil & Gas",
-                "number": "PEP.1"
+            ],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [
+              {
+                "linkTarget": {
+                  "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                },
+                "portID": null
               }
-            },
-            {
-              "interfaceTarget": {
-                "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
-                "name": "MA: Monitor & Control",
-                "number": "MA.1"
+            ],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [
+              {
+                "interfaceTarget": {
+                  "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                }
               }
-            },
-            {
-              "interfaceTarget": {
-                "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
-                "name": "PE: Local Conditions",
-                "number": "PE.1"
+            ],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "componentTarget": {
+                  "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+                  "name": "MA: Mission Aware",
+                  "number": "C.2"
+                },
+                "behaviorType": "Atomic"
               }
-            },
-            {
-              "interfaceTarget": {
-                "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
-                "name": "APT: Attack",
-                "number": "APT.1"
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
+            "name": "_External Entities",
+            "number": "X"
+          },
+          "attributes": {
+            "type": "Environment",
+            "clin": null,
+            "mission": null,
+            "operations": [],
+            "puid": null,
+            "purpose": null,
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [
+              {
+                "componentTarget": {
+                  "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                  "name": "PEP: Pipe End-Point",
+                  "number": "X.1"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              },
+              {
+                "componentTarget": {
+                  "id": "9c538421-8949-425a-b099-ed44aefcde28",
+                  "name": "APT: Advanced Persistent Threat",
+                  "number": "X.3"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              },
+              {
+                "componentTarget": {
+                  "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+                  "name": "PE: Physical Environment",
+                  "number": "X.2"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
               }
-            }
-          ]
+            ],
+            "builtIn": [],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "componentTarget": {
+                  "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
+                  "name": "_External Entities",
+                  "number": "X"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+            "name": "PEP: Pipe End-Point",
+            "number": "X.1"
+          },
+          "attributes": {
+            "type": "Facility",
+            "clin": null,
+            "mission": null,
+            "operations": [],
+            "puid": null,
+            "purpose": null,
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": "Pipeline End-Point - may be a supplier and/or consumer to/from the pipeline."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [],
+            "builtIn": [
+              {
+                "componentTarget": {
+                  "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                  "name": "PEP: Pipe End-Point",
+                  "number": "X.1"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              }
+            ],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [
+              {
+                "linkTarget": {
+                  "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+                  "name": "PEP: Gas & Oil",
+                  "number": "PEP.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [
+              {
+                "interfaceTarget": {
+                  "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+                  "name": "PEP: Oil & Gas",
+                  "number": "PEP.1"
+                }
+              }
+            ],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "componentTarget": {
+                  "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                  "name": "PEP: Pipe End-Point",
+                  "number": "X.1"
+                },
+                "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                  "name": "PEP: Pipe End-Point",
+                  "number": "X.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+            "name": "PE: Physical Environment",
+            "number": "X.2"
+          },
+          "attributes": {
+            "type": "External_System",
+            "clin": null,
+            "mission": null,
+            "operations": [],
+            "puid": null,
+            "purpose": null,
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": "The physical environment includes land, air, water, plants and animals, buildings and other infrastructure."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [],
+            "builtIn": [
+              {
+                "componentTarget": {
+                  "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+                  "name": "PE: Physical Environment",
+                  "number": "X.2"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              }
+            ],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [
+              {
+                "linkTarget": {
+                  "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [
+              {
+                "interfaceTarget": {
+                  "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                }
+              }
+            ],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "componentTarget": {
+                  "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+                  "name": "PE: Physical Environment",
+                  "number": "X.2"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "9c538421-8949-425a-b099-ed44aefcde28",
+            "name": "APT: Advanced Persistent Threat",
+            "number": "X.3"
+          },
+          "attributes": {
+            "type": "Human",
+            "clin": null,
+            "mission": null,
+            "operations": [],
+            "puid": null,
+            "purpose": null,
+            "cost": null,
+            "receptions": [],
+            "abbreviation": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "builtFrom": [],
+            "builtIn": [
+              {
+                "componentTarget": {
+                  "id": "9c538421-8949-425a-b099-ed44aefcde28",
+                  "name": "APT: Advanced Persistent Threat",
+                  "number": "X.3"
+                },
+                "wholeMultiplicity": "E_0",
+                "partRole": null,
+                "partMultiplicity": null
+              }
+            ],
+            "categorizedBy": [],
+            "causes": [],
+            "connectedTo": [
+              {
+                "linkTarget": {
+                  "id": "38191d12-14cb-4770-b830-41febf0db843",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "contains": [],
+            "describedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "exhibits": [],
+            "exposes": [],
+            "generalizationOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "joinedTo": [
+              {
+                "interfaceTarget": {
+                  "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                }
+              }
+            ],
+            "kindOf": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "participatesIn": [],
+            "performs": [
+              {
+                "componentTarget": {
+                  "id": "9c538421-8949-425a-b099-ed44aefcde28",
+                  "name": "APT: Advanced Persistent Threat",
+                  "number": "X.3"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "precipitates": [],
+            "protectsAgainst": [],
+            "reportedBy": [],
+            "simulates": [],
+            "specifiedBy": []
+          }
         }
-      },
-      {
-        "identity": {
-          "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
-          "name": "MA: Mission Aware",
-          "number": "C.2"
-        },
-        "attributes": {
-          "description": "",
-          "type": "System"
-        },
-        "relationships": {
-          "builtFrom": [],
-          "builtIn": [
-            {
-              "componentTarget": {
-                "id": "abed2d1e-e7e0-4ea2-a899-d269188d334f",
-                "name": "_System Context",
-                "number": "C"
-              }
-            }
-          ],
-          "joinedTo": [
-            {
-              "interfaceTarget": {
-                "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
-                "name": "MA: Monitor & Control",
-                "number": "MA.1"
-              }
-            }
-          ]
+      ],
+      "constraintDefinition": [],
+      "definedTerm": [],
+      "document": [],
+      "domainSet": [
+        {
+          "identity": {
+            "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+            "name": "#Pipeline Routes",
+            "number": "OGP.1"
+          },
+          "attributes": {
+            "count": "100",
+            "description": "The maximum number of supported pipeline routes."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "packagedBy": []
+          }
         }
-      },
-      {
-        "identity": {
-          "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-          "name": "_External Entities",
-          "number": "X"
+      ],
+      "event": [],
+      "exit": [],
+      "externalFile": [],
+      "fullPort": [],
+      "function": [
+        {
+          "identity": {
+            "id": "b76054a3-c4b8-48fa-85cd-15041a29a22f",
+            "name": "_Top",
+            "number": "0"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": "Top level behavior for system context and external."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [
+              {
+                "functionTarget": {
+                  "id": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+                  "name": "_Perform System Context Functions",
+                  "number": "C"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "58b8c2f1-6554-4e82-95f5-0ad0b453b3f4",
+                  "name": "_Perform External Functions",
+                  "number": "X"
+                }
+              }
+            ],
+            "decomposes": [],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
         },
-        "attributes": {
-          "description": "",
-          "type": "Environment"
+        {
+          "identity": {
+            "id": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+            "name": "_Perform System Context Functions",
+            "number": "C"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": "Top-level behavior model for ART-004 Pipeline Metrics Project."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "functionTarget": {
+                  "id": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+                  "name": "_Perform System Context Functions",
+                  "number": "C"
+                },
+                "behaviorType": "Integrated_Root"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [
+              {
+                "functionTarget": {
+                  "id": "edf21d07-28db-475b-9344-561410040f1a",
+                  "name": "OGP: Enable Oil Route",
+                  "number": "OGP.11"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "cde124b7-2e8c-4a29-b7ac-9b48bfbdb4c9",
+                  "name": "OGP: Monitor Environment",
+                  "number": "OGP.3"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "d99aae27-7413-469f-bcf5-d1651ace4dfc",
+                  "name": "OGP: Monitor Pipeline System",
+                  "number": "OGP.2"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "07b789c7-27cc-46d4-bb92-548df785f40d",
+                  "name": "OGP: Manage Pipeline System",
+                  "number": "OGP.4"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "61e06815-552c-442b-9f61-a799730d81af",
+                  "name": "OGP: Route Oil/Gas",
+                  "number": "OGP.15"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "bcf31720-ebd6-440b-ac9a-bd21731c526c",
+                  "name": "OGP: Disable Oil Route",
+                  "number": "OGP.12"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "df7c12e1-ae7a-4993-954e-079f36f32576",
+                  "name": "MA: Manage Pipeline Resiliency",
+                  "number": "MA.1"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "29124c2b-4d33-409b-9424-4c92da1b50f9",
+                  "name": "OGP: Manage Route",
+                  "number": "OGP.10"
+                }
+              }
+            ],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+                  "name": "_Perform System Context Functions",
+                  "number": "C"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [
+              {
+                "domainSetTarget": {
+                  "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+                  "name": "#Pipeline Routes",
+                  "number": "OGP.1"
+                }
+              }
+            ],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
         },
-        "relationships": {
-          "builtFrom": [
-            {
-              "componentTarget": {
-                "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
-                "name": "PEP: Pipe End-Point",
-                "number": "X.1"
+        {
+          "identity": {
+            "id": "df7c12e1-ae7a-4993-954e-079f36f32576",
+            "name": "MA: Manage Pipeline Resiliency",
+            "number": "MA.1"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
+                  "name": "MA: Mission Aware",
+                  "number": "C.2"
+                },
+                "behaviorType": "Atomic"
               }
-            },
-            {
-              "componentTarget": {
-                "id": "9c538421-8949-425a-b099-ed44aefcde28",
-                "name": "APT: Advanced Persistent Threat",
-                "number": "X.3"
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "df7c12e1-ae7a-4993-954e-079f36f32576",
+                  "name": "MA: Manage Pipeline Resiliency",
+                  "number": "MA.1"
+                }
               }
-            },
-            {
-              "componentTarget": {
-                "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
-                "name": "PE: Physical Environment",
-                "number": "X.2"
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "d99aae27-7413-469f-bcf5-d1651ace4dfc",
+            "name": "OGP: Monitor Pipeline System",
+            "number": "OGP.2"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
               }
-            }
-          ],
-          "builtIn": [],
-          "joinedTo": []
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "d99aae27-7413-469f-bcf5-d1651ace4dfc",
+                  "name": "OGP: Monitor Pipeline System",
+                  "number": "OGP.2"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "cde124b7-2e8c-4a29-b7ac-9b48bfbdb4c9",
+            "name": "OGP: Monitor Environment",
+            "number": "OGP.3"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "cde124b7-2e8c-4a29-b7ac-9b48bfbdb4c9",
+                  "name": "OGP: Monitor Environment",
+                  "number": "OGP.3"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "07b789c7-27cc-46d4-bb92-548df785f40d",
+            "name": "OGP: Manage Pipeline System",
+            "number": "OGP.4"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "07b789c7-27cc-46d4-bb92-548df785f40d",
+                  "name": "OGP: Manage Pipeline System",
+                  "number": "OGP.4"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "29124c2b-4d33-409b-9424-4c92da1b50f9",
+            "name": "OGP: Manage Route",
+            "number": "OGP.10"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "29124c2b-4d33-409b-9424-4c92da1b50f9",
+                  "name": "OGP: Manage Route",
+                  "number": "OGP.10"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "edf21d07-28db-475b-9344-561410040f1a",
+            "name": "OGP: Enable Oil Route",
+            "number": "OGP.11"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "edf21d07-28db-475b-9344-561410040f1a",
+                  "name": "OGP: Enable Oil Route",
+                  "number": "OGP.11"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "bcf31720-ebd6-440b-ac9a-bd21731c526c",
+            "name": "OGP: Disable Oil Route",
+            "number": "OGP.12"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "bcf31720-ebd6-440b-ac9a-bd21731c526c",
+                  "name": "OGP: Disable Oil Route",
+                  "number": "OGP.12"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "61e06815-552c-442b-9f61-a799730d81af",
+            "name": "OGP: Route Oil/Gas",
+            "number": "OGP.15"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "61e06815-552c-442b-9f61-a799730d81af",
+                  "name": "OGP: Route Oil/Gas",
+                  "number": "OGP.15"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "58b8c2f1-6554-4e82-95f5-0ad0b453b3f4",
+            "name": "_Perform External Functions",
+            "number": "X"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
+                  "name": "_External Entities",
+                  "number": "X"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [
+              {
+                "functionTarget": {
+                  "id": "cdc6f51d-4272-4884-8364-9d4484b728c8",
+                  "name": "APT: Simulate Threat",
+                  "number": "X.APT.1"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "4183077e-a089-41b8-b3d5-eef3f1495d1a",
+                  "name": "PE: Simulate Environment",
+                  "number": "X.PE.1"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "b734e479-bfb3-4e62-8be4-303fdad2ee31",
+                  "name": "PEP: Supply Oil/Gas",
+                  "number": "X.PEP.1"
+                }
+              },
+              {
+                "functionTarget": {
+                  "id": "b4ed6af1-a583-44f9-a2ee-c1d831717c1a",
+                  "name": "PEP: Sink Oil/Gas",
+                  "number": "X.PEP.2"
+                }
+              }
+            ],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "58b8c2f1-6554-4e82-95f5-0ad0b453b3f4",
+                  "name": "_Perform External Functions",
+                  "number": "X"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [
+              {
+                "domainSetTarget": {
+                  "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+                  "name": "#Pipeline Routes",
+                  "number": "OGP.1"
+                }
+              }
+            ],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "cdc6f51d-4272-4884-8364-9d4484b728c8",
+            "name": "APT: Simulate Threat",
+            "number": "X.APT.1"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "9c538421-8949-425a-b099-ed44aefcde28",
+                  "name": "APT: Advanced Persistent Threat",
+                  "number": "X.3"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "cdc6f51d-4272-4884-8364-9d4484b728c8",
+                  "name": "APT: Simulate Threat",
+                  "number": "X.APT.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "4183077e-a089-41b8-b3d5-eef3f1495d1a",
+            "name": "PE: Simulate Environment",
+            "number": "X.PE.1"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
+                  "name": "PE: Physical Environment",
+                  "number": "X.2"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "4183077e-a089-41b8-b3d5-eef3f1495d1a",
+                  "name": "PE: Simulate Environment",
+                  "number": "X.PE.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "b734e479-bfb3-4e62-8be4-303fdad2ee31",
+            "name": "PEP: Supply Oil/Gas",
+            "number": "X.PEP.1"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                  "name": "PEP: Pipe End-Point",
+                  "number": "X.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "b734e479-bfb3-4e62-8be4-303fdad2ee31",
+                  "name": "PEP: Supply Oil/Gas",
+                  "number": "X.PEP.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "b4ed6af1-a583-44f9-a2ee-c1d831717c1a",
+            "name": "PEP: Sink Oil/Gas",
+            "number": "X.PEP.2"
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
+                  "name": "PEP: Pipe End-Point",
+                  "number": "X.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "b4ed6af1-a583-44f9-a2ee-c1d831717c1a",
+                  "name": "PEP: Sink Oil/Gas",
+                  "number": "X.PEP.2"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
         }
-      },
-      {
-        "identity": {
-          "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
-          "name": "PEP: Pipe End-Point",
-          "number": "X.1"
-        },
-        "attributes": {
-          "description": "Pipeline End-Point - may be a supplier and/or consumer to/from the pipeline.",
-          "type": "Facility"
-        },
-        "relationships": {
-          "builtFrom": [],
-          "builtIn": [
-            {
-              "componentTarget": {
-                "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-                "name": "_External Entities",
-                "number": "X"
+      ],
+      "hazard": [
+        {
+          "identity": {
+            "id": "69e46397-058a-42ce-a078-bf8fc6e50730",
+            "name": "Release of pipeline content",
+            "number": "H.1"
+          },
+          "attributes": {
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "elicits": [],
+            "hasComments": [],
+            "isCausedBy": [],
+            "leadsTo": [
+              {
+                "lossTarget": {
+                  "id": "bbd7fd5c-d053-40d9-9ee4-46f6a9a094c2",
+                  "name": "Environment contaminated",
+                  "number": "L.2"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+                  "name": "Suboptimal capacity (economic loss)",
+                  "number": "L.4"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "0a2cb3f6-3c72-41c8-a1cc-8dbac76fbf1f",
+                  "name": "Equipment damage (economic loss)",
+                  "number": "L.3"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "621bd513-54f5-4ae3-a8d6-0fe678f8e516",
+                  "name": "People injured or killed",
+                  "number": "L.1"
+                }
               }
-            }
-          ],
-          "joinedTo": [
-            {
-              "interfaceTarget": {
-                "id": "08067b89-2740-417b-844d-36ce5a46e98e",
-                "name": "PEP: Oil & Gas",
-                "number": "PEP.1"
+            ],
+            "packagedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "a34a8e28-6dca-4bb6-bdf8-dab89d18fdab",
+            "name": "Equipment operated outside normal specification",
+            "number": "H.2"
+          },
+          "attributes": {
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "elicits": [],
+            "hasComments": [],
+            "isCausedBy": [],
+            "leadsTo": [
+              {
+                "lossTarget": {
+                  "id": "0a2cb3f6-3c72-41c8-a1cc-8dbac76fbf1f",
+                  "name": "Equipment damage (economic loss)",
+                  "number": "L.3"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+                  "name": "Suboptimal capacity (economic loss)",
+                  "number": "L.4"
+                }
               }
-            }
-          ]
+            ],
+            "packagedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "31ad8344-f1fa-4c1c-a285-843ddeaffe56",
+            "name": "Pipeline shutdown",
+            "number": "H.3"
+          },
+          "attributes": {
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "elicits": [],
+            "hasComments": [],
+            "isCausedBy": [],
+            "leadsTo": [
+              {
+                "lossTarget": {
+                  "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+                  "name": "Suboptimal capacity (economic loss)",
+                  "number": "L.4"
+                }
+              }
+            ],
+            "packagedBy": []
+          }
         }
-      },
-      {
-        "identity": {
-          "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
-          "name": "PE: Physical Environment",
-          "number": "X.2"
-        },
-        "attributes": {
-          "description": "The physical environment includes land, air, water, plants and animals, buildings and other infrastructure.",
-          "type": "External_System"
-        },
-        "relationships": {
-          "builtFrom": [],
-          "builtIn": [
-            {
-              "componentTarget": {
-                "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-                "name": "_External Entities",
-                "number": "X"
+      ],
+      "interface": [
+        {
+          "identity": {
+            "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+            "name": "APT: Attack",
+            "number": "APT.1"
+          },
+          "attributes": {
+            "title": null,
+            "puid": null,
+            "description": "Advanced Persistent Threat simulation interface."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprisedOf": [
+              {
+                "linkTarget": {
+                  "id": "38191d12-14cb-4770-b830-41febf0db843",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                }
               }
-            }
-          ],
-          "joinedTo": [
-            {
-              "interfaceTarget": {
-                "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
-                "name": "PE: Local Conditions",
-                "number": "PE.1"
+            ],
+            "documentedBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "joins": [
+              {
+                "interfaceTarget": {
+                  "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                }
               }
-            }
-          ]
+            ],
+            "packagedBy": [],
+            "reportedBy": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+            "name": "MA: Monitor & Control",
+            "number": "MA.1"
+          },
+          "attributes": {
+            "title": null,
+            "puid": null,
+            "description": "Mission Aware Monitor and Control Interface."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprisedOf": [
+              {
+                "linkTarget": {
+                  "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "joins": [
+              {
+                "interfaceTarget": {
+                  "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                }
+              }
+            ],
+            "packagedBy": [],
+            "reportedBy": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+            "name": "PE: Local Conditions",
+            "number": "PE.1"
+          },
+          "attributes": {
+            "title": null,
+            "puid": null,
+            "description": "Environmental Conditions Interface."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprisedOf": [
+              {
+                "linkTarget": {
+                  "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "joins": [
+              {
+                "interfaceTarget": {
+                  "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                }
+              }
+            ],
+            "packagedBy": [],
+            "reportedBy": [],
+            "specifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+            "name": "PEP: Oil & Gas",
+            "number": "PEP.1"
+          },
+          "attributes": {
+            "title": null,
+            "puid": null,
+            "description": "Pipeline Endpoint Interface - Supply & Sink."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprisedOf": [
+              {
+                "linkTarget": {
+                  "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+                  "name": "PEP: Gas & Oil",
+                  "number": "PEP.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "joins": [
+              {
+                "interfaceTarget": {
+                  "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+                  "name": "PEP: Oil & Gas",
+                  "number": "PEP.1"
+                }
+              },
+              {
+                "interfaceTarget": {
+                  "id": "08067b89-2740-417b-844d-36ce5a46e98e",
+                  "name": "PEP: Oil & Gas",
+                  "number": "PEP.1"
+                }
+              }
+            ],
+            "packagedBy": [],
+            "reportedBy": [],
+            "specifiedBy": []
+          }
         }
-      },
-      {
-        "identity": {
-          "id": "9c538421-8949-425a-b099-ed44aefcde28",
-          "name": "APT: Advanced Persistent Threat",
-          "number": "X.3"
-        },
-        "attributes": {
-          "description": "",
-          "type": "Human"
-        },
-        "relationships": {
-          "builtFrom": [],
-          "builtIn": [
-            {
-              "componentTarget": {
-                "id": "b0857b17-6f5a-40f6-9655-455ec5d91444",
-                "name": "_External Entities",
-                "number": "X"
+      ],
+      "issue": [],
+      "item": [],
+      "link": [
+        {
+          "identity": {
+            "id": "38191d12-14cb-4770-b830-41febf0db843",
+            "name": "APT: Attack",
+            "number": "APT.1"
+          },
+          "attributes": {
+            "protocol": null,
+            "delay": null,
+            "capacity": null,
+            "title": null,
+            "puid": null,
+            "delayUnits": null,
+            "capacityUnits": null,
+            "description": "Advanced Persistent Threat simulation link."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprises": [
+              {
+                "linkTarget": {
+                  "id": "38191d12-14cb-4770-b830-41febf0db843",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                }
               }
-            }
-          ],
-          "joinedTo": [
-            {
-              "interfaceTarget": {
-                "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
-                "name": "APT: Attack",
-                "number": "APT.1"
+            ],
+            "connectsTo": [
+              {
+                "linkTarget": {
+                  "id": "38191d12-14cb-4770-b830-41febf0db843",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "38191d12-14cb-4770-b830-41febf0db843",
+                  "name": "APT: Attack",
+                  "number": "APT.1"
+                },
+                "portID": null
               }
-            }
-          ]
+            ],
+            "constrainedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "servicedBy": [],
+            "specifiedBy": [],
+            "transfers": []
+          }
+        },
+        {
+          "identity": {
+            "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+            "name": "MA: Monitor & Control",
+            "number": "MA.1"
+          },
+          "attributes": {
+            "protocol": null,
+            "delay": null,
+            "capacity": null,
+            "title": null,
+            "puid": null,
+            "delayUnits": null,
+            "capacityUnits": null,
+            "description": "Mission Aware Monitor and Control Link."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprises": [
+              {
+                "linkTarget": {
+                  "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                }
+              }
+            ],
+            "connectsTo": [
+              {
+                "linkTarget": {
+                  "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "9b3333ce-78a7-4959-a5b7-e4a744dc2806",
+                  "name": "MA: Monitor & Control",
+                  "number": "MA.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "servicedBy": [],
+            "specifiedBy": [],
+            "transfers": []
+          }
+        },
+        {
+          "identity": {
+            "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+            "name": "PE: Local Conditions",
+            "number": "PE.1"
+          },
+          "attributes": {
+            "protocol": null,
+            "delay": null,
+            "capacity": null,
+            "title": null,
+            "puid": null,
+            "delayUnits": null,
+            "capacityUnits": null,
+            "description": "Environmental Conditions Link."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprises": [
+              {
+                "linkTarget": {
+                  "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                }
+              }
+            ],
+            "connectsTo": [
+              {
+                "linkTarget": {
+                  "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "a5ee0570-c4e8-4eeb-ad23-f2d6d4207771",
+                  "name": "PE: Local Conditions",
+                  "number": "PE.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "servicedBy": [],
+            "specifiedBy": [],
+            "transfers": []
+          }
+        },
+        {
+          "identity": {
+            "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+            "name": "PEP: Gas & Oil",
+            "number": "PEP.1"
+          },
+          "attributes": {
+            "protocol": null,
+            "delay": null,
+            "capacity": null,
+            "title": null,
+            "puid": null,
+            "delayUnits": null,
+            "capacityUnits": null,
+            "description": "Pipeline Endpoint Link - Supply & Sink."
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "causes": [],
+            "comprises": [
+              {
+                "linkTarget": {
+                  "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+                  "name": "PEP: Gas & Oil",
+                  "number": "PEP.1"
+                }
+              }
+            ],
+            "connectsTo": [
+              {
+                "linkTarget": {
+                  "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+                  "name": "PEP: Gas & Oil",
+                  "number": "PEP.1"
+                },
+                "portID": null
+              },
+              {
+                "linkTarget": {
+                  "id": "8aa90efc-854e-49fe-9bea-1ab489ca1882",
+                  "name": "PEP: Gas & Oil",
+                  "number": "PEP.1"
+                },
+                "portID": null
+              }
+            ],
+            "constrainedBy": [],
+            "documentedBy": [],
+            "enablesDetectionOf": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "includedIn": [],
+            "includes": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "servicedBy": [],
+            "specifiedBy": [],
+            "transfers": []
+          }
         }
-      }
-    ],
-    "interfaces": [
-      {
-        "identity": {
-          "id": "4afd0318-2820-4267-b94b-51a0ad6039cc",
-          "name": "APT: Attack",
-          "number": "APT.1"
-        },
-        "attributes": {
-          "description": "Advanced Persistent Threat simulation interface."
-        },
-        "relationships": {
-          "joins": [
-            {
-              "interfaceTarget": {
-                "id": "9c538421-8949-425a-b099-ed44aefcde28",
-                "name": "APT: Advanced Persistent Threat",
-                "number": "X.3"
+      ],
+      "loss": [
+        {
+          "identity": {
+            "id": "621bd513-54f5-4ae3-a8d6-0fe678f8e516",
+            "name": "People injured or killed",
+            "number": "L.1"
+          },
+          "attributes": {
+            "priority": "E_1",
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "isCausedBy": [
+              {
+                "lossTarget": {
+                  "id": "621bd513-54f5-4ae3-a8d6-0fe678f8e516",
+                  "name": "People injured or killed",
+                  "number": "L.1"
+                }
               }
-            },
-            {
-              "interfaceTarget": {
-                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-                "name": "OGP: Oil & Gas Pipeline",
-                "number": "C.1"
+            ],
+            "packagedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "bbd7fd5c-d053-40d9-9ee4-46f6a9a094c2",
+            "name": "Environment contaminated",
+            "number": "L.2"
+          },
+          "attributes": {
+            "priority": "E_1",
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "isCausedBy": [
+              {
+                "lossTarget": {
+                  "id": "bbd7fd5c-d053-40d9-9ee4-46f6a9a094c2",
+                  "name": "Environment contaminated",
+                  "number": "L.2"
+                }
               }
-            }
-          ]
+            ],
+            "packagedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "0a2cb3f6-3c72-41c8-a1cc-8dbac76fbf1f",
+            "name": "Equipment damage (economic loss)",
+            "number": "L.3"
+          },
+          "attributes": {
+            "priority": "E_1",
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "isCausedBy": [
+              {
+                "lossTarget": {
+                  "id": "0a2cb3f6-3c72-41c8-a1cc-8dbac76fbf1f",
+                  "name": "Equipment damage (economic loss)",
+                  "number": "L.3"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "0a2cb3f6-3c72-41c8-a1cc-8dbac76fbf1f",
+                  "name": "Equipment damage (economic loss)",
+                  "number": "L.3"
+                }
+              }
+            ],
+            "packagedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+            "name": "Suboptimal capacity (economic loss)",
+            "number": "L.4"
+          },
+          "attributes": {
+            "priority": "E_1",
+            "description": null
+          },
+          "parameters": {
+          },
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "isCausedBy": [
+              {
+                "lossTarget": {
+                  "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+                  "name": "Suboptimal capacity (economic loss)",
+                  "number": "L.4"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+                  "name": "Suboptimal capacity (economic loss)",
+                  "number": "L.4"
+                }
+              },
+              {
+                "lossTarget": {
+                  "id": "eb1f76ec-6dd4-47fd-b5ae-11d4797ecea3",
+                  "name": "Suboptimal capacity (economic loss)",
+                  "number": "L.4"
+                }
+              }
+            ],
+            "packagedBy": []
+          }
         }
-      },
-      {
-        "identity": {
-          "id": "17b3bb7b-0428-48d3-b5e9-fa5c9525c804",
-          "name": "MA: Monitor & Control",
-          "number": "MA.1"
-        },
-        "attributes": {
-          "description": "Mission Aware Monitor and Control Interface."
-        },
-        "relationships": {
-          "joins": [
-            {
-              "interfaceTarget": {
-                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-                "name": "OGP: Oil & Gas Pipeline",
-                "number": "C.1"
-              }
-            },
-            {
-              "interfaceTarget": {
-                "id": "35be796a-4ae1-4818-8eee-1c611cbd14b5",
-                "name": "MA: Mission Aware",
-                "number": "C.2"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "identity": {
-          "id": "89ccdeb6-cf14-4645-a131-2e9ef6e24961",
-          "name": "PE: Local Conditions",
-          "number": "PE.1"
-        },
-        "attributes": {
-          "description": "Environmental Conditions Interface."
-        },
-        "relationships": {
-          "joins": [
-            {
-              "interfaceTarget": {
-                "id": "1ebccfca-0d58-47d8-932e-2b948e585121",
-                "name": "PE: Physical Environment",
-                "number": "X.2"
-              }
-            },
-            {
-              "interfaceTarget": {
-                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-                "name": "OGP: Oil & Gas Pipeline",
-                "number": "C.1"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "identity": {
-          "id": "08067b89-2740-417b-844d-36ce5a46e98e",
-          "name": "PEP: Oil & Gas",
-          "number": "PEP.1"
-        },
-        "attributes": {
-          "description": "Pipeline Endpoint Interface - Supply & Sink."
-        },
-        "relationships": {
-          "joins": [
-            {
-              "interfaceTarget": {
-                "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
-                "name": "OGP: Oil & Gas Pipeline",
-                "number": "C.1"
-              }
-            },
-            {
-              "interfaceTarget": {
-                "id": "82f0b63d-1f9b-440d-b1d7-687ca5549660",
-                "name": "PEP: Pipe End-Point",
-                "number": "X.1"
-              }
-            }
-          ]
-        }
-      }
-    ]
+      ],
+      "lossScenario": [],
+      "mode": [],
+      "note": [],
+      "package": [],
+      "portDefinition": [],
+      "proxyPort": [],
+      "requirement": [],
+      "resource": [],
+      "risk": [],
+      "serviceSpecification": [],
+      "state": [],
+      "text": [],
+      "transition": [],
+      "unsafeAction": [],
+      "useCase": [],
+      "verificationRequirement": []
+    }
   }
 }
