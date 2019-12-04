@@ -3,6 +3,7 @@
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-systemigraph.png)
 ### References
+* [SystemiTool](https://sercuarc.org/serc-tools/)
 * [MBSE](http://www.vitechcorp.com/resources/white_papers/onemodel.pdf)
 * [Hazard Analysis - STPA](http://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf)
 
