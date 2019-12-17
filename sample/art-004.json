@@ -316,6 +316,14 @@
                   "number": "C.1"
                 },
                 "behaviorType": "Atomic"
+              },
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: _Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
               }
             ],
             "precipitates": [],
@@ -2438,25 +2446,6 @@
       "domainSet": [
         {
           "identity": {
-            "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
-            "name": "#Pipeline Routes",
-            "number": "OGP.1"
-          },
-          "attributes": {
-            "count": "2",
-            "description": "The maximum number of supported pipeline routes."
-          },
-          "parameters": [],
-          "relations": {
-            "augmentedBy": [],
-            "categorizedBy": [],
-            "documentedBy": [],
-            "hasComments": [],
-            "packagedBy": []
-          }
-        },
-        {
-          "identity": {
             "id": "e2d34c39-0e3f-45b5-a391-7b236f6c54fc",
             "name": "#Route Segments",
             "number": "OGP.2"
@@ -2492,10 +2481,66 @@
             "hasComments": [],
             "packagedBy": []
           }
+        },
+        {
+          "identity": {
+            "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+            "name": "#Pipeline Routes",
+            "number": ""
+          },
+          "attributes": {
+            "count": "2",
+            "description": "The maximum number of supported pipeline routes."
+          },
+          "parameters": [],
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "packagedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "55a15918-a285-4c83-b670-865dc7ed77c3",
+            "name": "DomainSet_001",
+            "number": ""
+          },
+          "attributes": {
+            "count": null,
+            "description": null
+          },
+          "parameters": [],
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "packagedBy": []
+          }
         }
       ],
       "event": [],
       "exit": [
+        {
+          "identity": {
+            "id": "9f4eff4f-270d-4ad8-b352-8703572a5d88",
+            "name": "Dummy",
+            "number": "1.1"
+          },
+          "attributes": {
+            "description": null
+          },
+          "parameters": [],
+          "relations": {
+            "augmentedBy": [],
+            "categorizedBy": [],
+            "documentedBy": [],
+            "hasComments": [],
+            "packagedBy": []
+          }
+        },
         {
           "identity": {
             "id": "3f60f696-f243-40ef-aa7c-8d93089c8e43",
@@ -2852,6 +2897,13 @@
             "decomposedBy": [
               {
                 "functionTarget": {
+                  "id": "06a35092-6699-4554-9ade-85fc34691a71",
+                  "name": "Function_001",
+                  "number": ""
+                }
+              },
+              {
+                "functionTarget": {
                   "id": "b524379b-378d-4993-b39d-e0a514287c28",
                   "name": "PUMP: Pump Oil & Gas",
                   "number": "OGP.1.PUMP.1"
@@ -2884,7 +2936,17 @@
             "documentedBy": [],
             "elaborates": [],
             "enablesDetectionOf": [],
-            "exitsBy": [],
+            "exitsBy": [
+              {
+                "exitTarget": {
+                  "id": "9f4eff4f-270d-4ad8-b352-8703572a5d88",
+                  "name": "Dummy",
+                  "number": "1.1"
+                },
+                "selectionProbability": null,
+                "type": "Normal"
+              }
+            ],
             "hasComments": [],
             "impactedBy": [],
             "incorporatedBy": [],
@@ -2915,6 +2977,13 @@
             "relatesTo": [
               {
                 "domainSetTarget": {
+                  "id": "55a15918-a285-4c83-b670-865dc7ed77c3",
+                  "name": "DomainSet_001",
+                  "number": ""
+                }
+              },
+              {
+                "domainSetTarget": {
                   "id": "e2d34c39-0e3f-45b5-a391-7b236f6c54fc",
                   "name": "#Route Segments",
                   "number": "OGP.2"
@@ -2924,7 +2993,7 @@
                 "domainSetTarget": {
                   "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
                   "name": "#Pipeline Routes",
-                  "number": "OGP.1"
+                  "number": ""
                 }
               }
             ],
@@ -3289,7 +3358,7 @@
                 "domainSetTarget": {
                   "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
                   "name": "#Pipeline Routes",
-                  "number": "OGP.1"
+                  "number": ""
                 }
               }
             ],
@@ -3728,7 +3797,7 @@
                 "domainSetTarget": {
                   "id": "89230d25-f3b5-4c70-a231-7de01dbda52c",
                   "name": "#Pipeline Routes",
-                  "number": "OGP.1"
+                  "number": ""
                 }
               }
             ],
@@ -3997,6 +4066,73 @@
                   "id": "541760b1-6432-4573-ba97-1246392ca5db",
                   "name": "SOC: Simulate Industry Share",
                   "number": "X.SOC.1"
+                }
+              }
+            ],
+            "documentedBy": [],
+            "elaborates": [],
+            "enablesDetectionOf": [],
+            "exitsBy": [],
+            "hasComments": [],
+            "impactedBy": [],
+            "incorporatedBy": [],
+            "inputs": [],
+            "manages": [],
+            "outputs": [],
+            "packagedBy": [],
+            "parameterUsedIn": [],
+            "produces": [],
+            "reflectedIn": [],
+            "reflects": [],
+            "relatesTo": [],
+            "resultOf": [],
+            "services": [],
+            "specifiedBy": [],
+            "triggeredBy": [],
+            "verifiedBy": []
+          }
+        },
+        {
+          "identity": {
+            "id": "06a35092-6699-4554-9ade-85fc34691a71",
+            "name": "Function_001",
+            "number": ""
+          },
+          "attributes": {
+            "puid": null,
+            "duration": null,
+            "executeDecomposition": true,
+            "logMessage": null,
+            "timeout": null,
+            "title": null,
+            "description": null
+          },
+          "parameters": [],
+          "relations": {
+            "allocatedTo": [
+              {
+                "componentTarget": {
+                  "id": "48e545a7-dbf0-4fec-811f-7c8adf31faf2",
+                  "name": "OGP: _Oil & Gas Pipeline",
+                  "number": "C.1"
+                },
+                "behaviorType": "Atomic"
+              }
+            ],
+            "augmentedBy": [],
+            "basedOn": [],
+            "captures": [],
+            "categorizedBy": [],
+            "causes": [],
+            "constrainedBy": [],
+            "consumes": [],
+            "decomposedBy": [],
+            "decomposes": [
+              {
+                "functionTarget": {
+                  "id": "06a35092-6699-4554-9ade-85fc34691a71",
+                  "name": "Function_001",
+                  "number": ""
                 }
               }
             ],
@@ -6319,7 +6455,1295 @@
         }
       ],
       "useCase": [],
-      "verificationRequirement": []
+      "verificationRequirement": [],
+      "callStructure": [
+        {
+          "function": {
+            "id": "b76054a3-c4b8-48fa-85cd-15041a29a22f",
+            "name": "_Top",
+            "number": "0"
+          },
+          "structure": {
+            "id": "d4aa43e4-868e-45b7-a7ae-1ff84d9fb21a",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": [
+              {
+                "id": "a81eb38c-41b7-4cd9-82ea-95531b2a1795",
+                "type": "Parallel",
+                "annotation": null,
+                "referenceID": null,
+                "referenceName": null,
+                "referenceNum": null,
+                "structure": [
+                  {
+                    "id": "116796d1-c5a2-49c4-848c-6e5131fe3223",
+                    "type": "Branch",
+                    "annotation": "System",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "21fb6de3-f72f-4ca1-a892-3f943b4a0a81",
+                        "type": "Function",
+                        "annotation": null,
+                        "referenceID": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+                        "referenceName": "_Perform System Context Functions",
+                        "referenceNum": "C",
+                        "structure": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "35278c28-2f90-44eb-ac8e-410efa465f59",
+                    "type": "Branch",
+                    "annotation": "External",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "941b7807-4dad-4c16-994b-bf9736d9cb00",
+                        "type": "Function",
+                        "annotation": null,
+                        "referenceID": "58b8c2f1-6554-4e82-95f5-0ad0b453b3f4",
+                        "referenceName": "_Perform External Functions",
+                        "referenceNum": "X",
+                        "structure": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "function": {
+            "id": "2cdafa04-e7d4-4ec8-ae47-2c7dc9533fa1",
+            "name": "_Perform System Context Functions",
+            "number": "C"
+          },
+          "structure": {
+            "id": "683eb635-a3a2-4ba7-83ca-93654880c9cf",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": [
+              {
+                "id": "fe499e80-1d6b-44a5-98ed-074fa64db78e",
+                "type": "Parallel",
+                "annotation": null,
+                "referenceID": null,
+                "referenceName": null,
+                "referenceNum": null,
+                "structure": [
+                  {
+                    "id": "c459cb47-6830-4165-a4b3-c8bda47c38a3",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": []
+                  },
+                  {
+                    "id": "ae505c02-030d-497b-913b-de4305701ccb",
+                    "type": "Branch",
+                    "annotation": "Environment",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "beda227e-7c01-4135-a64e-299f7cf30652",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "ae0c0d6d-a67d-488b-b8d2-fa426cd8dd0d",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "9ff43cc9-7e9f-4a90-88db-e4ab5117acd5",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "cde124b7-2e8c-4a29-b7ac-9b48bfbdb4c9",
+                                "referenceName": "OGP: Monitor Environment",
+                                "referenceNum": "OGP.3",
+                                "structure": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "9190a260-2fcb-4874-a942-2d72238a8046",
+                    "type": "Branch",
+                    "annotation": "Security Operations",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "c3edef75-3a2a-4020-a4ce-d4cd7a20ce25",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "0815d205-89b3-4e06-9c81-31ea3b1218d1",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "58f461f9-f002-462f-8635-a562950fbb5f",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "b48a976f-32a1-4e3e-a229-30d144267572",
+                                "referenceName": "OGP: Monitor SOC",
+                                "referenceNum": "OGP.5",
+                                "structure": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "d88ba20f-56ec-47ca-971b-4fdaa23cde11",
+                    "type": "Branch",
+                    "annotation": "Mission Aware",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "9852d290-fb07-40e0-bd3a-5eb1a689afee",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "d3edf3af-548a-44b0-8925-cf60a358af0d",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "c817ac13-033d-4fbe-b10d-503a1f2faca1",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "df7c12e1-ae7a-4993-954e-079f36f32576",
+                                "referenceName": "MA: Manage Pipeline Resiliency",
+                                "referenceNum": "MA.1",
+                                "structure": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "7f6d2823-d5c0-4864-b8a2-f4eeb4c1ac5c",
+                    "type": "Branch",
+                    "annotation": "SCADA Monitor",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "59bed28e-a694-4b6c-8bfd-1a417e275e9a",
+                        "type": "Function",
+                        "annotation": null,
+                        "referenceID": "d99aae27-7413-469f-bcf5-d1651ace4dfc",
+                        "referenceName": "OGP: _Monitor Pipeline System",
+                        "referenceNum": "OGP.2",
+                        "structure": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "f8959801-9053-4ea0-a42e-9283421118a6",
+                    "type": "Branch",
+                    "annotation": "SCADA Manage",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "382d57b6-cad6-43ca-a581-45ed61508d6c",
+                        "type": "Function",
+                        "annotation": null,
+                        "referenceID": "07b789c7-27cc-46d4-bb92-548df785f40d",
+                        "referenceName": "OGP: _Perform Pipeline Functions",
+                        "referenceNum": "OGP.1",
+                        "structure": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "function": {
+            "id": "df7c12e1-ae7a-4993-954e-079f36f32576",
+            "name": "MA: Manage Pipeline Resiliency",
+            "number": "MA.1"
+          },
+          "structure": {
+            "id": "6801d892-b67c-4593-9abc-cedb5d33cd0d",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "07b789c7-27cc-46d4-bb92-548df785f40d",
+            "name": "OGP: _Perform Pipeline Functions",
+            "number": "OGP.1"
+          },
+          "structure": {
+            "id": "f1092a30-9ca8-44b2-b6e9-b071cca31b7c",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": [
+              {
+                "id": "53367b46-ae15-4eb9-af27-bc70eea56a8f",
+                "type": "Parallel",
+                "annotation": null,
+                "referenceID": null,
+                "referenceName": null,
+                "referenceNum": null,
+                "structure": [
+                  {
+                    "id": "8d161159-2933-4dc6-8318-b0a172a2c239",
+                    "type": "Branch",
+                    "annotation": "Operator",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "5880b62b-9953-4e01-9182-1204e28ac88e",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "dac80a15-f76b-4d40-93fe-1d8ebce3f002",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "a3c0d80e-65cf-4160-af53-37cc4108942b",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "17598d17-b321-4494-81f9-06be55eaa8bf",
+                                "referenceName": "OP: Determine Action",
+                                "referenceNum": "OGP.1.OP.1",
+                                "structure": [
+                                  {
+                                    "id": "be8dcc26-97f4-43a1-a30d-b27dba35637a",
+                                    "type": "ExitCondition",
+                                    "annotation": null,
+                                    "referenceID": "5ab3b3a3-1f13-4cd6-aadc-87857445dd41",
+                                    "referenceName": "OGP: Set Segment Flow Rate",
+                                    "referenceNum": null,
+                                    "structure": []
+                                  },
+                                  {
+                                    "id": "1519defc-1ed0-46cf-a693-e0ee770fbda2",
+                                    "type": "ExitCondition",
+                                    "annotation": null,
+                                    "referenceID": "3f60f696-f243-40ef-aa7c-8d93089c8e43",
+                                    "referenceName": "OGP: Initiate Segment Inspection",
+                                    "referenceNum": null,
+                                    "structure": []
+                                  },
+                                  {
+                                    "id": "adc899d1-f942-4033-9005-8a0675a7a49c",
+                                    "type": "ExitCondition",
+                                    "annotation": null,
+                                    "referenceID": "3f98f0fe-5c40-40d3-90c7-cdbc5b7a41ab",
+                                    "referenceName": "OGP: Set Active Route Manager",
+                                    "referenceNum": null,
+                                    "structure": []
+                                  },
+                                  {
+                                    "id": "03a3f25d-332f-4fd7-b095-2705e0c821b9",
+                                    "type": "ExitCondition",
+                                    "annotation": null,
+                                    "referenceID": "ce33c545-44d0-4515-9657-6f86a97e3bc7",
+                                    "referenceName": "OGP: Set Preferred Communications Network",
+                                    "referenceNum": null,
+                                    "structure": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "b14288fd-d49c-4947-973e-e6d8ce502ae6",
+                    "type": "Branch",
+                    "annotation": "Pump",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "4c7c82da-0bd0-4d99-9887-139a662cd2e3",
+                        "type": "Replicate",
+                        "annotation": "With coordination",
+                        "referenceID": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+                        "referenceName": "#Pipeline Routes",
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "6f7dec0a-1853-4f7b-8d20-fa93c4e6fbac",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "b978ad8c-3b6e-42fc-82b5-cbd4c2235e18",
+                                "type": "Replicate",
+                                "annotation": "With coordination",
+                                "referenceID": "e2d34c39-0e3f-45b5-a391-7b236f6c54fc",
+                                "referenceName": "#Route Segments",
+                                "referenceNum": "OGP.2",
+                                "structure": [
+                                  {
+                                    "id": "2d4014f9-3ffd-4eb7-abb2-a521d73a6fb1",
+                                    "type": "Branch",
+                                    "annotation": null,
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": [
+                                      {
+                                        "id": "f0c51112-2f4c-467c-8f25-242523142416",
+                                        "type": "Parallel",
+                                        "annotation": null,
+                                        "referenceID": null,
+                                        "referenceName": null,
+                                        "referenceNum": null,
+                                        "structure": [
+                                          {
+                                            "id": "aacd26c8-2d3e-408a-976b-1d93f5c6e68a",
+                                            "type": "Branch",
+                                            "annotation": null,
+                                            "referenceID": null,
+                                            "referenceName": null,
+                                            "referenceNum": null,
+                                            "structure": [
+                                              {
+                                                "id": "486dcd78-3d32-496a-91e1-397e45fbcbf0",
+                                                "type": "Loop",
+                                                "annotation": null,
+                                                "referenceID": null,
+                                                "referenceName": null,
+                                                "referenceNum": null,
+                                                "structure": [
+                                                  {
+                                                    "id": "95ed1892-15e8-444d-beea-13ef89f19b6c",
+                                                    "type": "Branch",
+                                                    "annotation": null,
+                                                    "referenceID": null,
+                                                    "referenceName": null,
+                                                    "referenceNum": null,
+                                                    "structure": [
+                                                      {
+                                                        "id": "871f1d32-b523-4f47-886c-d20fd86ed961",
+                                                        "type": "Function",
+                                                        "annotation": null,
+                                                        "referenceID": "d40e719e-e7ef-493b-8007-d46c1d6ed3e2",
+                                                        "referenceName": "ACT: Adjust Pump Flow Rate",
+                                                        "referenceNum": "OGP.1.ACT.1",
+                                                        "structure": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "e0a86e7d-2fb7-4e28-9b6a-01f5ed3a5a91",
+                                            "type": "Branch",
+                                            "annotation": null,
+                                            "referenceID": null,
+                                            "referenceName": null,
+                                            "referenceNum": null,
+                                            "structure": [
+                                              {
+                                                "id": "b162f4a0-fc86-44af-a50f-6e64eb715a7f",
+                                                "type": "Loop",
+                                                "annotation": null,
+                                                "referenceID": null,
+                                                "referenceName": null,
+                                                "referenceNum": null,
+                                                "structure": [
+                                                  {
+                                                    "id": "8a85c78c-4814-4d1b-8861-ca61fcc0aefa",
+                                                    "type": "Branch",
+                                                    "annotation": null,
+                                                    "referenceID": null,
+                                                    "referenceName": null,
+                                                    "referenceNum": null,
+                                                    "structure": [
+                                                      {
+                                                        "id": "edb28cd9-1922-4c8c-862b-edd0e57fc33b",
+                                                        "type": "Function",
+                                                        "annotation": null,
+                                                        "referenceID": "b524379b-378d-4993-b39d-e0a514287c28",
+                                                        "referenceName": "PUMP: Pump Oil & Gas",
+                                                        "referenceNum": "OGP.1.PUMP.1",
+                                                        "structure": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "b863ddc2-564b-4d4b-93b8-bdfa59aa8747",
+                                    "type": "Branch",
+                                    "annotation": "With coordination",
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": []
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "ff52e67a-59f2-406a-acd6-43204504268b",
+                            "type": "Branch",
+                            "annotation": "With coordination",
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "dc814dcc-9c4c-4191-b152-dc6207e342d6",
+                "type": "Select",
+                "annotation": null,
+                "referenceID": null,
+                "referenceName": null,
+                "referenceNum": null,
+                "structure": [
+                  {
+                    "id": "d2f3718a-a3e6-4353-ba19-8cb548bf0dae",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": []
+                  },
+                  {
+                    "id": "a12208f5-b3b4-409a-a3bf-fce45267d44a",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "ba9090b0-21b5-4911-893c-03c769fc84ce",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "d6a7e862-df47-4c17-8145-4c6db535ceaa",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "ae461600-b117-4202-bddd-8133b7b4fec2",
+                                "type": "Select",
+                                "annotation": null,
+                                "referenceID": null,
+                                "referenceName": null,
+                                "referenceNum": null,
+                                "structure": [
+                                  {
+                                    "id": "d5284ac2-4392-480f-9630-e733c75ec76a",
+                                    "type": "Branch",
+                                    "annotation": null,
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": [
+                                      {
+                                        "id": "82a0b3a3-aaf5-42e3-a540-c7a24c980a2f",
+                                        "type": "Replicate",
+                                        "annotation": "With coordination",
+                                        "referenceID": "55a15918-a285-4c83-b670-865dc7ed77c3",
+                                        "referenceName": "DomainSet_001",
+                                        "referenceNum": null,
+                                        "structure": [
+                                          {
+                                            "id": "40486d4f-d492-4b91-9aca-e2ca754b9d4d",
+                                            "type": "Branch",
+                                            "annotation": null,
+                                            "referenceID": null,
+                                            "referenceName": null,
+                                            "referenceNum": null,
+                                            "structure": [
+                                              {
+                                                "id": "730992b6-325a-42ed-a9d6-e376f906e1c9",
+                                                "type": "Function",
+                                                "annotation": null,
+                                                "referenceID": "06a35092-6699-4554-9ade-85fc34691a71",
+                                                "referenceName": "Function_001",
+                                                "referenceNum": null,
+                                                "structure": []
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "3363d2bb-472f-4e97-9d7d-a103c13ca867",
+                                            "type": "Branch",
+                                            "annotation": "With coordination",
+                                            "referenceID": null,
+                                            "referenceName": null,
+                                            "referenceNum": null,
+                                            "structure": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "b285e6b9-ba83-4ced-849b-106515cdae7a",
+                                    "type": "Branch",
+                                    "annotation": null,
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": [
+                                      {
+                                        "id": "6c08ba13-bdc4-4eee-b576-3aea5de00d19",
+                                        "type": "LoopExit",
+                                        "annotation": null,
+                                        "referenceID": null,
+                                        "referenceName": null,
+                                        "referenceNum": null,
+                                        "structure": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "38aad9e2-198e-4aa1-93e9-df81f7c714bd",
+                "type": "Exit",
+                "annotation": null,
+                "referenceID": "9f4eff4f-270d-4ad8-b352-8703572a5d88",
+                "referenceName": "Dummy",
+                "referenceNum": "1.1",
+                "structure": []
+              }
+            ]
+          }
+        },
+        {
+          "function": {
+            "id": "d40e719e-e7ef-493b-8007-d46c1d6ed3e2",
+            "name": "ACT: Adjust Pump Flow Rate",
+            "number": "OGP.1.ACT.1"
+          },
+          "structure": {
+            "id": "1b48433d-9d73-4a5a-b515-f9b190fd1931",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "17598d17-b321-4494-81f9-06be55eaa8bf",
+            "name": "OP: Determine Action",
+            "number": "OGP.1.OP.1"
+          },
+          "structure": {
+            "id": "13771820-8041-4497-a375-9a08ca5afeeb",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "b524379b-378d-4993-b39d-e0a514287c28",
+            "name": "PUMP: Pump Oil & Gas",
+            "number": "OGP.1.PUMP.1"
+          },
+          "structure": {
+            "id": "71516e2e-95dd-4d87-ad04-8e227661df65",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "d99aae27-7413-469f-bcf5-d1651ace4dfc",
+            "name": "OGP: _Monitor Pipeline System",
+            "number": "OGP.2"
+          },
+          "structure": {
+            "id": "2956dcad-bbe5-4d71-9c8c-0491e8c184f7",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": [
+              {
+                "id": "b14e2f6e-8957-48d9-a1fd-f34c6ae48207",
+                "type": "Parallel",
+                "annotation": null,
+                "referenceID": null,
+                "referenceName": null,
+                "referenceNum": null,
+                "structure": [
+                  {
+                    "id": "0b572f90-8829-4157-89b5-fb95641edcbb",
+                    "type": "Branch",
+                    "annotation": "Sensor",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "ff4006ad-9929-4003-b7ec-f3c282ffde6a",
+                        "type": "Replicate",
+                        "annotation": "With coordination",
+                        "referenceID": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+                        "referenceName": "#Pipeline Routes",
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "d14f5da1-ad7f-4ba4-820a-ee0beffa2fb9",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "2d314067-e920-4f1c-85d8-48f06b84b731",
+                                "type": "Replicate",
+                                "annotation": "With coordination",
+                                "referenceID": "e2d34c39-0e3f-45b5-a391-7b236f6c54fc",
+                                "referenceName": "#Route Segments",
+                                "referenceNum": "OGP.2",
+                                "structure": [
+                                  {
+                                    "id": "f1ac68a8-68bd-4c1b-ac3f-8f763b1e473b",
+                                    "type": "Branch",
+                                    "annotation": null,
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": [
+                                      {
+                                        "id": "f6aeff3e-b6f3-4668-971b-dffc4f7f2196",
+                                        "type": "Replicate",
+                                        "annotation": "With coordination",
+                                        "referenceID": "3ef47a79-e5b5-4cdd-af33-dbd75e8e3070",
+                                        "referenceName": "#Segment Sensors",
+                                        "referenceNum": "OGP.3",
+                                        "structure": [
+                                          {
+                                            "id": "19ffa1d6-185d-4dd1-ab5a-aaf577e44212",
+                                            "type": "Branch",
+                                            "annotation": null,
+                                            "referenceID": null,
+                                            "referenceName": null,
+                                            "referenceNum": null,
+                                            "structure": [
+                                              {
+                                                "id": "3fd0e661-70cc-42ae-bae7-20eb4957bece",
+                                                "type": "Loop",
+                                                "annotation": null,
+                                                "referenceID": null,
+                                                "referenceName": null,
+                                                "referenceNum": null,
+                                                "structure": [
+                                                  {
+                                                    "id": "bd01ef4f-e876-4144-86ed-51527008f955",
+                                                    "type": "Branch",
+                                                    "annotation": null,
+                                                    "referenceID": null,
+                                                    "referenceName": null,
+                                                    "referenceNum": null,
+                                                    "structure": [
+                                                      {
+                                                        "id": "a5105061-a05f-4427-b199-c61522a0aa3c",
+                                                        "type": "Function",
+                                                        "annotation": null,
+                                                        "referenceID": "ed1f564c-a6ee-46c1-a3d6-dbf4675ce518",
+                                                        "referenceName": "SENSOR: Report Status",
+                                                        "referenceNum": "OGP.2.SENSOR.1",
+                                                        "structure": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "555a0589-7c6c-4738-baa7-f6fc7f1fa5e8",
+                                            "type": "Branch",
+                                            "annotation": "With coordination",
+                                            "referenceID": null,
+                                            "referenceName": null,
+                                            "referenceNum": null,
+                                            "structure": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "c2cab669-1592-4b1d-864c-c3dafb6fd8b4",
+                                    "type": "Branch",
+                                    "annotation": "With coordination",
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": []
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "b616b873-d142-405f-819d-3251a66af038",
+                            "type": "Branch",
+                            "annotation": "With coordination",
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "b73e360a-fa9c-4165-8731-5640f1087462",
+                    "type": "Branch",
+                    "annotation": "Route Manager",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "42561b21-bc6e-466b-90a3-c34b8238b820",
+                        "type": "Replicate",
+                        "annotation": "With coordination",
+                        "referenceID": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+                        "referenceName": "#Pipeline Routes",
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "c5027a7c-caf1-4a79-92be-2bcc0eb3e085",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "d78b43ce-2ff4-452a-b686-b42c4bbf8575",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "adcb8cc4-bba8-4dcd-aff7-69847252431c",
+                                "referenceName": "MGR: Manage Route State",
+                                "referenceNum": "OGP.2.MGR.2",
+                                "structure": []
+                              }
+                            ]
+                          },
+                          {
+                            "id": "3028befa-7e7f-4401-ba13-a83b87e4e737",
+                            "type": "Branch",
+                            "annotation": "With coordination",
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "15be2fc0-4757-4554-b086-08fadaf84ef9",
+                    "type": "Branch",
+                    "annotation": "Pipeline Manager",
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "8df71fb5-7cb6-43d9-97d2-79466df73947",
+                        "type": "Function",
+                        "annotation": null,
+                        "referenceID": "68b30046-fc0e-491a-b8da-01ad2d9cf593",
+                        "referenceName": "MGR: Manage Pipeline State",
+                        "referenceNum": "OGP.2.MGR.1",
+                        "structure": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "function": {
+            "id": "68b30046-fc0e-491a-b8da-01ad2d9cf593",
+            "name": "MGR: Manage Pipeline State",
+            "number": "OGP.2.MGR.1"
+          },
+          "structure": {
+            "id": "5e19242d-0454-473e-a55d-42e02ac69ea1",
+            "type": "Branch",
+            "annotation": "main",
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "adcb8cc4-bba8-4dcd-aff7-69847252431c",
+            "name": "MGR: Manage Route State",
+            "number": "OGP.2.MGR.2"
+          },
+          "structure": {
+            "id": "160081b3-9311-47cb-b37c-813a73e915cc",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "ed1f564c-a6ee-46c1-a3d6-dbf4675ce518",
+            "name": "SENSOR: Report Status",
+            "number": "OGP.2.SENSOR.1"
+          },
+          "structure": {
+            "id": "3117e117-c132-4863-ab58-3da2716ee11b",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "cde124b7-2e8c-4a29-b7ac-9b48bfbdb4c9",
+            "name": "OGP: Monitor Environment",
+            "number": "OGP.3"
+          },
+          "structure": {
+            "id": "1306ab58-c1da-44fd-a8d0-fa8009447382",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "b48a976f-32a1-4e3e-a229-30d144267572",
+            "name": "OGP: Monitor SOC",
+            "number": "OGP.5"
+          },
+          "structure": {
+            "id": "6ea5e16c-158e-4085-95d8-baa9d2656b54",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "58b8c2f1-6554-4e82-95f5-0ad0b453b3f4",
+            "name": "_Perform External Functions",
+            "number": "X"
+          },
+          "structure": {
+            "id": "7a60eb65-c667-4c94-af13-4d4a690d85e6",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": [
+              {
+                "id": "cb043626-bb33-4ee1-b575-7798fb64b27e",
+                "type": "Parallel",
+                "annotation": null,
+                "referenceID": null,
+                "referenceName": null,
+                "referenceNum": null,
+                "structure": [
+                  {
+                    "id": "00831849-0cd5-404d-b12e-64f0625dfdf2",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "30711102-d2e8-4dc3-ac4a-ab59794b330a",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "72aaa9f7-bba8-482d-9890-3063f77a9560",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "ac28fe70-365c-4324-b99b-e54e24367c62",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "4183077e-a089-41b8-b3d5-eef3f1495d1a",
+                                "referenceName": "PE: Simulate Environment",
+                                "referenceNum": "X.PE.1",
+                                "structure": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "281a70c0-c2cf-4345-b00a-8f092c879ed2",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "d3dde307-a20f-4a5f-b36b-07592336b98c",
+                        "type": "Replicate",
+                        "annotation": "With coordination",
+                        "referenceID": "89230d25-f3b5-4c70-a231-7de01dbda52c",
+                        "referenceName": "#Pipeline Routes",
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "46a99685-4313-4a7d-8b03-3c7f23f0ee66",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "28520ef6-c946-4eb1-920b-208e19229d0d",
+                                "type": "Loop",
+                                "annotation": null,
+                                "referenceID": null,
+                                "referenceName": null,
+                                "referenceNum": null,
+                                "structure": [
+                                  {
+                                    "id": "66fe3cea-5a3c-48d5-8770-1c72181f270b",
+                                    "type": "Branch",
+                                    "annotation": null,
+                                    "referenceID": null,
+                                    "referenceName": null,
+                                    "referenceNum": null,
+                                    "structure": [
+                                      {
+                                        "id": "b6393a12-88aa-490c-abb7-a16e8060ffbf",
+                                        "type": "Function",
+                                        "annotation": null,
+                                        "referenceID": "b734e479-bfb3-4e62-8be4-303fdad2ee31",
+                                        "referenceName": "PEP: Transfer Oil/Gas",
+                                        "referenceNum": "X.PEP.1",
+                                        "structure": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "3c9934ed-ef61-4840-8264-6b54270db6eb",
+                            "type": "Branch",
+                            "annotation": "With coordination",
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "e0ad05b9-11d7-42b8-87fd-0792fd3bb11f",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "7fb848e6-a515-4837-b048-3992ce5e2992",
+                        "type": "Function",
+                        "annotation": null,
+                        "referenceID": "cdc6f51d-4272-4884-8364-9d4484b728c8",
+                        "referenceName": "APT: Simulate Threat",
+                        "referenceNum": "X.APT.1",
+                        "structure": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "84b8df60-e521-4850-826e-9bf87cbc5702",
+                    "type": "Branch",
+                    "annotation": null,
+                    "referenceID": null,
+                    "referenceName": null,
+                    "referenceNum": null,
+                    "structure": [
+                      {
+                        "id": "83dcf707-0c36-4339-91bf-933803cb8801",
+                        "type": "Loop",
+                        "annotation": null,
+                        "referenceID": null,
+                        "referenceName": null,
+                        "referenceNum": null,
+                        "structure": [
+                          {
+                            "id": "a77b7de1-ac32-46c1-b6b8-7851fe792df1",
+                            "type": "Branch",
+                            "annotation": null,
+                            "referenceID": null,
+                            "referenceName": null,
+                            "referenceNum": null,
+                            "structure": [
+                              {
+                                "id": "080fc371-3cec-49d4-9276-ac302f3f9735",
+                                "type": "Function",
+                                "annotation": null,
+                                "referenceID": "541760b1-6432-4573-ba97-1246392ca5db",
+                                "referenceName": "SOC: Simulate Industry Share",
+                                "referenceNum": "X.SOC.1",
+                                "structure": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "function": {
+            "id": "cdc6f51d-4272-4884-8364-9d4484b728c8",
+            "name": "APT: Simulate Threat",
+            "number": "X.APT.1"
+          },
+          "structure": {
+            "id": "c67cf63b-66a7-47db-84f1-7388cc175c15",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "4183077e-a089-41b8-b3d5-eef3f1495d1a",
+            "name": "PE: Simulate Environment",
+            "number": "X.PE.1"
+          },
+          "structure": {
+            "id": "5fb805c4-bc44-4ff4-8b76-16070fabb1b6",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "b734e479-bfb3-4e62-8be4-303fdad2ee31",
+            "name": "PEP: Transfer Oil/Gas",
+            "number": "X.PEP.1"
+          },
+          "structure": {
+            "id": "1878e211-5fab-4121-a609-33a5df32feed",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "541760b1-6432-4573-ba97-1246392ca5db",
+            "name": "SOC: Simulate Industry Share",
+            "number": "X.SOC.1"
+          },
+          "structure": {
+            "id": "2cd3e7fa-3f60-408d-a917-cc8b155cc5cf",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        },
+        {
+          "function": {
+            "id": "06a35092-6699-4554-9ade-85fc34691a71",
+            "name": "Function_001",
+            "number": ""
+          },
+          "structure": {
+            "id": "d718e535-47f5-4487-b245-cadd5c0c4cec",
+            "type": "Branch",
+            "annotation": null,
+            "referenceID": null,
+            "referenceName": null,
+            "referenceNum": null,
+            "structure": []
+          }
+        }
+      ]
     }
   }
 }

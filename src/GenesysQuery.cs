@@ -13,6 +13,7 @@ namespace genesys_graphql
         static ClientModel client;
         static System.IO.StreamWriter schemaFile;
         static System.IO.StreamWriter dataFile;
+
         static int indent = 0;
         static List<String> sortedEntityDefinitionList = new List<String>();
         static ISchema schema;
@@ -71,6 +72,215 @@ namespace genesys_graphql
 
             return project;
         }
+        static void CreateStructure(IProject project)
+        {
+            dataFile.WriteLine("".PadLeft(indent) + @"""callStructure"": [");
+            IFolder functionFolder = project.GetFolder("Function");
+            IEnumerable<IEntity> functionList = functionFolder.GetAllEntities();
+            ISortBlock numericSortBlock = project.GetSortBlock(SortBlockConstants.Numeric);
+
+            int currentFunctionIndex = 0;
+            int totalFunctionCount = functionList.Count();
+
+            foreach (IEntity function in numericSortBlock.SortEntities(functionList))
+            {
+                currentFunctionIndex += 1;
+                indent += 2;
+                dataFile.WriteLine("".PadLeft(indent) + "{");
+                indent += 2;
+                dataFile.WriteLine("".PadLeft(indent) + @"""function"": {");
+                indent += 2;
+                dataFile.WriteLine("".PadLeft(indent) + @"""id"": """ + function.Id.ToString() + @""",");
+                dataFile.WriteLine("".PadLeft(indent) + @"""name"": """ + (function?.Name ?? null) + @""",");
+                dataFile.WriteLine("".PadLeft(indent) + @"""number"": """ +
+                    (function.GetAttribute("number")?.ToString() ?? null) + @"""");
+                indent -= 2;
+                dataFile.WriteLine("".PadLeft(indent) + "},");
+
+                dataFile.WriteLine("".PadLeft(indent) + @"""structure"": {");
+                indent += 2;
+
+                IEnumerable<IStructureItem> structureItemList = function.GetStructure().GetItems<IStructureItem>();
+                string structure = RetrieveStructureItem(structureItemList.First());
+                dataFile.Write(structure);
+                indent -= 2;
+                dataFile.WriteLine("".PadLeft(indent) + "}");
+
+                indent -= 2;
+                if (currentFunctionIndex < totalFunctionCount)
+                {
+                    dataFile.WriteLine("".PadLeft(indent) + "},");
+                }
+                else
+                { // last item - no ,
+                    dataFile.WriteLine("".PadLeft(indent) + "}");
+                }
+                indent -= 2;
+            }
+            dataFile.WriteLine("".PadLeft(indent) + "]");
+        }
+        static string RetrieveStructureItem(IStructureItem inputStructureItem)
+        {
+            string structure = "";
+            structure += "".PadLeft(indent) + @"""id"": """ + inputStructureItem.Id.ToString() + @"""," + Environment.NewLine;
+            string structureType = inputStructureItem.GetType().Name;
+            switch (structureType)
+            {
+                case "StructureBranch":
+                    structure += "".PadLeft(indent) + @"""type"": ""Branch""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": ";
+                    structure += (inputStructureItem as IStructureBranch).Annotation != null ?
+                        @"""" + (inputStructureItem as IStructureBranch).Annotation.ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+                case "KillStatusBranch": // Parallel
+                    structure += "".PadLeft(indent) + @"""type"": ""Branch""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": ";
+                    structure += (inputStructureItem as IKillStatusBranch).Annotation != null ?
+                        @"""" + (inputStructureItem as IKillStatusBranch).Annotation.ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+                case "SelectionBranch":
+                    structure += "".PadLeft(indent) + @"""type"": ""Branch""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": ";
+                    structure += (inputStructureItem as ISelectionBranch).Annotation != null ?
+                        @"""" + (inputStructureItem as ISelectionBranch).Annotation.ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+                case "ParallelConstruct":
+                    structure += "".PadLeft(indent) + @"""type"": ""Parallel""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+                case "SelectConstruct":
+                    structure += "".PadLeft(indent) + @"""type"": ""Select""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+                case "LoopConstruct":
+                    structure += "".PadLeft(indent) + @"""type"": ""Loop""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+                case "ReplicateConstruct": // referenced DomainSet
+                    IEntity domainSet = inputStructureItem.Project.GetEntity((inputStructureItem as IReplicateConstruct).DomainSetId.Value);
+
+                    structure += "".PadLeft(indent) + @"""type"": ""Replicate""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": ";
+                    structure += (inputStructureItem as IReplicateConstruct).CoordinationBranch.Annotation != null ?
+                        @"""" + (inputStructureItem as IReplicateConstruct).CoordinationBranch.Annotation.ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": """ +
+                        domainSet.Id.ToString() + @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": """ + domainSet.Name + 
+                        @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": ";
+                    structure += domainSet.GetAttribute("number").ToString() != "" ?
+                        @"""" + domainSet.GetAttribute("number").ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    break;
+                case "FunctionConstruct":
+                    IEntity function = inputStructureItem.Project.GetEntity((inputStructureItem as IFunctionConstruct).FunctionId);
+
+                    structure += "".PadLeft(indent) + @"""type"": ""Function""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": """ +
+                        function.Id.ToString() + @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": """ + function.Name +
+                        @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": ";
+                    structure += function.GetAttribute("number").ToString() != "" ?
+                        @"""" + function.GetAttribute("number").ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    break;
+                case "ExitBranch": // referenced Exit
+                    IEntity exitB = inputStructureItem.Project.GetEntity((inputStructureItem as IExitBranch).ExitId);
+
+                    structure += "".PadLeft(indent) + @"""type"": ""ExitCondition""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": """ +
+                        exitB.Id.ToString() + @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": """ + exitB.Name +
+                        @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": ";
+                    structure += exitB.GetAttribute("number").ToString() != "" ?
+                        @"""" + exitB.GetAttribute("number").ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    break; 
+                case "ExitConstruct": // referenced Exit
+                    IEntity exitC = inputStructureItem.Project.GetEntity((inputStructureItem as IExitConstruct).ExitId);
+
+                    structure += "".PadLeft(indent) + @"""type"": ""Exit""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": """ +
+                        exitC.Id.ToString() + @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": """ + exitC.Name +
+                        @"""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": ";
+                    structure += exitC.GetAttribute("number").ToString() != "" ?
+                        @"""" + exitC.GetAttribute("number").ToString() + @"""," : "null,";
+                    structure += Environment.NewLine;
+                    break;
+                case "LoopExitConstruct":
+                    structure += "".PadLeft(indent) + @"""type"": ""LoopExit""," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""annotation"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceID"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceName"": null," + Environment.NewLine;
+                    structure += "".PadLeft(indent) + @"""referenceNum"": null," + Environment.NewLine;
+                    break;
+            }
+
+            IEnumerable<IStructureItem> structureItemList = inputStructureItem.GetLocalItems<IStructureItem>();
+            int structureItemCount = structureItemList.Count();
+            int currentStructureItem = 0;
+
+            if (structureItemCount > 0)
+            {
+                structure += "".PadLeft(indent) + @"""structure"": [" + Environment.NewLine;
+                indent += 2;
+
+                foreach (IStructureItem structureItem in structureItemList)
+                {
+                    currentStructureItem += 1;
+                    structure += "".PadLeft(indent) + @"{" + Environment.NewLine;
+                    indent += 2;
+                    structure += RetrieveStructureItem(structureItem);
+                    indent -= 2;
+                    if (currentStructureItem < structureItemCount)
+                    {
+                        // additional structure items to process - add ,
+                        structure += "".PadLeft(indent) + @"}," + Environment.NewLine;
+                    }
+                    else
+                    {
+                        structure += "".PadLeft(indent) + @"}" + Environment.NewLine;
+                    }
+                }
+
+                indent -= 2;
+                structure += "".PadLeft(indent) + @"]" + Environment.NewLine;
+            }
+            else
+            {
+                structure += "".PadLeft(indent) + @"""structure"": []" + Environment.NewLine;
+            }
+            return (structure);
+        }
         static void CreateSchema(string projectName)
         {
             Connect(projectName);
@@ -99,12 +309,16 @@ namespace genesys_graphql
                     // Component description
                     schemaFile.WriteLine("  " + line);
                 }
-                // lowercase first character of Component and make plural variable name
+                // lowercase first character of Component
                 schemaFile.WriteLine("  " + Char.ToLower(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) +
                     ": [" + entityDefinition.Name + "]");
                 schemaFile.WriteLine("");
             }
-            // Ouput Project Definition
+            // Output call Structure
+            schemaFile.WriteLine("  # recursive call structure (select, parallel, loop, etc.) for each function");
+            schemaFile.WriteLine("  callStructure: [CallStructure]");
+
+            // Output Project Definition
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type Project {");
             schemaFile.WriteLine("  id: ID!");
@@ -242,6 +456,34 @@ namespace genesys_graphql
                     }
                 }
             }
+            // Output the function call structure schema
+            schemaFile.WriteLine("type CallStructure {");
+            schemaFile.WriteLine("  function: FunctionID");
+            schemaFile.WriteLine("  structure: StructureItem");
+            schemaFile.WriteLine("}");
+            schemaFile.WriteLine("type StructureItem {");
+            schemaFile.WriteLine("  id: ID!");
+            schemaFile.WriteLine("  type: StructureType");
+            schemaFile.WriteLine("  # optional annotation for a Branch");
+            schemaFile.WriteLine("  annotation: String");
+            schemaFile.WriteLine("  # reference UUID / Name / Num for: Function, Exit / ExitCondition (Exit), Replicate (DomainSet) types");
+            schemaFile.WriteLine("  referenceID: String");
+            schemaFile.WriteLine("  referenceName: String");
+            schemaFile.WriteLine("  referenceNum: String");
+            schemaFile.WriteLine("  structure: [StructureItem]");
+            schemaFile.WriteLine("}");
+            schemaFile.WriteLine("enum StructureType");
+            schemaFile.WriteLine("{");
+            schemaFile.WriteLine("  Branch");
+            schemaFile.WriteLine("  Function");
+            schemaFile.WriteLine("  Exit");
+            schemaFile.WriteLine("  ExitCondition");
+            schemaFile.WriteLine("  Loop");
+            schemaFile.WriteLine("  LoopExit");
+            schemaFile.WriteLine("  Parallel");
+            schemaFile.WriteLine("  Replicate");
+            schemaFile.WriteLine("  Select");
+            schemaFile.WriteLine("}");
         }
         static void CreateModel(string projectName, string outFileName)
         {
@@ -264,14 +506,11 @@ namespace genesys_graphql
             indent -= 2;
             dataFile.WriteLine("".PadLeft(indent) + "},");
 
-            int currentEntityType = 0;
-            int totalEntityType = sortedEntityDefinitionList.Count;
-
             foreach (String entityType in sortedEntityDefinitionList)
             {
                 String entityAlias = schema.GetEntityDefinition(entityType).Alias ?? entityType;
                 IFolder folder = project.GetFolder(entityAlias);
-                currentEntityType += 1;
+
 
                 // Create a sorted list of Relations for EntityType
                 IEnumerable<IRelationDefinition> entityRelationDefinitionList =
@@ -286,14 +525,7 @@ namespace genesys_graphql
                 // Output Entity Type
                 if (folder.EntityCount == 0)
                 {
-                    if (currentEntityType == totalEntityType)
-                    {   // last in list - no ,
-                        dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": []");
-                    }
-                    else
-                    {
-                        dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": [],");
-                    }
+                    dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": [],");
                 }
                 else
                 {
@@ -491,16 +723,10 @@ namespace genesys_graphql
                         }
                     }
                     indent -= 2;
-                    if (currentEntityType == totalEntityType)
-                    {   // last in list - no ,
-                        dataFile.WriteLine("".PadLeft(indent) + "]");
-                    }
-                    else
-                    {
-                        dataFile.WriteLine("".PadLeft(indent) + "],");
-                    }
+                    dataFile.WriteLine("".PadLeft(indent) + "],");
                 }
             }
+            CreateStructure(project);
             indent -= 2;  // missionAware: close
             dataFile.WriteLine("".PadLeft(indent) + "}");
             indent -= 2; // data: close

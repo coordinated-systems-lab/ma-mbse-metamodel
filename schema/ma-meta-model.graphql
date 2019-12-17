@@ -159,6 +159,8 @@ type MissionAwareSystemModel {
   # be used, and the current verification status.
   verificationRequirement: [VerificationRequirement]
 
+  # recursive call structure (select, parallel, loop, etc.) for each function
+  callStructure: [CallStructure]
 }
 type Project {
   id: ID!
@@ -4657,4 +4659,31 @@ type VerificationRequirement_ReportedByTarget {
 type VerificationRequirement_VerifiesTarget {
   functionTarget: FunctionID
   requirementTarget: RequirementID
+}
+type CallStructure {
+  function: FunctionID
+  structure: StructureItem
+}
+type StructureItem {
+  id: ID!
+  type: StructureType
+  # optional annotation for a Branch
+  annotation: String
+  # reference UUID / Name / Num for: Function, Exit / ExitCondition (Exit), Replicate (DomainSet) types
+  referenceID: String
+  referenceName: String
+  referenceNum: String
+  structure: [StructureItem]
+}
+enum StructureType
+{
+  Branch
+  Function
+  Exit
+  ExitCondition
+  Loop
+  LoopExit
+  Parallel
+  Replicate
+  Select
 }
