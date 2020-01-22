@@ -2,34 +2,23 @@ schema {
   query: Query
 }
 type Query {
-  # System Model for: 'Systems Engineering' Facility
+  # System Model for: 'Mission Aware' Facility
   missionAwareSystemModel: MissionAwareSystemModel
 }
 type MissionAwareSystemModel {
   # The project identity.
   project: Project
 
-  # A category groups related entities. Specifically used for formal documentation
-  # to group non-functional requirements by subject matter.
-  category: [Category]
-
-  # A Change Request Package captures the basic information and relationships to
-  # identify a formal change request.
-  changeRequestPackage: [ChangeRequestPackage]
-
   # A component is an abstract term that represents the physical or logical entity
   # that performs a specific function or functions.
   component: [Component]
 
-  # The ConstraintDefinition entity captures the definition of the parametric
-  # constraint as an Expression, identifying the independent variable(s) and the
-  # dependent variable in the definition.
-  constraintDefinition: [ConstraintDefinition]
+  # The set of process model variables and values.
+  context: [Context]
 
-  # A defined term identifies a word, phrase, or acronym used in a document. The
-  # formal documentation scripts treat the entity name as the acronym meaning or the
-  # term, Acronym as the acronym, and Description as the term definition.
-  definedTerm: [DefinedTerm]
+  # A controller may provide control actions to control some process and to enforce
+  # constraints on the behavior of the controlled process.
+  controlAction: [ControlAction]
 
   # A document identifies either the source/authorization for information entered
   # into the system description database, a specification/document generated from
@@ -41,22 +30,12 @@ type MissionAwareSystemModel {
   # structure.
   domainSet: [DomainSet]
 
-  # An occurrence that may cause a state transition. Event types include an explicit
-  # signal from outside the system, an invocation from inside the system, the
-  # passage of a designated period of time, or a designated condition becoming true.
-  event: [Event]
-
   # An exit identifies a possible path to follow when a processing unit completes.
   exit: [Exit]
 
-  # An external file references non-database text or graphics to augment an entity’s
-  # definition. The file content must be MS-Word compatible and is automatically
-  # included in formal reports.
-  externalFile: [ExternalFile]
-
-  # A full port is a structural feature of a Component that specifies the boundary
-  # to the component and the features associated with the port.
-  fullPort: [FullPort]
+  # Process models may be updated in part by feedback used to observe the controlled
+  # process.
+  feedback: [Feedback]
 
   # A Function is a transformation that accepts one or more inputs (items) and
   # transforms them into outputs (items).
@@ -68,12 +47,6 @@ type MissionAwareSystemModel {
 
   # An interface describes the logical connections between parts of an architecture.
   interface: [Interface]
-
-  # A concern identifies a problem (as well as its resolution) with a requirement or
-  # system entity in a system design or specification. The primary application is to
-  # problems such as achievability, correctness, completeness, consistency,
-  # testability, etc.
-  issue: [Issue]
 
   # Items represent flows within and between functions. An item is an input to or an
   # output from a function.
@@ -94,70 +67,22 @@ type MissionAwareSystemModel {
   # executed or not executed, leading to hazards?
   lossScenario: [LossScenario]
 
-  # An indicator applied to a set of entities, which represents a distinct and
-  # separate method of operation of a component, device, system, etc. In another
-  # words, an optional change to a device's method of operation.
-  mode: [Mode]
-
-  # A note provides additional information or a query regarding the characteristics
-  # of a particular entity.
-  note: [Note]
-
-  # A package groups related entities, specifically for organizational and
-  # navigation purposes.
-  package: [Package]
-
-  # A port definition describes a set of behavioral features related to the full
-  # port.
-  portDefinition: [PortDefinition]
-
-  # Proxy Port defines the boundary on a Component by specifying which features of
-  # the owning component are visible through the external connector.
-  proxyPort: [ProxyPort]
-
   # A Requirement is either an originating requirement extracted from source
   # documentation for a system, a refinement of a higher-level requirement, a
   # derived characteristic of the system or one of its subcomponents, or a design
   # decision.
   requirement: [Requirement]
 
+  # A resilient mode of the system that remediates one or more loss scenarios.
+  resilientMode: [ResilientMode]
+
   # A Resource is something (e.g., power, MIPS, interceptors, etc.) that the system
   # uses, captures, or generates while it is operating.
   resource: [Resource]
 
-  # A Risk is the uncertainty of attaining/achieving a product or program milestone.
-  risk: [Risk]
-
-  # A ServiceSpecification contains the information prepared for or taken from a
-  # specification defining network services.
-  serviceSpecification: [ServiceSpecification]
-
-  # A State entity identifies a state of a component.
-  state: [State]
-
-  # A Text entity allows the inclusion of additional text and any associated
-  # external file content in a document following the description of the augmented
-  # entity.
-  text: [Text]
-
-  # Transition is the process or period of changing from one state or condition to
-  # another.
-  transition: [Transition]
-
   # An Unsafe Control Action (UCA) is a control action that, in a particular context
   # and worst-case environment, will lead to a hazard.
   unsafeAction: [UnsafeAction]
-
-  # A use case entity identifies a piece of the functionality of a system in terms
-  # of how the users use the system to achieve their goals. Use cases are high-level
-  # descriptions of behavior under a specific set of conditions. These high-level
-  # descriptions can then be elaborated to define the system behavior.
-  useCase: [UseCase]
-
-  # A VerificationRequirement describes what is to be proved (i.e., requirements),
-  # at what level the verification will occur, which method of verification should
-  # be used, and the current verification status.
-  verificationRequirement: [VerificationRequirement]
 
   # recursive call structure (select, parallel, loop, etc.) for each function
   callStructure: [CallStructure]
@@ -176,216 +101,6 @@ type Parameter {
   design: String
   observed: String
   units: String
-}
-#########################################
-# Category definition
-#########################################
-type Category {
-  identity: CategoryID!
-  attributes: CategoryATTR
-  parameters: [Parameter]
-  relations: CategoryREL
-}
-type CategoryID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type CategoryATTR {
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type CategoryREL {
-  # Categorizes identifies the entities that comprise the group defined by this
-  # entity.
-  categorizes: [Category_CategorizesTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Category_HasCommentsTarget]
-
-  # Included in identifies the parent of this entity.
-  includedIn: [Category_IncludedInTarget]
-
-  # Includes identifies the children of this entity.
-  includes: [Category_IncludesTarget]
-
-}
-type Category_CategorizesTarget {
-  definedTermTarget: DefinedTermID
-  documentTarget: DocumentID
-}
-type Category_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Category_IncludedInTarget {
-  categoryTarget: CategoryID
-}
-type Category_IncludesTarget {
-  categoryTarget: CategoryID
-}
-#########################################
-# ChangeRequestPackage definition
-#########################################
-type ChangeRequestPackage {
-  identity: ChangeRequestPackageID!
-  attributes: ChangeRequestPackageATTR
-  parameters: [Parameter]
-  relations: ChangeRequestPackageREL
-}
-type ChangeRequestPackageID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type ChangeRequestPackageATTR {
-  # Add, Modify or Delete an entry by an authorized individual.
-  action: ChangeRequestPackageAction
-
-  # The number used by the change request process to identify individual change
-  # requests.
-  changeRequestNumber: String
-
-  # Importance indicates the relative priority of the point, concern, or change
-  # request.
-  importance: ChangeRequestPackageImportance
-
-  # Alternatives identifies the candidate choices under consideration. This
-  # clarifies the scope of the supporting trade study or decision procedure.
-  alternatives: String
-
-  # Rationale documents the reasoning for the decision or rejection associated with
-  # the point, concern, or change request.
-  rationale: String
-
-  # Status identifies the current state of the point, concern, or change request.
-  status: ChangeRequestPackageStatus
-
-  # Originator identifies the source of the point raised for resolution, if
-  # different from the creator of the entity in the database.
-  originator: String
-
-  # Assumptions identify the premises that were used in the process of making a
-  # decision.
-  assumptions: String
-
-  # Decision identifies the choice which was made from the alternatives.
-  decision: String
-
-  # Date Closed is the date when no further action is necessary.
-  dateClosed: String
-
-  # Due Date specifies the expected closure date for this current open point or
-  # concern.
-  dueDate: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum ChangeRequestPackageAction {
-  nil
-  Add
-  Delete
-  Modify
-}
-enum ChangeRequestPackageImportance {
-  Critical
-  Essential
-  Important
-  Minor
-  nil
-}
-enum ChangeRequestPackageStatus {
-  Open
-  Closed
-  Rejected
-}
-type ChangeRequestPackageREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [ChangeRequestPackage_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [ChangeRequestPackage_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [ChangeRequestPackage_DocumentedByTarget]
-
-  # Generated by identifies the entity that raised the concern.
-  generatedBy: [ChangeRequestPackage_GeneratedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [ChangeRequestPackage_HasCommentsTarget]
-
-  # Identified by provides the note that is related to the ChangeRequestPackage,
-  # Issue, or Risk.
-  identifiedBy: [ChangeRequestPackage_IdentifiedByTarget]
-
-  # Impacts identifies the risk that threatens the successful definition or
-  # implementation of the entity.
-  impacts: [ChangeRequestPackage_ImpactsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [ChangeRequestPackage_PackagedByTarget]
-
-  # Results in identifies the entity derived from this entity's decision.
-  resultsIn: [ChangeRequestPackage_ResultsInTarget]
-
-}
-type ChangeRequestPackage_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type ChangeRequestPackage_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type ChangeRequestPackage_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type ChangeRequestPackage_GeneratedByTarget {
-  documentTarget: DocumentID
-  requirementTarget: RequirementID
-  proxyPortTarget: ProxyPortID
-  interfaceTarget: InterfaceID
-  componentTarget: ComponentID
-  fullPortTarget: FullPortID
-  useCaseTarget: UseCaseID
-  linkTarget: LinkID
-  verificationRequirementTarget: VerificationRequirementID
-  functionTarget: FunctionID
-  resourceTarget: ResourceID
-  stateTarget: StateID
-}
-type ChangeRequestPackage_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type ChangeRequestPackage_IdentifiedByTarget {
-  noteTarget: NoteID
-}
-type ChangeRequestPackage_ImpactsTarget {
-  documentTarget: DocumentID
-  interfaceTarget: InterfaceID
-  requirementTarget: RequirementID
-  fullPortTarget: FullPortID
-  proxyPortTarget: ProxyPortID
-  modeTarget: ModeID
-  useCaseTarget: UseCaseID
-  resourceTarget: ResourceID
-  stateTarget: StateID
-}
-type ChangeRequestPackage_PackagedByTarget {
-  packageTarget: PackageID
-}
-type ChangeRequestPackage_ResultsInTarget {
-  requirementTarget: RequirementID
-  functionTarget: FunctionID
 }
 #########################################
 # Component definition
@@ -478,10 +193,6 @@ enum ComponentType {
   Threat_Simulator
 }
 type ComponentREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Component_AugmentedByTarget]
-
   # Built from identifies the entities (children) that make up this entity (the
   # parent).
   builtFrom: [Component_BuiltFromTarget]
@@ -489,29 +200,9 @@ type ComponentREL {
   # Built in identifies the parent entity for which this entity is a part.
   builtIn: [Component_BuiltInTarget]
 
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Component_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [Component_CausesTarget]
-
   # Connected to identifies the connection that serves to link this unit to another
   # entity.
   connectedTo: [Component_ConnectedToTarget]
-
-  # Mappings identifies the parameters associated with the constrained by
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  constrainedBy: [Component_ConstrainedByTarget]
-
-  # Contains identifies a membership-like relationship between two entities, much
-  # like between a set and its entities. It also represents the notion that
-  # something has or holds another entity within.
-  contains: [Component_ContainsTarget]
-
-  # Described by identifies the use cases that reflect how the users will use this
-  # entity to achieve their physical objectives.
-  describedBy: [Component_DescribedByTarget]
 
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
@@ -520,23 +211,10 @@ type ComponentREL {
   # The Function / Link / Item enables detection of Loss Scenario.
   enablesDetectionOf: [Component_EnablesDetectionOfTarget]
 
-  # Exhibits identifies characteristics of the entity.
-  exhibits: [Component_ExhibitsTarget]
-
-  # A port is a structural feature of a component that describes the points at which
-  # the component interacts with other component thru a physical link.
-  exposes: [Component_ExposesTarget]
-
   # Generalization of associates a specific object classification with a more
   # general object classification. For example, "Vehicle" is a generalization of
   # "Car," "Train," and "Plane."
   generalizationOf: [Component_GeneralizationOfTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Component_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Component_ImpactedByTarget]
 
   # Joined to identifies the logical units through which this physical unit
   # interfaces with another.
@@ -545,16 +223,6 @@ type ComponentREL {
   # Kind of indicates classification. This relationship is often referred to as the
   # "is a" relationship (i.e., a car "is a" vehicle).
   kindOf: [Component_KindOfTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Component_PackagedByTarget]
-
-  # An entity’s parameter is being referenced by a ConstraintDefinition.
-  parameterUsedIn: [Component_ParameterUsedInTarget]
-
-  # Participates in identifies the use cases that this actor supports.
-  participatesIn: [Component_ParticipatesInTarget]
 
   # Performs identifies the actions that this entity accomplishes.
   performs: [Component_PerformsTarget]
@@ -575,14 +243,6 @@ type ComponentREL {
   # Specified by identifies constraint and/or performance requirements that this
   # entity must satisfy.
   specifiedBy: [Component_SpecifiedByTarget]
-
-}
-type Component_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
 
 }
 type Component_BuiltFromTarget {
@@ -625,12 +285,6 @@ enum Component_BuiltInWholeMultiplicity {
   E_0
   E_1
 }
-type Component_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Component_CausesTarget {
-  riskTarget: RiskID
-}
 type Component_ConnectedToTarget {
   linkTarget: LinkID
   # Port ID provides a unique identification for the port that is used between the
@@ -638,52 +292,13 @@ type Component_ConnectedToTarget {
   portID: String
 
 }
-type Component_ConstrainedByTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings show how the parameter maps to the variable used.
-  mappings: [String]
-
-}
-type Component_ContainsTarget {
-  modeTarget: ModeID
-}
-type Component_DescribedByTarget {
-  useCaseTarget: UseCaseID
-}
 type Component_DocumentedByTarget {
-  serviceSpecificationTarget: ServiceSpecificationID
   documentTarget: DocumentID
 }
 type Component_EnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
-
-}
-type Component_ExhibitsTarget {
-  stateTarget: StateID
-  # Behavior Type classifies the mapping between the source and destination
-  # entities.
-  behaviorType: Component_ExhibitsBehaviorType
-
-}
-enum Component_ExhibitsBehaviorType {
-  Atomic
-  Integrated_Root
-}
-type Component_ExposesTarget {
-  fullPortTarget: FullPortID
-  proxyPortTarget: ProxyPortID
-  # PortMultiplicity is the potential number of connections available on this port.
-  # This can be specified as zero, a whole number, or a range from a lower bound to
-  # an upper bound.
-  portMultiplicity: String
-
-  # When two Components interact through a proxy port, they may exchange similar
-  # items but in opposite directions. If isConjugate is set to be true, then the
-  # direction of behavioral features and flow properties should be reversed with
-  # respect to one another.
-  isConjugate: Boolean
 
 }
 type Component_GeneralizationOfTarget {
@@ -698,12 +313,6 @@ type Component_GeneralizationOfTarget {
 enum Component_GeneralizationOfType {
   Inheritance
   Instance
-}
-type Component_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Component_ImpactedByTarget {
-  riskTarget: RiskID
 }
 type Component_JoinedToTarget {
   interfaceTarget: InterfaceID
@@ -720,20 +329,6 @@ type Component_KindOfTarget {
 enum Component_KindOfType {
   Inheritance
   Instance
-}
-type Component_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Component_ParameterUsedInTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings identifies the parameters associated with the uses parameter from
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  mappings: [String]
-
-}
-type Component_ParticipatesInTarget {
-  useCaseTarget: UseCaseID
 }
 type Component_PerformsTarget {
   functionTarget: FunctionID
@@ -768,162 +363,325 @@ type Component_SpecifiedByTarget {
 
 }
 #########################################
-# ConstraintDefinition definition
+# Context definition
 #########################################
-type ConstraintDefinition {
-  identity: ConstraintDefinitionID!
-  attributes: ConstraintDefinitionATTR
+type Context {
+  identity: ContextID!
+  attributes: ContextATTR
   parameters: [Parameter]
-  relations: ConstraintDefinitionREL
+  relations: ContextREL
 }
-type ConstraintDefinitionID {
+type ContextID {
   id: ID!
   name: String!
   number: String!
 }
-type ConstraintDefinitionATTR {
-  # The Expression is defined in terms of independent variables which are evaluated
-  # to determine the dependent variable that represents the parametric constraint.
-  expression: [String]
+type ContextATTR {
+  # Range identifies the range of values that the entity can assume.
+  range: String
 
-  # The Dependent Variable is the parameter that results from evaluating the
-  # parametric constraint definition Expression. The Dependent Variable depends on
-  # one or more independent variables in an algebraic expression.
-  dependentVariables: [String]
+  # Units identifies the units of measurement for the value of the entity.
+  units: String
 
-  # The abbreviation is a shortened phrase or reduced form of the overall name which
-  # can be used to identify the entity. Abbreviation is used in the icon for a
-  # Constraint Block.
-  abbreviation: String
+  # Accuracy identifies how correct the value of the entity must be.
+  accuracy: String
 
-  # The Independent Variable(s) is (are) the variables that may be freely chosen
-  # without consideration of the Dependent Variable. Independent Variables are
-  # evaluated in the parametric constraint definition Expression.
-  independentVariables: [String]
+  # Fields identifies the data fields contained within the item.
+  fields: [String]
 
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type ConstraintDefinitionREL {
-  # Augmented by identifies text or external files that expand on the description of
+  # Precision identifies the number of significant digits required for the value of
   # the entity.
-  augmentedBy: [ConstraintDefinition_AugmentedByTarget]
+  precision: String
 
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [ConstraintDefinition_CategorizedByTarget]
+  # Doc. PUID is the project unique identifier that is often used in system
+  # development specifications and documents to identify the same entity in multiple
+  # documents. This is not to be confused with the database entity unique
+  # identifier.
+  puid: String
 
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [ConstraintDefinition_DocumentedByTarget]
+  # Size indicates the estimated size (in sizeUnits) of this entity.
+  size: String
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [ConstraintDefinition_HasCommentsTarget]
+  # Size Units indicates the measurement units associated with this entity.
+  sizeUnits: String
 
-  # Included in constraint definition defines the child in the parent-child
-  # relationship between ConstraintDefinitions.
-  includedInConstraintDefinition: [ConstraintDefinition_IncludedInConstraintDefinitionTarget]
+  # Priority is used to identify the order of processing of an entity. High priority
+  # entities (larger numbers) are processed before low priority entities (smaller
+  # numbers).
+  priority: String
 
-  # Includes constraint definition defines the parent in the parent-child
-  # relationship between ConstraintDefinitions.
-  includesConstraintDefinition: [ConstraintDefinition_IncludesConstraintDefinitionTarget]
+  # Type is the physical type of this entity.
+  type: ContextType
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [ConstraintDefinition_PackagedByTarget]
-
-}
-type ConstraintDefinition_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type ConstraintDefinition_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type ConstraintDefinition_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type ConstraintDefinition_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type ConstraintDefinition_IncludedInConstraintDefinitionTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # : Mappings identifies the parameters associated with the included constraint
-  # definition relationship. The mappings relationship attribute shows how the
-  # parameter maps to the variable used.
-  mappings: [String]
-
-}
-type ConstraintDefinition_IncludesConstraintDefinitionTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # : Mappings identifies the parameters associated with the included constraint
-  # definition relationship. The mappings relationship attribute shows how the
-  # parameter maps to the variable used.
-  mappings: [String]
-
-}
-type ConstraintDefinition_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# DefinedTerm definition
-#########################################
-type DefinedTerm {
-  identity: DefinedTermID!
-  attributes: DefinedTermATTR
-  parameters: [Parameter]
-  relations: DefinedTermREL
-}
-type DefinedTermID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type DefinedTermATTR {
-  # Acronym identifies the word being defined by the entity.
-  acronym: String
+  # Title is the label to be used in formal documentation instead of the entity
+  # name.
+  title: String
 
   # Description is the written statement of this entity.
   description: String
 
 }
-type DefinedTermREL {
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [DefinedTerm_CategorizedByTarget]
+enum ContextType {
+  nil
+  Analog
+  Digital
+  Physical
+  Mixed
+}
+type ContextREL {
+  # Decomposed by identifies the children of this entity.
+  decomposedBy: [Context_DecomposedByTarget]
+
+  # Decomposes identifies the parent of this entity.
+  decomposes: [Context_DecomposesTarget]
 
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
-  documentedBy: [DefinedTerm_DocumentedByTarget]
+  documentedBy: [Context_DocumentedByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [DefinedTerm_HasCommentsTarget]
+  # The Function / Link / Item enables detection of Loss Scenario.
+  enablesDetectionOf: [Context_EnablesDetectionOfTarget]
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [DefinedTerm_PackagedByTarget]
+  # Input to identifies the processing unit that transforms this entity.
+  inputTo: [Context_InputToTarget]
 
-  # Used in identifies the documents that employ the term or acronym.
-  usedIn: [DefinedTerm_UsedInTarget]
+  # Output from identifies the processing unit that produces this entity.
+  outputFrom: [Context_OutputFromTarget]
+
+  # Context (process model) for unsafe action.
+  providesProcessModelFor: [Context_ProvidesProcessModelForTarget]
+
+  # Specified by identifies constraint and/or performance requirements that this
+  # entity must satisfy.
+  specifiedBy: [Context_SpecifiedByTarget]
+
+  # Transferred by identifies the connection over which this entity is transported.
+  transferredBy: [Context_TransferredByTarget]
+
+  # Triggers identifies the information units that enable a processing unit to begin
+  # execution.  A processing unit begins execution when it has received control
+  # enablement, all of its triggers have arrived, and its necessary resources are
+  # available.
+  triggers: [Context_TriggersTarget]
 
 }
-type DefinedTerm_CategorizedByTarget {
-  categoryTarget: CategoryID
+type Context_DecomposedByTarget {
+  itemTarget: ItemID
 }
-type DefinedTerm_DocumentedByTarget {
+type Context_DecomposesTarget {
+  itemTarget: ItemID
+}
+type Context_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type DefinedTerm_HasCommentsTarget {
-  noteTarget: NoteID
+type Context_EnablesDetectionOfTarget {
+  lossScenarioTarget: LossScenarioID
+  # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  constraint: [String]
+
 }
-type DefinedTerm_PackagedByTarget {
-  packageTarget: PackageID
+type Context_InputToTarget {
+  functionTarget: FunctionID
 }
-type DefinedTerm_UsedInTarget {
+type Context_OutputFromTarget {
+  functionTarget: FunctionID
+}
+type Context_ProvidesProcessModelForTarget {
+  unsafeActionTarget: UnsafeActionID
+  # The process model attributes and values that define the "context" for the unsafe
+  # control action.
+  processModelAttributes: [String]
+
+}
+type Context_SpecifiedByTarget {
+  requirementTarget: RequirementID
+  # The Governs relationship attribute identifies the Parameter attribute that is
+  # associated in both the Requirement entity and Component entity joined by the
+  # specified by / specifies relationship.
+  governs: String
+
+}
+type Context_TransferredByTarget {
+  linkTarget: LinkID
+}
+type Context_TriggersTarget {
+  functionTarget: FunctionID
+  # Queue Type specifies how the triggering entities should queue up at the
+  # receiving processing unit.
+  queueType: Context_TriggersQueueType
+
+}
+enum Context_TriggersQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+#########################################
+# ControlAction definition
+#########################################
+type ControlAction {
+  identity: ControlActionID!
+  attributes: ControlActionATTR
+  parameters: [Parameter]
+  relations: ControlActionREL
+}
+type ControlActionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+type ControlActionATTR {
+  # Range identifies the range of values that the entity can assume.
+  range: String
+
+  # Units identifies the units of measurement for the value of the entity.
+  units: String
+
+  # Accuracy identifies how correct the value of the entity must be.
+  accuracy: String
+
+  # Fields identifies the data fields contained within the item.
+  fields: [String]
+
+  # Precision identifies the number of significant digits required for the value of
+  # the entity.
+  precision: String
+
+  # Doc. PUID is the project unique identifier that is often used in system
+  # development specifications and documents to identify the same entity in multiple
+  # documents. This is not to be confused with the database entity unique
+  # identifier.
+  puid: String
+
+  # Size indicates the estimated size (in sizeUnits) of this entity.
+  size: String
+
+  # Size Units indicates the measurement units associated with this entity.
+  sizeUnits: String
+
+  # Priority is used to identify the order of processing of an entity. High priority
+  # entities (larger numbers) are processed before low priority entities (smaller
+  # numbers).
+  priority: String
+
+  # Type is the physical type of this entity.
+  type: ControlActionType
+
+  # Title is the label to be used in formal documentation instead of the entity
+  # name.
+  title: String
+
+  # Description is the written statement of this entity.
+  description: String
+
+}
+enum ControlActionType {
+  nil
+  Analog
+  Digital
+  Physical
+  Mixed
+}
+type ControlActionREL {
+  # Decomposed by identifies the children of this entity.
+  decomposedBy: [ControlAction_DecomposedByTarget]
+
+  # Decomposes identifies the parent of this entity.
+  decomposes: [ControlAction_DecomposesTarget]
+
+  # Documented by identifies the source document which specifies and/or enhances the
+  # definition of this entity.
+  documentedBy: [ControlAction_DocumentedByTarget]
+
+  # The Function / Link / Item enables detection of Loss Scenario.
+  enablesDetectionOf: [ControlAction_EnablesDetectionOfTarget]
+
+  # Entity may have analysis variations.
+  hasVariation: [ControlAction_HasVariationTarget]
+
+  # Input to identifies the processing unit that transforms this entity.
+  inputTo: [ControlAction_InputToTarget]
+
+  # The control action which manages (enable / disable  test) the resilient mode.
+  manages: [ControlAction_ManagesTarget]
+
+  # Output from identifies the processing unit that produces this entity.
+  outputFrom: [ControlAction_OutputFromTarget]
+
+  # Specified by identifies constraint and/or performance requirements that this
+  # entity must satisfy.
+  specifiedBy: [ControlAction_SpecifiedByTarget]
+
+  # Transferred by identifies the connection over which this entity is transported.
+  transferredBy: [ControlAction_TransferredByTarget]
+
+  # Triggers identifies the information units that enable a processing unit to begin
+  # execution.  A processing unit begins execution when it has received control
+  # enablement, all of its triggers have arrived, and its necessary resources are
+  # available.
+  triggers: [ControlAction_TriggersTarget]
+
+}
+type ControlAction_DecomposedByTarget {
+  itemTarget: ItemID
+}
+type ControlAction_DecomposesTarget {
+  itemTarget: ItemID
+}
+type ControlAction_DocumentedByTarget {
   documentTarget: DocumentID
+}
+type ControlAction_EnablesDetectionOfTarget {
+  lossScenarioTarget: LossScenarioID
+  # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  constraint: [String]
+
+}
+type ControlAction_HasVariationTarget {
+  unsafeActionTarget: UnsafeActionID
+}
+type ControlAction_InputToTarget {
+  functionTarget: FunctionID
+}
+type ControlAction_ManagesTarget {
+  resilientModeTarget: ResilientModeID
+  # The management action type for the resilient mode.
+  actionType: ControlAction_ManagesActionType
+
+}
+enum ControlAction_ManagesActionType {
+  nil
+  activate
+  deactivate
+  selfTest
+}
+type ControlAction_OutputFromTarget {
+  functionTarget: FunctionID
+}
+type ControlAction_SpecifiedByTarget {
+  requirementTarget: RequirementID
+  # The Governs relationship attribute identifies the Parameter attribute that is
+  # associated in both the Requirement entity and Component entity joined by the
+  # specified by / specifies relationship.
+  governs: String
+
+}
+type ControlAction_TransferredByTarget {
+  linkTarget: LinkID
+}
+type ControlAction_TriggersTarget {
+  functionTarget: FunctionID
+  # Queue Type specifies how the triggering entities should queue up at the
+  # receiving processing unit.
+  queueType: ControlAction_TriggersQueueType
+
+}
+enum ControlAction_TriggersQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
 }
 #########################################
 # Document definition
@@ -1060,26 +818,6 @@ enum DocumentType {
   Trade_Study
 }
 type DocumentREL {
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Document_CategorizedByTarget]
-
-  # Documents identifies the entities which are specified in or enhanced by this
-  # external source document.
-  documents: [Document_DocumentsTarget]
-
-  # Generates identifies the concern that is precipitated by this entity.
-  generates: [Document_GeneratesTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Document_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Document_ImpactedByTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Document_PackagedByTarget]
-
   # Referenced by identifies documents for which the subject document is an
   # applicable or reference document.
   referencedBy: [Document_ReferencedByTarget]
@@ -1106,29 +844,6 @@ type DocumentREL {
   # subject document should be associated.
   tracesTo: [Document_TracesToTarget]
 
-  # Uses identifies a term or acronym employed in the generated document.
-  uses: [Document_UsesTarget]
-
-}
-type Document_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Document_DocumentsTarget {
-  noteTarget: NoteID
-  definedTermTarget: DefinedTermID
-}
-type Document_GeneratesTarget {
-  changeRequestPackageTarget: ChangeRequestPackageID
-}
-type Document_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Document_ImpactedByTarget {
-  riskTarget: RiskID
-  changeRequestPackageTarget: ChangeRequestPackageID
-}
-type Document_PackagedByTarget {
-  packageTarget: PackageID
 }
 type Document_ReferencedByTarget {
   documentTarget: DocumentID
@@ -1144,16 +859,12 @@ type Document_RefinesTarget {
 }
 type Document_ReportsOnTarget {
   interfaceTarget: InterfaceID
-  verificationRequirementTarget: VerificationRequirementID
 }
 type Document_TracedFromTarget {
   documentTarget: DocumentID
 }
 type Document_TracesToTarget {
   documentTarget: DocumentID
-}
-type Document_UsesTarget {
-  definedTermTarget: DefinedTermID
 }
 #########################################
 # DomainSet definition
@@ -1179,146 +890,13 @@ type DomainSetATTR {
 
 }
 type DomainSetREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [DomainSet_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [DomainSet_CategorizedByTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [DomainSet_DocumentedByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [DomainSet_HasCommentsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [DomainSet_PackagedByTarget]
-
-}
-type DomainSet_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type DomainSet_CategorizedByTarget {
-  categoryTarget: CategoryID
 }
 type DomainSet_DocumentedByTarget {
   documentTarget: DocumentID
-}
-type DomainSet_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type DomainSet_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# Event definition
-#########################################
-type Event {
-  identity: EventID!
-  attributes: EventATTR
-  parameters: [Parameter]
-  relations: EventREL
-}
-type EventID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type EventATTR {
-  # Title is the label to be used in formal documentation instead of the entity
-  # name.
-  title: String
-
-  # The "rule" whose satisfaction permits an Event to generate a Transition.
-  condition: String
-
-  # Defines the type of Event that is being represented.
-  type: EventType
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum EventType {
-  Absolute_Time
-  Call
-  Change
-  Relative_Time
-  Signal
-}
-type EventREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Event_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Event_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [Event_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Event_HasCommentsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Event_PackagedByTarget]
-
-  # Responsible for identifies the target entities overseen or controlled by the
-  # source entity.
-  responsibleFor: [Event_ResponsibleForTarget]
-
-  # Triggers identifies the information units that enable a processing unit to begin
-  # execution.  A processing unit begins execution when it has received control
-  # enablement, all of its triggers have arrived, and its necessary resources are
-  # available.
-  triggers: [Event_TriggersTarget]
-
-}
-type Event_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Event_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Event_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Event_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Event_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Event_ResponsibleForTarget {
-  itemTarget: ItemID
-}
-type Event_TriggersTarget {
-  transitionTarget: TransitionID
-  # Queue Type specifies how the triggering entities should queue up at the
-  # receiving processing unit.
-  queueType: Event_TriggersQueueType
-
-}
-enum Event_TriggersQueueType {
-  FIFO
-  LIFO
-  Priority
-  Reverse_Priority
 }
 #########################################
 # Exit definition
@@ -1340,296 +918,158 @@ type ExitATTR {
 
 }
 type ExitREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Exit_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Exit_CategorizedByTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [Exit_DocumentedByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Exit_HasCommentsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Exit_PackagedByTarget]
-
-}
-type Exit_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Exit_CategorizedByTarget {
-  categoryTarget: CategoryID
 }
 type Exit_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Exit_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Exit_PackagedByTarget {
-  packageTarget: PackageID
-}
 #########################################
-# ExternalFile definition
+# Feedback definition
 #########################################
-type ExternalFile {
-  identity: ExternalFileID!
-  attributes: ExternalFileATTR
+type Feedback {
+  identity: FeedbackID!
+  attributes: FeedbackATTR
   parameters: [Parameter]
-  relations: ExternalFileREL
+  relations: FeedbackREL
 }
-type ExternalFileID {
+type FeedbackID {
   id: ID!
   name: String!
   number: String!
 }
-type ExternalFileATTR {
-  # Page Orientation identifies which page orientation to use when including the
-  # external file in a document.
-  pageOrientation: ExternalFilePageOrientation
+type FeedbackATTR {
+  # Range identifies the range of values that the entity can assume.
+  range: String
 
-  # External File Path contains the external file reference in either standard
-  # (c:\myDirectory\mySubDirectory\filename) or UNC (\\Server\directory\filename)
-  # format.
-  externalFilePath: String
+  # Units identifies the units of measurement for the value of the entity.
+  units: String
 
-  # Type characterizes the contents of the external file.
-  type: ExternalFileType
+  # Accuracy identifies how correct the value of the entity must be.
+  accuracy: String
 
-  # Title is the label to be output as the figure or table title. For formal
-  # documentation, if Title is nil, a title will not be output. The figure or table
-  # number will be computed by the report script and will be included, along with
-  # the title, in the report's List of Figures or List of Tables, as appropriate.
+  # Fields identifies the data fields contained within the item.
+  fields: [String]
+
+  # Precision identifies the number of significant digits required for the value of
+  # the entity.
+  precision: String
+
+  # Doc. PUID is the project unique identifier that is often used in system
+  # development specifications and documents to identify the same entity in multiple
+  # documents. This is not to be confused with the database entity unique
+  # identifier.
+  puid: String
+
+  # Size indicates the estimated size (in sizeUnits) of this entity.
+  size: String
+
+  # Size Units indicates the measurement units associated with this entity.
+  sizeUnits: String
+
+  # Priority is used to identify the order of processing of an entity. High priority
+  # entities (larger numbers) are processed before low priority entities (smaller
+  # numbers).
+  priority: String
+
+  # Type is the physical type of this entity.
+  type: FeedbackType
+
+  # Title is the label to be used in formal documentation instead of the entity
+  # name.
   title: String
 
   # Description is the written statement of this entity.
   description: String
 
 }
-enum ExternalFilePageOrientation {
-  Portrait
-  Landscape
-}
-enum ExternalFileType {
-  Figure
-  Table
-  Text
-}
-type ExternalFileREL {
-  # Augments identifies the entity whose description is expanded by this entity.
-  augments: [ExternalFile_AugmentsTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [ExternalFile_HasCommentsTarget]
-
-}
-type ExternalFile_AugmentsTarget {
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type ExternalFile_HasCommentsTarget {
-  noteTarget: NoteID
-}
-#########################################
-# FullPort definition
-#########################################
-type FullPort {
-  identity: FullPortID!
-  attributes: FullPortATTR
-  parameters: [Parameter]
-  relations: FullPortREL
-}
-type FullPortID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type FullPortATTR {
-  # Abbreviation identifies a unique shortened name for the element.
-  abbreviation: String
-
-  # Direction indicates the manner of the flow through this port.
-  direction: FullPortDirection
-
-  # Doc. PUID is the project unique identifier that is often used in system
-  # development specifications and documents to identify the same entity in multiple
-  # documents. This is not to be confused with the database element unique
-  # identifier.
-  puid: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum FullPortDirection {
+enum FeedbackType {
   nil
-  in
-  out
-  inout
+  Analog
+  Digital
+  Physical
+  Mixed
 }
-type FullPortREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [FullPort_AugmentedByTarget]
+type FeedbackREL {
+  # Decomposed by identifies the children of this entity.
+  decomposedBy: [Feedback_DecomposedByTarget]
 
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [FullPort_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [FullPort_CausesTarget]
+  # Decomposes identifies the parent of this entity.
+  decomposes: [Feedback_DecomposesTarget]
 
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
-  documentedBy: [FullPort_DocumentedByTarget]
+  documentedBy: [Feedback_DocumentedByTarget]
 
-  # A port is a structural feature of a component that describes the points at which
-  # the component interacts with other component thru a physical link.
-  exposes: [FullPort_ExposesTarget]
+  # The Function / Link / Item enables detection of Loss Scenario.
+  enablesDetectionOf: [Feedback_EnablesDetectionOfTarget]
 
-  # Generalization of associates a specific object classification with a more
-  # general object classification. For example, "Vehicle" is a generalization of
-  # "Car," "Train," and "Plane."
-  generalizationOf: [FullPort_GeneralizationOfTarget]
+  # Input to identifies the processing unit that transforms this entity.
+  inputTo: [Feedback_InputToTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [FullPort_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [FullPort_ImpactedByTarget]
-
-  # Identifies the component thru which the physical link connects to the component.
-  isPortFor: [FullPort_IsPortForTarget]
-
-  # Kind of indicates classification. This relationship is often referred to as the
-  # "is a" relationship (i.e., a car "is a" vehicle).
-  kindOf: [FullPort_KindOfTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [FullPort_PackagedByTarget]
-
-  # Provides identifies the capability, capabilities, service or services offered by
-  # the organization.  When used in port definition, provides specifies one or more
-  # operations that component provides through a port.
-  provides: [FullPort_ProvidesTarget]
-
-  # A required port specifies one or more operations required by the component to
-  # realize its behavior on the physical link.
-  requires: [FullPort_RequiresTarget]
+  # Output from identifies the processing unit that produces this entity.
+  outputFrom: [Feedback_OutputFromTarget]
 
   # Specified by identifies constraint and/or performance requirements that this
   # entity must satisfy.
-  specifiedBy: [FullPort_SpecifiedByTarget]
+  specifiedBy: [Feedback_SpecifiedByTarget]
+
+  # Transferred by identifies the connection over which this entity is transported.
+  transferredBy: [Feedback_TransferredByTarget]
+
+  # Triggers identifies the information units that enable a processing unit to begin
+  # execution.  A processing unit begins execution when it has received control
+  # enablement, all of its triggers have arrived, and its necessary resources are
+  # available.
+  triggers: [Feedback_TriggersTarget]
 
 }
-type FullPort_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
+type Feedback_DecomposedByTarget {
+  itemTarget: ItemID
 }
-type FullPort_CategorizedByTarget {
-  categoryTarget: CategoryID
+type Feedback_DecomposesTarget {
+  itemTarget: ItemID
 }
-type FullPort_CausesTarget {
-  riskTarget: RiskID
-}
-type FullPort_DocumentedByTarget {
+type Feedback_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type FullPort_ExposesTarget {
-  fullPortTarget: FullPortID
-  proxyPortTarget: ProxyPortID
-  # PortMultiplicity is the potential number of connections available on this port.
-  # This can be specified as zero, a whole number, or a range from a lower bound to
-  # an upper bound.
-  portMultiplicity: String
-
-  # When two Components interact through a proxy port, they may exchange similar
-  # items but in opposite directions. If isConjugate is set to be true, then the
-  # direction of behavioral features and flow properties should be reversed with
-  # respect to one another.
-  isConjugate: Boolean
+type Feedback_EnablesDetectionOfTarget {
+  lossScenarioTarget: LossScenarioID
+  # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  constraint: [String]
 
 }
-type FullPort_GeneralizationOfTarget {
-  fullPortTarget: FullPortID
-  # Type classifies the nature of the generalization / specialization relationship.
-  # Inheritance indicates that the specialization shares the properties of the
-  # generalization. Instance indicates that the specialization also shares the
-  # relationships of the generalization.
-  type: FullPort_GeneralizationOfType
-
+type Feedback_InputToTarget {
+  functionTarget: FunctionID
 }
-enum FullPort_GeneralizationOfType {
-  Inheritance
-  Instance
+type Feedback_OutputFromTarget {
+  functionTarget: FunctionID
 }
-type FullPort_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type FullPort_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type FullPort_IsPortForTarget {
-  componentTarget: ComponentID
-  fullPortTarget: FullPortID
-  # PortMultiplicity is the potential number of connections available on this port.
-  # This can be specified as zero, a whole number, or a range from a lower bound to
-  # an upper bound.
-  portMultiplicity: String
-
-  # When two Components interact through a proxy port, they may exchange similar
-  # items but in opposite directions. If isConjugate is set to be true, then the
-  # direction of behavioral features and flow properties should be reversed with
-  # respect to one another.
-  isConjugate: Boolean
-
-}
-type FullPort_KindOfTarget {
-  fullPortTarget: FullPortID
-  # Type classifies the nature of the generalization / specialization relationship.
-  # Inheritance indicates that the specialization shares the properties of the
-  # generalization. Instance indicates that the specialization also shares the
-  # relationships of the generalization.
-  type: FullPort_KindOfType
-
-}
-enum FullPort_KindOfType {
-  Inheritance
-  Instance
-}
-type FullPort_PackagedByTarget {
-  packageTarget: PackageID
-}
-type FullPort_ProvidesTarget {
-  portDefinitionTarget: PortDefinitionID
-}
-type FullPort_RequiresTarget {
-  portDefinitionTarget: PortDefinitionID
-}
-type FullPort_SpecifiedByTarget {
+type Feedback_SpecifiedByTarget {
   requirementTarget: RequirementID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
   governs: String
 
+}
+type Feedback_TransferredByTarget {
+  linkTarget: LinkID
+}
+type Feedback_TriggersTarget {
+  functionTarget: FunctionID
+  # Queue Type specifies how the triggering entities should queue up at the
+  # receiving processing unit.
+  queueType: Feedback_TriggersQueueType
+
+}
+enum Feedback_TriggersQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
 }
 #########################################
 # Function definition
@@ -1679,10 +1119,6 @@ type FunctionREL {
   # Allocated to identifies the entity that implements this processing unit.
   allocatedTo: [Function_AllocatedToTarget]
 
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Function_AugmentedByTarget]
-
   # Based on identifies the originating requirement, capability, or activity that
   # this entity fulfills in whole or in part.
   basedOn: [Function_BasedOnTarget]
@@ -1691,17 +1127,6 @@ type FunctionREL {
   # during execution. Resources are captured when the execution of the processing
   # unit begins and released when it completes execution.
   captures: [Function_CapturesTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Function_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [Function_CausesTarget]
-
-  # Mappings identifies the parameters associated with the constrained by
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  constrainedBy: [Function_ConstrainedByTarget]
 
   # Consumes identifies resources which this object requires (and destroys) during
   # execution. Resources are consumed when the execution of the processing unit
@@ -1718,28 +1143,17 @@ type FunctionREL {
   # definition of this entity.
   documentedBy: [Function_DocumentedByTarget]
 
-  # Elaborates identifies the use case for which this entity provides the detailed
-  # behavioral model.
-  elaborates: [Function_ElaboratesTarget]
-
   # The Function / Link / Item enables detection of Loss Scenario.
   enablesDetectionOf: [Function_EnablesDetectionOfTarget]
 
   # Exits by identifies the set of mutually exclusive exits for this entity.
   exitsBy: [Function_ExitsByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Function_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Function_ImpactedByTarget]
-
-  # Incorporated by identifies the source entity as contributing to the destination
-  # entity.
-  incorporatedBy: [Function_IncorporatedByTarget]
-
   # Inputs identifies the entities that are transformed by this processing unit.
   inputs: [Function_InputsTarget]
+
+  # A failed / cyber attacked "system" Function is recovered by a ReslientMode.
+  isRecoveredBy: [Function_IsRecoveredByTarget]
 
   # The control action which manages (enable / disable  test) the resilient mode.
   manages: [Function_ManagesTarget]
@@ -1747,13 +1161,6 @@ type FunctionREL {
   # Outputs identifies the products of the transformation carried out by this
   # processing unit.
   outputs: [Function_OutputsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Function_PackagedByTarget]
-
-  # An entity’s parameter is being referenced by a ConstraintDefinition.
-  parameterUsedIn: [Function_ParameterUsedInTarget]
 
   # Produces identifies resources generated by the processing unit. Resources are
   # produced when the execution of the processing unit completes.
@@ -1770,9 +1177,6 @@ type FunctionREL {
   # Relates to is maintained automatically for the purpose of consistency.
   relatesTo: [Function_RelatesToTarget]
 
-  # Result of identifies the entity from which this entity is derived.
-  resultOf: [Function_ResultOfTarget]
-
   # Services identifies the connection supported by this processing unit.
   services: [Function_ServicesTarget]
 
@@ -1784,10 +1188,6 @@ type FunctionREL {
   # processing unit begins execution when it has received control enablement, all of
   # its triggers have arrived, and its necessary resources are available.
   triggeredBy: [Function_TriggeredByTarget]
-
-  # Verified by points to the method of requirement proof which specifies the
-  # verification technique, level, and status.
-  verifiedBy: [Function_VerifiedByTarget]
 
 }
 type Function_AllocatedToTarget {
@@ -1802,14 +1202,6 @@ enum Function_AllocatedToBehaviorType {
   Integrated_Root
   Thread
 }
-type Function_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
 type Function_BasedOnTarget {
   requirementTarget: RequirementID
 }
@@ -1822,18 +1214,6 @@ type Function_CapturesTarget {
 
   # Amount indicates how much of the resource is captured by the processing unit
   amount: String
-
-}
-type Function_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Function_CausesTarget {
-  riskTarget: RiskID
-}
-type Function_ConstrainedByTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings show how the parameter maps to the variable used.
-  mappings: [String]
 
 }
 type Function_ConsumesTarget {
@@ -1855,17 +1235,6 @@ type Function_DecomposesTarget {
 }
 type Function_DocumentedByTarget {
   documentTarget: DocumentID
-}
-type Function_ElaboratesTarget {
-  useCaseTarget: UseCaseID
-  # Flow type indicates if this elaboration represents the primary flow or alternate
-  # flow.
-  flowType: Function_ElaboratesFlowType
-
-}
-enum Function_ElaboratesFlowType {
-  Alternate
-  Primary
 }
 type Function_EnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
@@ -1890,30 +1259,23 @@ enum Function_ExitsByType {
   Exception
   Timeout
 }
-type Function_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Function_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type Function_IncorporatedByTarget {
-  stateTarget: StateID
-  # Behavior Type classifies the mapping between the source and destination
-  # entities.
-  behaviorType: Function_IncorporatedByBehaviorType
-
-}
-enum Function_IncorporatedByBehaviorType {
-  Atomic
-  Integrated_Root
-  Entry
-  Exit
-}
 type Function_InputsTarget {
   itemTarget: ItemID
 }
+type Function_IsRecoveredByTarget {
+  resilientModeTarget: ResilientModeID
+  # A collection of calculated values: "measured" (via system evaluation /
+  # simulation) resilient mode recovery time divided by "needed" resilient mode
+  # recovery time per loss scenario.  Recovery time includes: time to detect, time
+  # to isolate, time to restore (including operator decision times).    <loss
+  # scenario name>:<ratio>    A value < 1 is acceptable. A value > 1 is unacceptable
+  # (too long to recover)
+  recoveryRatio: [String]
+
+}
 type Function_ManagesTarget {
   lossScenarioTarget: LossScenarioID
+  resilientModeTarget: ResilientModeID
   # The management action type for the resilient mode.
   actionType: Function_ManagesActionType
 
@@ -1926,17 +1288,6 @@ enum Function_ManagesActionType {
 }
 type Function_OutputsTarget {
   itemTarget: ItemID
-}
-type Function_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Function_ParameterUsedInTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings identifies the parameters associated with the uses parameter from
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  mappings: [String]
-
 }
 type Function_ProducesTarget {
   resourceTarget: ResourceID
@@ -1953,11 +1304,7 @@ type Function_ReflectsTarget {
 type Function_RelatesToTarget {
   domainSetTarget: DomainSetID
 }
-type Function_ResultOfTarget {
-  riskTarget: RiskID
-}
 type Function_ServicesTarget {
-  transitionTarget: TransitionID
   linkTarget: LinkID
 }
 type Function_SpecifiedByTarget {
@@ -1981,9 +1328,6 @@ enum Function_TriggeredByQueueType {
   Priority
   Reverse_Priority
 }
-type Function_VerifiedByTarget {
-  verificationRequirementTarget: VerificationRequirementID
-}
 #########################################
 # Hazard definition
 #########################################
@@ -2004,13 +1348,6 @@ type HazardATTR {
 
 }
 type HazardREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Hazard_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Hazard_CategorizedByTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [Hazard_DocumentedByTarget]
@@ -2019,30 +1356,12 @@ type HazardREL {
   # stakeholders.
   elicits: [Hazard_ElicitsTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Hazard_HasCommentsTarget]
-
   # Indicates causality of entity.
   isCausedBy: [Hazard_IsCausedByTarget]
 
   # Indicates factors leading to entity.
   leadsTo: [Hazard_LeadsToTarget]
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Hazard_PackagedByTarget]
-
-}
-type Hazard_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Hazard_CategorizedByTarget {
-  categoryTarget: CategoryID
 }
 type Hazard_DocumentedByTarget {
   documentTarget: DocumentID
@@ -2050,17 +1369,11 @@ type Hazard_DocumentedByTarget {
 type Hazard_ElicitsTarget {
   requirementTarget: RequirementID
 }
-type Hazard_HasCommentsTarget {
-  noteTarget: NoteID
-}
 type Hazard_IsCausedByTarget {
   unsafeActionTarget: UnsafeActionID
 }
 type Hazard_LeadsToTarget {
   lossTarget: LossID
-}
-type Hazard_PackagedByTarget {
-  packageTarget: PackageID
 }
 #########################################
 # Interface definition
@@ -2092,28 +1405,12 @@ type InterfaceATTR {
 
 }
 type InterfaceREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Interface_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Interface_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [Interface_CausesTarget]
-
   # Comprised of identifies the physical units which make up this entity.
   comprisedOf: [Interface_ComprisedOfTarget]
 
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [Interface_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Interface_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Interface_ImpactedByTarget]
 
   # Included in identifies the parent of this entity.
   includedIn: [Interface_IncludedInTarget]
@@ -2125,10 +1422,6 @@ type InterfaceREL {
   # interface.
   joins: [Interface_JoinsTarget]
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Interface_PackagedByTarget]
-
   # Reported by identifies the documentation entity of which the entity is the
   # primary subject.
   reportedBy: [Interface_ReportedByTarget]
@@ -2138,31 +1431,11 @@ type InterfaceREL {
   specifiedBy: [Interface_SpecifiedByTarget]
 
 }
-type Interface_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Interface_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Interface_CausesTarget {
-  riskTarget: RiskID
-}
 type Interface_ComprisedOfTarget {
   linkTarget: LinkID
 }
 type Interface_DocumentedByTarget {
   documentTarget: DocumentID
-}
-type Interface_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Interface_ImpactedByTarget {
-  riskTarget: RiskID
 }
 type Interface_IncludedInTarget {
   interfaceTarget: InterfaceID
@@ -2172,9 +1445,6 @@ type Interface_IncludesTarget {
 }
 type Interface_JoinsTarget {
   componentTarget: ComponentID
-}
-type Interface_PackagedByTarget {
-  packageTarget: PackageID
 }
 type Interface_ReportedByTarget {
   documentTarget: DocumentID
@@ -2186,154 +1456,6 @@ type Interface_SpecifiedByTarget {
   # specified by / specifies relationship.
   governs: String
 
-}
-#########################################
-# Issue definition
-#########################################
-type Issue {
-  identity: IssueID!
-  attributes: IssueATTR
-  parameters: [Parameter]
-  relations: IssueREL
-}
-type IssueID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type IssueATTR {
-  # Importance indicates the relative priority of the point, concern, or change
-  # request.
-  importance: IssueImportance
-
-  # Alternatives identifies the candidate choices under consideration. This
-  # clarifies the scope of the supporting trade study or decision procedure.
-  alternatives: String
-
-  # Rationale documents the reasoning for the decision or rejection associated with
-  # the point, concern, or change request.
-  rationale: String
-
-  # Status identifies the current state of the point, concern, or change request.
-  status: IssueStatus
-
-  # Originator identifies the source of the point raised for resolution, if
-  # different from the creator of the entity in the database.
-  originator: String
-
-  # Assumptions identify the premises that were used in the process of making a
-  # decision.
-  assumptions: String
-
-  # Decision identifies the choice which was made from the alternatives.
-  decision: String
-
-  # Date Closed is the date when no further action is necessary.
-  dateClosed: String
-
-  # Due Date specifies the expected closure date for this current open point or
-  # concern.
-  dueDate: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum IssueImportance {
-  Critical
-  Essential
-  Important
-  Minor
-  nil
-}
-enum IssueStatus {
-  Open
-  Closed
-  Rejected
-}
-type IssueREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Issue_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Issue_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [Issue_DocumentedByTarget]
-
-  # Generated by identifies the entity that raised the concern.
-  generatedBy: [Issue_GeneratedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Issue_HasCommentsTarget]
-
-  # Identified by provides the note that is related to the ChangeRequestPackage,
-  # Issue, or Risk.
-  identifiedBy: [Issue_IdentifiedByTarget]
-
-  # Impacts identifies the risk that threatens the successful definition or
-  # implementation of the entity.
-  impacts: [Issue_ImpactsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Issue_PackagedByTarget]
-
-  # Results in identifies the entity derived from this entity's decision.
-  resultsIn: [Issue_ResultsInTarget]
-
-}
-type Issue_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Issue_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Issue_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Issue_GeneratedByTarget {
-  requirementTarget: RequirementID
-  proxyPortTarget: ProxyPortID
-  interfaceTarget: InterfaceID
-  componentTarget: ComponentID
-  fullPortTarget: FullPortID
-  useCaseTarget: UseCaseID
-  linkTarget: LinkID
-  verificationRequirementTarget: VerificationRequirementID
-  functionTarget: FunctionID
-  resourceTarget: ResourceID
-  stateTarget: StateID
-}
-type Issue_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Issue_IdentifiedByTarget {
-  noteTarget: NoteID
-}
-type Issue_ImpactsTarget {
-  interfaceTarget: InterfaceID
-  requirementTarget: RequirementID
-  fullPortTarget: FullPortID
-  proxyPortTarget: ProxyPortID
-  modeTarget: ModeID
-  useCaseTarget: UseCaseID
-  resourceTarget: ResourceID
-  stateTarget: StateID
-}
-type Issue_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Issue_ResultsInTarget {
-  requirementTarget: RequirementID
-  functionTarget: FunctionID
 }
 #########################################
 # Item definition
@@ -2402,22 +1524,6 @@ enum ItemType {
   Mixed
 }
 type ItemREL {
-  # Assigned to identifies a source entity being overseen or controlled by the
-  # target entity.
-  assignedTo: [Item_AssignedToTarget]
-
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Item_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Item_CategorizedByTarget]
-
-  # Mappings identifies the parameters associated with the constrained by
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  constrainedBy: [Item_ConstrainedByTarget]
-
   # Decomposed by identifies the children of this entity.
   decomposedBy: [Item_DecomposedByTarget]
 
@@ -2431,24 +1537,11 @@ type ItemREL {
   # The Function / Link / Item enables detection of Loss Scenario.
   enablesDetectionOf: [Item_EnablesDetectionOfTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Item_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Item_ImpactedByTarget]
-
   # Input to identifies the processing unit that transforms this entity.
   inputTo: [Item_InputToTarget]
 
   # Output from identifies the processing unit that produces this entity.
   outputFrom: [Item_OutputFromTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Item_PackagedByTarget]
-
-  # An entity’s parameter is being referenced by a ConstraintDefinition.
-  parameterUsedIn: [Item_ParameterUsedInTarget]
 
   # Specified by identifies constraint and/or performance requirements that this
   # entity must satisfy.
@@ -2462,26 +1555,6 @@ type ItemREL {
   # enablement, all of its triggers have arrived, and its necessary resources are
   # available.
   triggers: [Item_TriggersTarget]
-
-}
-type Item_AssignedToTarget {
-  eventTarget: EventID
-}
-type Item_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Item_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Item_ConstrainedByTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings show how the parameter maps to the variable used.
-  mappings: [String]
 
 }
 type Item_DecomposedByTarget {
@@ -2499,28 +1572,11 @@ type Item_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
-type Item_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Item_ImpactedByTarget {
-  riskTarget: RiskID
-}
 type Item_InputToTarget {
   functionTarget: FunctionID
 }
 type Item_OutputFromTarget {
   functionTarget: FunctionID
-}
-type Item_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Item_ParameterUsedInTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings identifies the parameters associated with the uses parameter from
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  mappings: [String]
-
 }
 type Item_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -2595,16 +1651,6 @@ type LinkATTR {
 
 }
 type LinkREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Link_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Link_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [Link_CausesTarget]
-
   # Comprises identifies the logical interface which is in part implemented
   # (physically) by this entity.
   comprises: [Link_ComprisesTarget]
@@ -2613,11 +1659,6 @@ type LinkREL {
   # entity.
   connectsTo: [Link_ConnectsToTarget]
 
-  # Mappings identifies the parameters associated with the constrained by
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  constrainedBy: [Link_ConstrainedByTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [Link_DocumentedByTarget]
@@ -2625,24 +1666,11 @@ type LinkREL {
   # The Function / Link / Item enables detection of Loss Scenario.
   enablesDetectionOf: [Link_EnablesDetectionOfTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Link_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Link_ImpactedByTarget]
-
   # Included in identifies the parent of this entity.
   includedIn: [Link_IncludedInTarget]
 
   # Includes identifies the children of this entity.
   includes: [Link_IncludesTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Link_PackagedByTarget]
-
-  # An entity’s parameter is being referenced by a ConstraintDefinition.
-  parameterUsedIn: [Link_ParameterUsedInTarget]
 
   # Serviced by identifies the processing unit that performs the interface function.
   servicedBy: [Link_ServicedByTarget]
@@ -2656,20 +1684,6 @@ type LinkREL {
   transfers: [Link_TransfersTarget]
 
 }
-type Link_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Link_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Link_CausesTarget {
-  riskTarget: RiskID
-}
 type Link_ComprisesTarget {
   interfaceTarget: InterfaceID
 }
@@ -2678,12 +1692,6 @@ type Link_ConnectsToTarget {
   # Port ID provides a unique identification for the port that is used between the
   # Link and the Component.
   portID: String
-
-}
-type Link_ConstrainedByTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings show how the parameter maps to the variable used.
-  mappings: [String]
 
 }
 type Link_DocumentedByTarget {
@@ -2695,28 +1703,11 @@ type Link_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
-type Link_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Link_ImpactedByTarget {
-  riskTarget: RiskID
-}
 type Link_IncludedInTarget {
   linkTarget: LinkID
 }
 type Link_IncludesTarget {
   linkTarget: LinkID
-}
-type Link_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Link_ParameterUsedInTarget {
-  constraintDefinitionTarget: ConstraintDefinitionID
-  # Mappings identifies the parameters associated with the uses parameter from
-  # relationship. The mappings relationship attribute shows how the parameter maps
-  # to the variable used.
-  mappings: [String]
-
 }
 type Link_ServicedByTarget {
   functionTarget: FunctionID
@@ -2764,50 +1755,19 @@ enum LossPriority {
   E_4
 }
 type LossREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Loss_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Loss_CategorizedByTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [Loss_DocumentedByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Loss_HasCommentsTarget]
-
   # Indicates causality of entity.
   isCausedBy: [Loss_IsCausedByTarget]
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Loss_PackagedByTarget]
-
-}
-type Loss_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Loss_CategorizedByTarget {
-  categoryTarget: CategoryID
 }
 type Loss_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Loss_HasCommentsTarget {
-  noteTarget: NoteID
-}
 type Loss_IsCausedByTarget {
   hazardTarget: HazardID
-}
-type Loss_PackagedByTarget {
-  packageTarget: PackageID
 }
 #########################################
 # LossScenario definition
@@ -2864,13 +1824,6 @@ enum LossScenarioDetect_pattern {
   Other
 }
 type LossScenarioREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [LossScenario_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [LossScenario_CategorizedByTarget]
-
   # The Loss Scenario is detected by monitoring:  Item – Control Action / Feedback /
   # Context​  "Field" value tampered​  size tampered​  order modified  Function 
   # Input / Trigger – injected / spoofed​  Output – incorrect value  Exit (Error
@@ -2883,14 +1836,14 @@ type LossScenarioREL {
   # definition of this entity.
   documentedBy: [LossScenario_DocumentedByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [LossScenario_HasCommentsTarget]
-
   # The loss scenario is caused by a component.
   isPrecipitatedBy: [LossScenario_IsPrecipitatedByTarget]
 
   # A Loss Scenario is protected by a Sentinel.
   isProtectedBy: [LossScenario_IsProtectedByTarget]
+
+  # The resilient mode which remediates loss scenarios.
+  isRemediatedBy: [LossScenario_IsRemediatedByTarget]
 
   # A Loss Scenario is simulated by a Threat Simulator.
   isSimulatedBy: [LossScenario_IsSimulatedByTarget]
@@ -2901,21 +1854,6 @@ type LossScenarioREL {
   # The resilient mode is managed (enabled / disabled / tested) by control action.
   managedBy: [LossScenario_ManagedByTarget]
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [LossScenario_PackagedByTarget]
-
-}
-type LossScenario_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type LossScenario_CategorizedByTarget {
-  categoryTarget: CategoryID
 }
 type LossScenario_DetectedByMonitoringTarget {
   itemTarget: ItemID
@@ -2930,14 +1868,14 @@ type LossScenario_DetectedByMonitoringTarget {
 type LossScenario_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type LossScenario_HasCommentsTarget {
-  noteTarget: NoteID
-}
 type LossScenario_IsPrecipitatedByTarget {
   componentTarget: ComponentID
 }
 type LossScenario_IsProtectedByTarget {
   componentTarget: ComponentID
+}
+type LossScenario_IsRemediatedByTarget {
+  resilientModeTarget: ResilientModeID
 }
 type LossScenario_IsSimulatedByTarget {
   componentTarget: ComponentID
@@ -2956,395 +1894,6 @@ enum LossScenario_ManagedByActionType {
   activate
   deactivate
   selfTest
-}
-type LossScenario_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# Mode definition
-#########################################
-type Mode {
-  identity: ModeID!
-  attributes: ModeATTR
-  parameters: [Parameter]
-  relations: ModeREL
-}
-type ModeID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type ModeATTR {
-  # Title is the label to be used in formal documentation instead of the entity
-  # name.
-  title: String
-
-  # Doc. PUID is the project unique identifier that is often used in system
-  # development specifications and documents to identify the same entity in multiple
-  # documents. This is not to be confused with the database entity unique
-  # identifier.
-  puid: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type ModeREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Mode_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Mode_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [Mode_DocumentedByTarget]
-
-  # The source entity envelopes or includes the destination entity in some sense.
-  encompasses: [Mode_EncompassesTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Mode_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Mode_ImpactedByTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Mode_PackagedByTarget]
-
-  # Specified by identifies constraint and/or performance requirements that this
-  # entity must satisfy.
-  specifiedBy: [Mode_SpecifiedByTarget]
-
-}
-type Mode_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Mode_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Mode_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Mode_EncompassesTarget {
-  stateTarget: StateID
-}
-type Mode_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Mode_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type Mode_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Mode_SpecifiedByTarget {
-  requirementTarget: RequirementID
-  # The Governs relationship attribute identifies the Parameter attribute that is
-  # associated in both the Requirement entity and Component entity joined by the
-  # specified by / specifies relationship.
-  governs: String
-
-}
-#########################################
-# Note definition
-#########################################
-type Note {
-  identity: NoteID!
-  attributes: NoteATTR
-  parameters: [Parameter]
-  relations: NoteREL
-}
-type NoteID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type NoteATTR {
-  # Decision identifies the reason for the resolution of the note.
-  decision: String
-
-  # Type identifies the fundamental nature of the Note.  A Comment is an informal
-  # statement or question concerning the entity to which it is related.  A Note
-  # provides additional information on a particular entity in the architecture.
-  type: NoteType
-
-  # Status identifies the current state of review for the note.
-  status: NoteStatus
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum NoteType {
-  Comment
-  Note
-}
-enum NoteStatus {
-  Open
-  Under_Review
-  Accepted
-  Closed
-  Resolved
-  Rejected
-}
-type NoteREL {
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [Note_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Note_HasCommentsTarget]
-
-  # Identifies provides the ChangeRequestPackage, Issue, or Risk that a Note is
-  # related to.
-  identifies: [Note_IdentifiesTarget]
-
-}
-type Note_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Note_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Note_IdentifiesTarget {
-  riskTarget: RiskID
-}
-#########################################
-# Package definition
-#########################################
-type Package {
-  identity: PackageID!
-  attributes: PackageATTR
-  parameters: [Parameter]
-  relations: PackageREL
-}
-type PackageID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type PackageATTR {
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type PackageREL {
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Package_HasCommentsTarget]
-
-  # Included in identifies the parent of this entity.
-  includedIn: [Package_IncludedInTarget]
-
-  # Includes identifies the children of this entity.
-  includes: [Package_IncludesTarget]
-
-  # Packages identifies the entities that comprise the group (primarily
-  # organizational or navigational) defined by this entity.
-  packages: [Package_PackagesTarget]
-
-}
-type Package_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Package_IncludedInTarget {
-  packageTarget: PackageID
-}
-type Package_IncludesTarget {
-  packageTarget: PackageID
-}
-type Package_PackagesTarget {
-  definedTermTarget: DefinedTermID
-  documentTarget: DocumentID
-}
-#########################################
-# PortDefinition definition
-#########################################
-type PortDefinition {
-  identity: PortDefinitionID!
-  attributes: PortDefinitionATTR
-  parameters: [Parameter]
-  relations: PortDefinitionREL
-}
-type PortDefinitionID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type PortDefinitionATTR {
-  # Operations describe synchronous interactions where the requestor waits for the
-  # request to be handled. This attribute identifies a subset of the allocated
-  # behavior that is critical to highlight on SysML representations.
-  operations: [String]
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type PortDefinitionREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [PortDefinition_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [PortDefinition_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [PortDefinition_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [PortDefinition_HasCommentsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [PortDefinition_PackagedByTarget]
-
-  # Provided by identifies the entity that provides the capability or service.  When
-  # used in port definition, provided by specifies the port that is used for one or
-  # more operation by the component.
-  providedBy: [PortDefinition_ProvidedByTarget]
-
-  # Specifies the port needed by the component for the identified physical link.
-  requiredBy: [PortDefinition_RequiredByTarget]
-
-}
-type PortDefinition_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type PortDefinition_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type PortDefinition_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type PortDefinition_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type PortDefinition_PackagedByTarget {
-  packageTarget: PackageID
-}
-type PortDefinition_ProvidedByTarget {
-  fullPortTarget: FullPortID
-}
-type PortDefinition_RequiredByTarget {
-  fullPortTarget: FullPortID
-}
-#########################################
-# ProxyPort definition
-#########################################
-type ProxyPort {
-  identity: ProxyPortID!
-  attributes: ProxyPortATTR
-  parameters: [Parameter]
-  relations: ProxyPortREL
-}
-type ProxyPortID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type ProxyPortATTR {
-  # Is behavior indicates if this proxy port is showing behavior.
-  isBehavior: Boolean
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type ProxyPortREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [ProxyPort_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [ProxyPort_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [ProxyPort_CausesTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [ProxyPort_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [ProxyPort_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [ProxyPort_ImpactedByTarget]
-
-  # Identifies the component thru which the physical link connects to the component.
-  isPortFor: [ProxyPort_IsPortForTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [ProxyPort_PackagedByTarget]
-
-  # Specified by identifies constraint and/or performance requirements that this
-  # entity must satisfy.
-  specifiedBy: [ProxyPort_SpecifiedByTarget]
-
-}
-type ProxyPort_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type ProxyPort_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type ProxyPort_CausesTarget {
-  riskTarget: RiskID
-}
-type ProxyPort_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type ProxyPort_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type ProxyPort_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type ProxyPort_IsPortForTarget {
-  componentTarget: ComponentID
-  fullPortTarget: FullPortID
-  # PortMultiplicity is the potential number of connections available on this port.
-  # This can be specified as zero, a whole number, or a range from a lower bound to
-  # an upper bound.
-  portMultiplicity: String
-
-  # When two Components interact through a proxy port, they may exchange similar
-  # items but in opposite directions. If isConjugate is set to be true, then the
-  # direction of behavioral features and flow properties should be reversed with
-  # respect to one another.
-  isConjugate: Boolean
-
-}
-type ProxyPort_PackagedByTarget {
-  packageTarget: PackageID
-}
-type ProxyPort_SpecifiedByTarget {
-  requirementTarget: RequirementID
-  # The Governs relationship attribute identifies the Parameter attribute that is
-  # associated in both the Requirement entity and Component entity joined by the
-  # specified by / specifies relationship.
-  governs: String
-
 }
 #########################################
 # Requirement definition
@@ -3455,19 +2004,9 @@ enum RequirementPerformanceParameterType {
   MOP
 }
 type RequirementREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Requirement_AugmentedByTarget]
-
   # Basis of identifies the entities needed to fulfill one or more originating
   # requirements or operational activities.
   basisOf: [Requirement_BasisOfTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Requirement_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [Requirement_CausesTarget]
 
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
@@ -3476,52 +2015,19 @@ type RequirementREL {
   # A requirement may be elicited by a Use Case, Hazard, Unsafe Action.
   elicitedBy: [Requirement_ElicitedByTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Requirement_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Requirement_ImpactedByTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Requirement_PackagedByTarget]
-
   # Refined by identifies the children of this entity.
   refinedBy: [Requirement_RefinedByTarget]
 
   # Refines identifies the parent of this entity.
   refines: [Requirement_RefinesTarget]
 
-  # Result of identifies the entity from which this entity is derived.
-  resultOf: [Requirement_ResultOfTarget]
-
   # Specifies identifies those entities whose performance or whose characteristics
   # are bounded by the requirement.
   specifies: [Requirement_SpecifiesTarget]
 
-  # Verified by points to the method of requirement proof which specifies the
-  # verification technique, level, and status.
-  verifiedBy: [Requirement_VerifiedByTarget]
-
-}
-type Requirement_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
 }
 type Requirement_BasisOfTarget {
-  verificationRequirementTarget: VerificationRequirementID
   functionTarget: FunctionID
-  useCaseTarget: UseCaseID
-}
-type Requirement_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Requirement_CausesTarget {
-  riskTarget: RiskID
 }
 type Requirement_DocumentedByTarget {
   documentTarget: DocumentID
@@ -3529,16 +2035,6 @@ type Requirement_DocumentedByTarget {
 type Requirement_ElicitedByTarget {
   hazardTarget: HazardID
   unsafeActionTarget: UnsafeActionID
-  useCaseTarget: UseCaseID
-}
-type Requirement_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Requirement_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type Requirement_PackagedByTarget {
-  packageTarget: PackageID
 }
 type Requirement_RefinedByTarget {
   requirementTarget: RequirementID
@@ -3546,25 +2042,137 @@ type Requirement_RefinedByTarget {
 type Requirement_RefinesTarget {
   requirementTarget: RequirementID
 }
-type Requirement_ResultOfTarget {
-  riskTarget: RiskID
-}
 type Requirement_SpecifiesTarget {
   itemTarget: ItemID
   functionTarget: FunctionID
-  modeTarget: ModeID
   interfaceTarget: InterfaceID
-  stateTarget: StateID
-  fullPortTarget: FullPortID
-  proxyPortTarget: ProxyPortID
   # The Governs relationship attribute identifies the Parameter attribute that is
   # associated in both the Requirement entity and Component entity joined by the
   # specified by / specifies relationship.
   governs: String
 
 }
-type Requirement_VerifiedByTarget {
-  verificationRequirementTarget: VerificationRequirementID
+#########################################
+# ResilientMode definition
+#########################################
+type ResilientMode {
+  identity: ResilientModeID!
+  attributes: ResilientModeATTR
+  parameters: [Parameter]
+  relations: ResilientModeREL
+}
+type ResilientModeID {
+  id: ID!
+  name: String!
+  number: String!
+}
+type ResilientModeATTR {
+  # STRAT: "Effectiveness" of resilient mode calculated by impact on remediating
+  # high "likelihood", attacks (Loss Scenario) associated with high "mission impact"
+  # Losses.
+  effectiveness: ResilientModeEffectiveness
+
+  # Degree of model "contained by" associations.​
+  complexity: ResilientModeComplexity
+
+  # Degree of operator training need.  Degree of mission interruption.
+  operationalImpact: ResilientModeOperationalImpact
+
+  # Time budget to restore system function via resilient mode.​
+  restoreTime: Float
+
+  # Time budget for operator decision time to enable resilient mode. 0 implies
+  # automated resilient mode.​
+  operatorDecisionTime: Float
+
+  # Title is the label to be used in formal documentation instead of the entity
+  # name.
+  title: String
+
+  # Doc. PUID is the project unique identifier that is often used in system
+  # development specifications and documents to identify the same entity in multiple
+  # documents. This is not to be confused with the database entity unique
+  # identifier.
+  puid: String
+
+  # Description is the written statement of this entity.
+  description: String
+
+}
+enum ResilientModeEffectiveness {
+  nil
+  High
+  Medium
+  Low
+}
+enum ResilientModeComplexity {
+  nil
+  High
+  Med
+  Low
+}
+enum ResilientModeOperationalImpact {
+  nil
+  High
+  Med
+  Low
+}
+type ResilientModeREL {
+  # Documented by identifies the source document which specifies and/or enhances the
+  # definition of this entity.
+  documentedBy: [ResilientMode_DocumentedByTarget]
+
+  # The resilient mode is managed (enabled / disabled / tested) by control action.
+  managedBy: [ResilientMode_ManagedByTarget]
+
+  # A ResilentMode recovers a failed / cyber attacked "system" Function.
+  recovers: [ResilientMode_RecoversTarget]
+
+  # The loss scenarios remediated by the resilient mode.
+  remediates: [ResilientMode_RemediatesTarget]
+
+  # Specified by identifies constraint and/or performance requirements that this
+  # entity must satisfy.
+  specifiedBy: [ResilientMode_SpecifiedByTarget]
+
+}
+type ResilientMode_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type ResilientMode_ManagedByTarget {
+  controlActionTarget: ControlActionID
+  functionTarget: FunctionID
+  # The management action type for the resilient mode.
+  actionType: ResilientMode_ManagedByActionType
+
+}
+enum ResilientMode_ManagedByActionType {
+  nil
+  activate
+  deactivate
+  selfTest
+}
+type ResilientMode_RecoversTarget {
+  functionTarget: FunctionID
+  # A collection of calculated values: "measured" (via system evaluation /
+  # simulation) resilient mode recovery time divided by "needed" resilient mode
+  # recovery time per loss scenario.  Recovery time includes: time to detect, time
+  # to isolate, time to restore (including operator decision times).    <loss
+  # scenario name>:<ratio>    A value < 1 is acceptable. A value > 1 is unacceptable
+  # (too long to recover)
+  recoveryRatio: [String]
+
+}
+type ResilientMode_RemediatesTarget {
+  lossScenarioTarget: LossScenarioID
+}
+type ResilientMode_SpecifiedByTarget {
+  requirementTarget: RequirementID
+  # The Governs relationship attribute identifies the Parameter attribute that is
+  # associated in both the Requirement entity and Component entity joined by the
+  # specified by / specifies relationship.
+  governs: String
+
 }
 #########################################
 # Resource definition
@@ -3606,16 +2214,6 @@ enum ResourceAmountType {
   Integer
 }
 type ResourceREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Resource_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Resource_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [Resource_CausesTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [Resource_DocumentedByTarget]
@@ -3623,30 +2221,6 @@ type ResourceREL {
   # The Function / Link / Item enables detection of Loss Scenario.
   enablesDetectionOf: [Resource_EnablesDetectionOfTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Resource_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [Resource_ImpactedByTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Resource_PackagedByTarget]
-
-}
-type Resource_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Resource_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Resource_CausesTarget {
-  riskTarget: RiskID
 }
 type Resource_DocumentedByTarget {
   documentTarget: DocumentID
@@ -3656,598 +2230,6 @@ type Resource_EnablesDetectionOfTarget {
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
-}
-type Resource_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Resource_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type Resource_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# Risk definition
-#########################################
-type Risk {
-  identity: RiskID!
-  attributes: RiskATTR
-  parameters: [Parameter]
-  relations: RiskREL
-}
-type RiskID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type RiskATTR {
-  # Risk Rating is determined by the combination of Consequence and Likelihood in
-  # accordance with the standard risk cube. To have this automatically populated
-  # based on the settings for Consequence and Likelihood run the Utility script Set
-  # Risk Rating.
-  riskRating: RiskRiskRating
-
-  # Likelihood is the probability of the occurrence of a risk event.
-  likelihood: RiskLikelihood
-
-  # The expected date when the consequences of the unmitigated risk effects occur.
-  riskEffectiveDate: String
-
-  # Consequence is the severity of adverse effects stemming from the referenced
-  # cause.   1 Minimal or no consequence to technical performance.   2 Minor
-  # reduction in technical performance or supportability, can be tolerated with
-  # little or no impact on program.   3 Moderate reduction in technical performance
-  # or supportability with limited impact on program objectives.   4 Significant
-  # degradation in technical performance or major shortfall in supportability; may
-  # jeopardize program success.   5 Severe degradation in technical performance;
-  # cannot meet KPP or key technical/supportability threshold; will jeopardize
-  # program success.
-  consequence: RiskConsequence
-
-  # Status Description amplifies and clarifies the current state of the status
-  # attribute.
-  statusDescription: String
-
-  # Cost associated with managing the identified risk.
-  mitigationCost: Float
-
-  # Status documents the current state of risk management.
-  status: RiskStatus
-
-  # Type identifies the nature of this risk.
-  type: RiskType
-
-  # Significance is the potential adverse outcomes associated with the unmitigated
-  # risk.
-  significance: String
-
-  # Mitigation Plan describes the plan to mitigate this risk.
-  mitigationPlan: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum RiskRiskRating {
-  nil
-  Low
-  Medium
-  High
-}
-enum RiskLikelihood {
-  nil
-  E_1__Not_Likely
-  E_2__Low_Likelihood
-  E_3__Likely
-  E_4__High_Likelihood
-  E_5__Near_Certainty
-}
-enum RiskConsequence {
-  nil
-  E_1__Minimal
-  E_2__Minor
-  E_3__Moderate
-  E_4__Significant
-  E_5__Severe
-}
-enum RiskStatus {
-  Closed
-  Open__Mitigated
-  Open__Unmitigated
-  Rejected
-}
-enum RiskType {
-  nil
-  Cost
-  Logistics
-  Other
-  Requirements
-  Safety
-  Security
-  Schedule
-  Technical
-  Test_and_Evaluation
-}
-type RiskREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Risk_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Risk_CategorizedByTarget]
-
-  # Caused by identifies the entity in the design which precipitates this risk. For
-  # instance, a newly conceived component may cause a program schedule
-  # (programmatic) risk.
-  causedBy: [Risk_CausedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [Risk_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Risk_HasCommentsTarget]
-
-  # Identified by provides the note that is related to the ChangeRequestPackage,
-  # Issue, or Risk.
-  identifiedBy: [Risk_IdentifiedByTarget]
-
-  # Impacts identifies the risk that threatens the successful definition or
-  # implementation of the entity.
-  impacts: [Risk_ImpactsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Risk_PackagedByTarget]
-
-  # Results in identifies the entity derived from this entity's decision.
-  resultsIn: [Risk_ResultsInTarget]
-
-}
-type Risk_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Risk_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Risk_CausedByTarget {
-  proxyPortTarget: ProxyPortID
-  resourceTarget: ResourceID
-  interfaceTarget: InterfaceID
-  verificationRequirementTarget: VerificationRequirementID
-  fullPortTarget: FullPortID
-  functionTarget: FunctionID
-  useCaseTarget: UseCaseID
-  linkTarget: LinkID
-  requirementTarget: RequirementID
-  componentTarget: ComponentID
-}
-type Risk_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Risk_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Risk_IdentifiedByTarget {
-  noteTarget: NoteID
-}
-type Risk_ImpactsTarget {
-  modeTarget: ModeID
-  requirementTarget: RequirementID
-  useCaseTarget: UseCaseID
-  resourceTarget: ResourceID
-  interfaceTarget: InterfaceID
-  serviceSpecificationTarget: ServiceSpecificationID
-  proxyPortTarget: ProxyPortID
-  documentTarget: DocumentID
-  fullPortTarget: FullPortID
-  stateTarget: StateID
-}
-type Risk_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Risk_ResultsInTarget {
-  requirementTarget: RequirementID
-  functionTarget: FunctionID
-}
-#########################################
-# ServiceSpecification definition
-#########################################
-type ServiceSpecification {
-  identity: ServiceSpecificationID!
-  attributes: ServiceSpecificationATTR
-  parameters: [Parameter]
-  relations: ServiceSpecificationREL
-}
-type ServiceSpecificationID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type ServiceSpecificationATTR {
-  # Authentication mechanism describes the security mechanisms that the user needs
-  # to access the service.
-  authenticationMechanism: String
-
-  # Overview includes the name of the operation, a narrative description of the
-  # operation, and the message flow.
-  overview: String
-
-  # Data Type refers to the URI that points to the documentation of complex data
-  # types and data structures that are used.
-  dataType: String
-
-  # Version identifies the latest revision level of the service.
-  version: String
-
-  # Effects explains the results that may come from invoking the operation.
-  effects: String
-
-  # Service Access Point Type identifies the lifecycle phase of the capability.
-  sapType: ServiceSpecificationSapType
-
-  # Access criteria describes both the user access model, criteria, and process for
-  # registering to use the service and the service restrictions that have been
-  # placed on users.
-  accessCriteria: String
-
-  # WSDL is the URI that points to a file that is composed of other files including
-  # a WSDL and any supporting files for the WSDL.
-  wsdl: String
-
-  # Service access point includes information that describes the message format and
-  # transmission protocol, URL, the operational status and point of contact, and the
-  # lifecycle step of the service.
-  serviceAccessPoint: String
-
-  # Point of contact includes information on the types of contacts associated with
-  # the service.
-  pointOfContact: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum ServiceSpecificationSapType {
-  Development
-  nil
-  Production
-  Testing
-}
-type ServiceSpecificationREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [ServiceSpecification_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [ServiceSpecification_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [ServiceSpecification_DocumentedByTarget]
-
-  # Documents identifies the entities which are specified in or enhanced by this
-  # external source document.
-  documents: [ServiceSpecification_DocumentsTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [ServiceSpecification_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [ServiceSpecification_ImpactedByTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [ServiceSpecification_PackagedByTarget]
-
-}
-type ServiceSpecification_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type ServiceSpecification_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type ServiceSpecification_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type ServiceSpecification_DocumentsTarget {
-  componentTarget: ComponentID
-}
-type ServiceSpecification_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type ServiceSpecification_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type ServiceSpecification_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# State definition
-#########################################
-type State {
-  identity: StateID!
-  attributes: StateATTR
-  parameters: [Parameter]
-  relations: StateREL
-}
-type StateID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type StateATTR {
-  # Doc. PUID is the project unique identifier that is often used in system
-  # development specifications and documents to identify the same entity in multiple
-  # documents. This is not to be confused with the database entity unique
-  # identifier.
-  puid: String
-
-  # Title to be used in formal documentation instead of the entity name.
-  title: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type StateREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [State_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [State_CategorizedByTarget]
-
-  # Decomposed by identifies the children of this entity.
-  decomposedBy: [State_DecomposedByTarget]
-
-  # Decomposes identifies the parent of this entity.
-  decomposes: [State_DecomposesTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [State_DocumentedByTarget]
-
-  # The source entity is held or included, in some sense, by the destination entity.
-  encompassedBy: [State_EncompassedByTarget]
-
-  # Entered by represents the source entity enabling the destination entity. In
-  # other words, it relates what caused the source entity to become active.
-  enteredBy: [State_EnteredByTarget]
-
-  # Exited by represents the entity by which the entity is departed.
-  exitedBy: [State_ExitedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [State_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [State_ImpactedByTarget]
-
-  # Incorporates identifies the destination entity as contained within the source
-  # entity.
-  incorporates: [State_IncorporatesTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [State_PackagedByTarget]
-
-  # Specified by identifies constraint and/or performance requirements that this
-  # entity must satisfy.
-  specifiedBy: [State_SpecifiedByTarget]
-
-}
-type State_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type State_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type State_DecomposedByTarget {
-  stateTarget: StateID
-}
-type State_DecomposesTarget {
-  stateTarget: StateID
-}
-type State_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type State_EncompassedByTarget {
-  modeTarget: ModeID
-}
-type State_EnteredByTarget {
-  transitionTarget: TransitionID
-}
-type State_ExitedByTarget {
-  transitionTarget: TransitionID
-}
-type State_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type State_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type State_IncorporatesTarget {
-  functionTarget: FunctionID
-  # Behavior Type classifies the mapping between the source and destination
-  # entities.
-  behaviorType: State_IncorporatesBehaviorType
-
-}
-enum State_IncorporatesBehaviorType {
-  Atomic
-  Integrated_Root
-  Entry
-  Exit
-}
-type State_PackagedByTarget {
-  packageTarget: PackageID
-}
-type State_SpecifiedByTarget {
-  requirementTarget: RequirementID
-  # The Governs relationship attribute identifies the Parameter attribute that is
-  # associated in both the Requirement entity and Component entity joined by the
-  # specified by / specifies relationship.
-  governs: String
-
-}
-#########################################
-# Text definition
-#########################################
-type Text {
-  identity: TextID!
-  attributes: TextATTR
-  parameters: [Parameter]
-  relations: TextREL
-}
-type TextID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type TextATTR {
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type TextREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Text_AugmentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Text_HasCommentsTarget]
-
-}
-type Text_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Text_HasCommentsTarget {
-  noteTarget: NoteID
-}
-#########################################
-# Transition definition
-#########################################
-type Transition {
-  identity: TransitionID!
-  attributes: TransitionATTR
-  parameters: [Parameter]
-  relations: TransitionREL
-}
-type TransitionID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type TransitionATTR {
-  # Delay represents the period of time by which something is hindered in achieving
-  # its objective.
-  delay: String
-
-  # Delay Units identifies the measurement basis for the delay attribute.
-  delayUnits: String
-
-  # A rule that must be met to enable the occurrence of the transition.
-  guard: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type TransitionREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [Transition_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [Transition_CategorizedByTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [Transition_DocumentedByTarget]
-
-  # Enters represents the source of the enablement for another entity.
-  enters: [Transition_EntersTarget]
-
-  # Exits represents the source for the departure of an entity.
-  exits: [Transition_ExitsTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [Transition_HasCommentsTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [Transition_PackagedByTarget]
-
-  # Serviced by identifies the processing unit that performs the interface function.
-  servicedBy: [Transition_ServicedByTarget]
-
-  # Triggered by identifies the processing units that are enabled by this entity.  A
-  # processing unit begins execution when it has received control enablement, all of
-  # its triggers have arrived, and its necessary resources are available.
-  triggeredBy: [Transition_TriggeredByTarget]
-
-}
-type Transition_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type Transition_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type Transition_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Transition_EntersTarget {
-  stateTarget: StateID
-}
-type Transition_ExitsTarget {
-  stateTarget: StateID
-}
-type Transition_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type Transition_PackagedByTarget {
-  packageTarget: PackageID
-}
-type Transition_ServicedByTarget {
-  functionTarget: FunctionID
-}
-type Transition_TriggeredByTarget {
-  eventTarget: EventID
-  # Queue Type specifies how the triggering entities should queue up at the
-  # receiving processing unit.
-  queueType: Transition_TriggeredByQueueType
-
-}
-enum Transition_TriggeredByQueueType {
-  FIFO
-  LIFO
-  Priority
-  Reverse_Priority
 }
 #########################################
 # UnsafeAction definition
@@ -4282,13 +2264,6 @@ enum UnsafeActionVariationType {
   TooLongTooSoon
 }
 type UnsafeActionREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [UnsafeAction_AugmentedByTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [UnsafeAction_CategorizedByTarget]
-
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [UnsafeAction_DocumentedByTarget]
@@ -4297,8 +2272,8 @@ type UnsafeActionREL {
   # stakeholders.
   elicits: [UnsafeAction_ElicitsTarget]
 
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [UnsafeAction_HasCommentsTarget]
+  # Unsafe control action context (process model).
+  hasProcessModel: [UnsafeAction_HasProcessModelTarget]
 
   # Indicates causality of entity.
   isCausedBy: [UnsafeAction_IsCausedByTarget]
@@ -4306,21 +2281,9 @@ type UnsafeActionREL {
   # Indicates factors leading to entity.
   leadsTo: [UnsafeAction_LeadsToTarget]
 
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [UnsafeAction_PackagedByTarget]
+  # Entity is an analysis variation.
+  variationOf: [UnsafeAction_VariationOfTarget]
 
-}
-type UnsafeAction_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type UnsafeAction_CategorizedByTarget {
-  categoryTarget: CategoryID
 }
 type UnsafeAction_DocumentedByTarget {
   documentTarget: DocumentID
@@ -4328,8 +2291,12 @@ type UnsafeAction_DocumentedByTarget {
 type UnsafeAction_ElicitsTarget {
   requirementTarget: RequirementID
 }
-type UnsafeAction_HasCommentsTarget {
-  noteTarget: NoteID
+type UnsafeAction_HasProcessModelTarget {
+  contextTarget: ContextID
+  # The process model attributes and values that define the "context" for the unsafe
+  # control action.
+  processModelAttributes: [String]
+
 }
 type UnsafeAction_IsCausedByTarget {
   lossScenarioTarget: LossScenarioID
@@ -4337,328 +2304,8 @@ type UnsafeAction_IsCausedByTarget {
 type UnsafeAction_LeadsToTarget {
   hazardTarget: HazardID
 }
-type UnsafeAction_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# UseCase definition
-#########################################
-type UseCase {
-  identity: UseCaseID!
-  attributes: UseCaseATTR
-  parameters: [Parameter]
-  relations: UseCaseREL
-}
-type UseCaseID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type UseCaseATTR {
-  # Doc. PUID is the project unique identifier that is often used in system
-  # development specifications and documents to identify the same entity in multiple
-  # documents. This is not to be confused with the database entity unique
-  # identifier.
-  puid: String
-
-  # Preconditions are the conditions that must hold true for this use case to begin.
-  preconditions: String
-
-  # Primary flow is a textual description of the most frequent scenario or scenarios
-  # for this use case. The primary flow serves as the foundation for the behavioral
-  # representation of the use case.
-  primaryFlow: String
-
-  # Alternate flow is a textual description of the scenarios that are less frequent
-  # or exceptions. The alternate flow serves helps guide the development of the
-  # integrated logic.
-  alternateFlow: String
-
-  # Postconditions are the conditions that must hold true once this case has
-  # completed.
-  postconditions: String
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-type UseCaseREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [UseCase_AugmentedByTarget]
-
-  # Based on identifies the originating requirement, capability, or activity that
-  # this entity fulfills in whole or in part.
-  basedOn: [UseCase_BasedOnTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [UseCase_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [UseCase_CausesTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [UseCase_DocumentedByTarget]
-
-  # A Use Case, Hazard, Unsafe Action enables the elicitation of requirements from
-  # stakeholders.
-  elicits: [UseCase_ElicitsTarget]
-
-  # Extended by identifies the use cases which extend the entity by providing
-  # additional fragments of functionality not considered part of the normal base use
-  # case.
-  extendedBy: [UseCase_ExtendedByTarget]
-
-  # Extends identifies the use case for which this entity provides an additional
-  # fragment of functionality not considered part of the normal base use case.
-  extends: [UseCase_ExtendsTarget]
-
-  # Generalization of associates a specific object classification with a more
-  # general object classification. For example, "Vehicle" is a generalization of
-  # "Car," "Train," and "Plane."
-  generalizationOf: [UseCase_GeneralizationOfTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [UseCase_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [UseCase_ImpactedByTarget]
-
-  # Included in identifies the parent of this entity.
-  includedIn: [UseCase_IncludedInTarget]
-
-  # Includes identifies the children of this entity.
-  includes: [UseCase_IncludesTarget]
-
-  # Kind of indicates classification. This relationship is often referred to as the
-  # "is a" relationship (i.e., a car "is a" vehicle).
-  kindOf: [UseCase_KindOfTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [UseCase_PackagedByTarget]
-
-}
-type UseCase_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type UseCase_BasedOnTarget {
-  requirementTarget: RequirementID
-}
-type UseCase_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type UseCase_CausesTarget {
-  riskTarget: RiskID
-}
-type UseCase_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type UseCase_ElicitsTarget {
-  requirementTarget: RequirementID
-}
-type UseCase_ExtendedByTarget {
-  useCaseTarget: UseCaseID
-  # Extension point is the point at which the extending use case extends the base
-  # use case functionality.
-  extensionPoint: String
-
-}
-type UseCase_ExtendsTarget {
-  useCaseTarget: UseCaseID
-  # Extension point is the point at which the extending use case extends the base
-  # use case functionality.
-  extensionPoint: String
-
-}
-type UseCase_GeneralizationOfTarget {
-  useCaseTarget: UseCaseID
-  # Type classifies the nature of the generalization / specialization relationship.
-  # Inheritance indicates that the specialization shares the properties of the
-  # generalization. Instance indicates that the specialization also shares the
-  # relationships of the generalization.
-  type: UseCase_GeneralizationOfType
-
-}
-enum UseCase_GeneralizationOfType {
-  Inheritance
-  Instance
-}
-type UseCase_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type UseCase_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type UseCase_IncludedInTarget {
-  useCaseTarget: UseCaseID
-}
-type UseCase_IncludesTarget {
-  useCaseTarget: UseCaseID
-}
-type UseCase_KindOfTarget {
-  useCaseTarget: UseCaseID
-  # Type classifies the nature of the generalization / specialization relationship.
-  # Inheritance indicates that the specialization shares the properties of the
-  # generalization. Instance indicates that the specialization also shares the
-  # relationships of the generalization.
-  type: UseCase_KindOfType
-
-}
-enum UseCase_KindOfType {
-  Inheritance
-  Instance
-}
-type UseCase_PackagedByTarget {
-  packageTarget: PackageID
-}
-#########################################
-# VerificationRequirement definition
-#########################################
-type VerificationRequirement {
-  identity: VerificationRequirementID!
-  attributes: VerificationRequirementATTR
-  parameters: [Parameter]
-  relations: VerificationRequirementREL
-}
-type VerificationRequirementID {
-  id: ID!
-  name: String!
-  number: String!
-}
-type VerificationRequirementATTR {
-  # Title is the label to be used in formal documentation instead of the element
-  # name.
-  title: String
-
-  # Doc. PUID is the project unique identifier that is often used in system
-  # development specifications and documents to identify the same entity in multiple
-  # documents. This is not to be confused with the database entity unique
-  # identifier.
-  puid: String
-
-  # Status identifies the current status of the verification activity.
-  status: VerificationRequirementStatus
-
-  # Level identifies the development level at which the related requirement
-  # statements are to be verified.
-  level: VerificationRequirementLevel
-
-  # Method characterizes the qualification techniques to be used to ensure that the
-  # related requirement statements are satisfied.
-  method: VerificationRequirementMethod
-
-  # Description is the written statement of this entity.
-  description: String
-
-}
-enum VerificationRequirementStatus {
-  nil
-  Not_Yet_Planned
-  Planned
-  In_Progress
-  Completed__Satisfactory
-  Completed__Unsatisfactory
-}
-enum VerificationRequirementLevel {
-  nil
-  System
-  Segment
-  Subsystem
-  HWCI
-  HW_Element
-  Part
-  CSCI
-  CSC
-  CSU
-  Facility
-  Task
-}
-enum VerificationRequirementMethod {
-  nil
-  Analysis
-  Demonstration
-  Inspection
-  Test
-}
-type VerificationRequirementREL {
-  # Augmented by identifies text or external files that expand on the description of
-  # the entity.
-  augmentedBy: [VerificationRequirement_AugmentedByTarget]
-
-  # Based on identifies the originating requirement, capability, or activity that
-  # this entity fulfills in whole or in part.
-  basedOn: [VerificationRequirement_BasedOnTarget]
-
-  # Categorized by identifies a grouping that includes this entity.
-  categorizedBy: [VerificationRequirement_CategorizedByTarget]
-
-  # Causes identifies the technical or programmatic risk resulting from this entity.
-  causes: [VerificationRequirement_CausesTarget]
-
-  # Documented by identifies the source document which specifies and/or enhances the
-  # definition of this entity.
-  documentedBy: [VerificationRequirement_DocumentedByTarget]
-
-  # Has comments identifies the note that is precipitated by the entity.
-  hasComments: [VerificationRequirement_HasCommentsTarget]
-
-  # Impacted by identifies the entity that is affected by the risk.
-  impactedBy: [VerificationRequirement_ImpactedByTarget]
-
-  # Packaged by identifies a grouping (primarily organizational or navigational)
-  # that includes this entity.
-  packagedBy: [VerificationRequirement_PackagedByTarget]
-
-  # Reported by identifies the documentation entity of which the entity is the
-  # primary subject.
-  reportedBy: [VerificationRequirement_ReportedByTarget]
-
-  # Verifies identifies the entities to be validated.
-  verifies: [VerificationRequirement_VerifiesTarget]
-
-}
-type VerificationRequirement_AugmentedByTarget {
-  externalFileTarget: ExternalFileID
-  textTarget: TextID
-  # Position is used to order the use of external files and text associated with an
-  # entity.
-  position: Int
-
-}
-type VerificationRequirement_BasedOnTarget {
-  requirementTarget: RequirementID
-}
-type VerificationRequirement_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type VerificationRequirement_CausesTarget {
-  riskTarget: RiskID
-}
-type VerificationRequirement_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type VerificationRequirement_HasCommentsTarget {
-  noteTarget: NoteID
-}
-type VerificationRequirement_ImpactedByTarget {
-  riskTarget: RiskID
-}
-type VerificationRequirement_PackagedByTarget {
-  packageTarget: PackageID
-}
-type VerificationRequirement_ReportedByTarget {
-  documentTarget: DocumentID
-}
-type VerificationRequirement_VerifiesTarget {
-  functionTarget: FunctionID
-  requirementTarget: RequirementID
+type UnsafeAction_VariationOfTarget {
+  controlActionTarget: ControlActionID
 }
 type CallStructure {
   function: FunctionID

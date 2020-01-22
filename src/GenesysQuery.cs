@@ -54,7 +54,10 @@ namespace genesys_graphql
             Console.WriteLine("Project Id: " + project.Id);
 
             schema = project.GetSchema();
-            IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID
+            // IFacilityList facilityList = schema.GetFacilities();
+            // IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID
+            IFacility facility = schema.GetFacility(new Guid("8b0c834f-8039-4129-837a-98b8240a07ea")); // MA GUID
+
             Console.WriteLine("Facility: " + facility.Name + "  :" + facility.Id);
             facilityName = facility.Name;
 
@@ -67,6 +70,11 @@ namespace genesys_graphql
             {
                 entityDefinitionList.MoveNext();
                 sortedEntityDefinitionList.Add(entityDefinitionList.Current.Name);
+                IEnumerable<IEntityDefinition> childEntityDefinitionList = entityDefinitionList.Current.GetAllChildrenConcrete();
+                foreach (IEntityDefinition childEntityDefinition in childEntityDefinitionList)
+                {
+                    sortedEntityDefinitionList.Add(childEntityDefinition.Name);
+                }
             }
             sortedEntityDefinitionList.Sort();
 
