@@ -9,6 +9,12 @@ type MissionAwareSystemModel {
   # The project identity.
   project: Project
 
+  # An attack vector is a path or means by which a hacker can gain access to a
+  # computer or network server in order to deliver a payload or malicious outcome.
+  # Attack vectors enable hackers to exploit system vulnerabilities, including the
+  # human element.
+  attackVector: [AttackVector]
+
   # A component is an abstract term that represents the physical or logical entity
   # that performs a specific function or functions.
   component: [Component]
@@ -103,6 +109,90 @@ type Parameter {
   units: String
 }
 #########################################
+# AttackVector definition
+#########################################
+type AttackVector {
+  identity: AttackVectorID!
+  attributes: AttackVectorATTR
+  parameters: [Parameter]
+  relations: AttackVectorREL
+}
+type AttackVectorID {
+  id: ID!
+  name: String!
+  number: String!
+}
+type AttackVectorATTR {
+  # The likelihood of the attack.
+  likelihood: AttackVectorLikelihood
+
+  # Is the attack vector to be considered for the system?
+  outOfScope: Boolean
+
+  # A justification for not including the attack vector within the system scope.
+  outOfScopeJustification: String
+
+  # The domain of attack.  The attack domain aligns to the Component Type / Link: 
+  # Software -> SW Subsystem  Hardware -> HW Subsystem  Communication -> Link 
+  # Supply Chain -> HW & SW Subsystem  Social Engineering -> Human  Physical
+  # Security -> Environment
+  domainOfAttack: AttackVectorDomainOfAttack
+
+  # Description is the written statement of this entity.
+  description: String
+
+}
+enum AttackVectorLikelihood {
+  nil
+  High
+  Medium
+  Low
+}
+enum AttackVectorDomainOfAttack {
+  nil
+  Software
+  Hardware
+  Communications
+  Supply_Chain
+  Social_Engineering
+  Physical_Security
+}
+type AttackVectorREL {
+  # Documented by identifies the source document which specifies and/or enhances the
+  # definition of this entity.
+  documentedBy: [AttackVector_DocumentedByTarget]
+
+  # The attack vector which causes the loss scenario.
+  precipitates: [AttackVector_PrecipitatesTarget]
+
+  # Identifies Entities that can be violated by an Attack.
+  violates: [AttackVector_ViolatesTarget]
+
+}
+type AttackVector_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type AttackVector_PrecipitatesTarget {
+  lossScenarioTarget: LossScenarioID
+}
+type AttackVector_ViolatesTarget {
+  componentTarget: ComponentID
+  linkTarget: LinkID
+  # A description of selected mitigation.
+  justification: String
+
+  # The selected system mitigation for the associated attack vector.
+  mitigationType: AttackVector_ViolatesMitigationType
+
+}
+enum AttackVector_ViolatesMitigationType {
+  nil
+  Defensive
+  DiverseRedundancy
+  Harden
+  N_A
+}
+#########################################
 # Component definition
 #########################################
 type Component {
@@ -123,6 +213,12 @@ type ComponentATTR {
   # Contract Line Item Number is a reference to the contract's identification for
   # the specific items and services requiring separate pricing.
   clin: String
+
+  # Is the Component out of scope for the system Attack Analysis?
+  outOfScopeAttackAnalysis: Boolean
+
+  # A justification for excluding the Component from the Attack Analysis.
+  outofScopeJustification: String
 
   # Mission is the text description of the business purpose of a system.
   mission: String
@@ -216,6 +312,9 @@ type ComponentREL {
   # "Car," "Train," and "Plane."
   generalizationOf: [Component_GeneralizationOfTarget]
 
+  # Identifies Attack Patterns that may violate an Entity.
+  isViolatedBy: [Component_IsViolatedByTarget]
+
   # Joined to identifies the logical units through which this physical unit
   # interfaces with another.
   joinedTo: [Component_JoinedToTarget]
@@ -226,9 +325,6 @@ type ComponentREL {
 
   # Performs identifies the actions that this entity accomplishes.
   performs: [Component_PerformsTarget]
-
-  # The component which causes the loss scenario.
-  precipitates: [Component_PrecipitatesTarget]
 
   # A Sentinel protects against one or more Loss Scenarios.
   protectsAgainst: [Component_ProtectsAgainstTarget]
@@ -314,6 +410,22 @@ enum Component_GeneralizationOfType {
   Inheritance
   Instance
 }
+type Component_IsViolatedByTarget {
+  attackVectorTarget: AttackVectorID
+  # A description of selected mitigation.
+  justification: String
+
+  # The selected system mitigation for the associated attack vector.
+  mitigationType: Component_IsViolatedByMitigationType
+
+}
+enum Component_IsViolatedByMitigationType {
+  nil
+  Defensive
+  DiverseRedundancy
+  Harden
+  N_A
+}
 type Component_JoinedToTarget {
   interfaceTarget: InterfaceID
 }
@@ -341,9 +453,6 @@ enum Component_PerformsBehaviorType {
   Atomic
   Integrated_Root
   Thread
-}
-type Component_PrecipitatesTarget {
-  lossScenarioTarget: LossScenarioID
 }
 type Component_ProtectsAgainstTarget {
   lossScenarioTarget: LossScenarioID
@@ -1617,8 +1726,14 @@ type LinkID {
   number: String!
 }
 type LinkATTR {
+  # A justification for excluding the Link from the Attack Analysis.
+  outOfScopeJustification: String
+
   # Protocol identifies the communication protocol for this entity.
   protocol: String
+
+  # Is the Link out of scope for the system Attack Analysis?
+  outOfScopeAttackAnalysis: Boolean
 
   # Delay represents the time delay that occurs when an information unit traverses
   # this connecting unit. It is intended to model the actual propagation delay and
@@ -1672,6 +1787,9 @@ type LinkREL {
   # Includes identifies the children of this entity.
   includes: [Link_IncludesTarget]
 
+  # Identifies Attack Patterns that may violate an Entity.
+  isViolatedBy: [Link_IsViolatedByTarget]
+
   # Serviced by identifies the processing unit that performs the interface function.
   servicedBy: [Link_ServicedByTarget]
 
@@ -1708,6 +1826,22 @@ type Link_IncludedInTarget {
 }
 type Link_IncludesTarget {
   linkTarget: LinkID
+}
+type Link_IsViolatedByTarget {
+  attackVectorTarget: AttackVectorID
+  # A description of selected mitigation.
+  justification: String
+
+  # The selected system mitigation for the associated attack vector.
+  mitigationType: Link_IsViolatedByMitigationType
+
+}
+enum Link_IsViolatedByMitigationType {
+  nil
+  Defensive
+  DiverseRedundancy
+  Harden
+  N_A
 }
 type Link_ServicedByTarget {
   functionTarget: FunctionID
@@ -1784,21 +1918,11 @@ type LossScenarioID {
   number: String!
 }
 type LossScenarioATTR {
-  # The type of attack: Insider, Supply Chain, External
-  type: LossScenarioType
-
-  # An indication of the likelihood of the attack on the "precipitating component":
-  # High, Medium, Low.  As determined by Red Team / CYBOK.
-  likelihood: LossScenarioLikelihood
-
   # Time budget to detect loss scenario.
   detectTime: Float
 
   # Time budget to isolate the loss scenario.
   isolateTime: Float
-
-  # The ID # and Title of the CAPEC attack pattern.
-  attack_pattern: String
 
   # The Sentinel design pattern associated with the Loss Scenario.
   detect_pattern: LossScenarioDetect_pattern
@@ -1806,16 +1930,6 @@ type LossScenarioATTR {
   # Description is the written statement of this entity.
   description: String
 
-}
-enum LossScenarioType {
-  Insider
-  Supply_Chain
-  External
-}
-enum LossScenarioLikelihood {
-  High
-  Medium
-  Low
 }
 enum LossScenarioDetect_pattern {
   Changing_Control_Input
@@ -1836,7 +1950,7 @@ type LossScenarioREL {
   # definition of this entity.
   documentedBy: [LossScenario_DocumentedByTarget]
 
-  # The loss scenario is caused by a component.
+  # The loss scenario is caused by an attack vector.
   isPrecipitatedBy: [LossScenario_IsPrecipitatedByTarget]
 
   # A Loss Scenario is protected by a Sentinel.
@@ -1869,7 +1983,7 @@ type LossScenario_DocumentedByTarget {
   documentTarget: DocumentID
 }
 type LossScenario_IsPrecipitatedByTarget {
-  componentTarget: ComponentID
+  attackVectorTarget: AttackVectorID
 }
 type LossScenario_IsProtectedByTarget {
   componentTarget: ComponentID
