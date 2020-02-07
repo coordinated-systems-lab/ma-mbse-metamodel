@@ -21,4 +21,4 @@
 ## Sample Project Models
 
 * [art-004.json](https://gitlab.com/tsherburne/art-004-mbse/blob/master/model/art-004.json)
-* [silverfish.json](https://github.com/tsherburne/silverfish/blob/master/docs/mbse/silverfish.json)
+* [silverfish.json](https://gitlab.com/tsherburne/silverfish-mbse/blob/master/mbse/silverfish.json)
