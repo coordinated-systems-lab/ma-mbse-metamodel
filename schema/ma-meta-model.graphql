@@ -132,6 +132,9 @@ type AttackVectorATTR {
   # A justification for not including the attack vector within the system scope.
   outOfScopeJustification: String
 
+  # Typical severity of this type of attack.
+  severity: AttackVectorSeverity
+
   # The domain of attack.  The attack domain aligns to the Component Type / Link: 
   # Software -> SW Subsystem  Hardware -> HW Subsystem  Communication -> Link 
   # Supply Chain -> HW & SW Subsystem  Social Engineering -> Human  Physical
@@ -147,6 +150,14 @@ enum AttackVectorLikelihood {
   High
   Medium
   Low
+}
+enum AttackVectorSeverity {
+  nil
+  Very_High
+  High
+  Medium
+  Low
+  Very_Low
 }
 enum AttackVectorDomainOfAttack {
   nil
@@ -181,7 +192,10 @@ type AttackVector_ViolatesTarget {
   # A description of selected mitigation.
   justification: String
 
-  # The selected system mitigation for the associated attack vector.
+  # Component / Link specific attack vector description.
+  description: String
+
+  # The attack vector system mitigation for the associated Component / Link.
   mitigationType: AttackVector_ViolatesMitigationType
 
 }
@@ -415,7 +429,10 @@ type Component_IsViolatedByTarget {
   # A description of selected mitigation.
   justification: String
 
-  # The selected system mitigation for the associated attack vector.
+  # Component / Link specific attack vector description.
+  description: String
+
+  # The attack vector system mitigation for the associated Component / Link.
   mitigationType: Component_IsViolatedByMitigationType
 
 }
@@ -1832,7 +1849,10 @@ type Link_IsViolatedByTarget {
   # A description of selected mitigation.
   justification: String
 
-  # The selected system mitigation for the associated attack vector.
+  # Component / Link specific attack vector description.
+  description: String
+
+  # The attack vector system mitigation for the associated Component / Link.
   mitigationType: Link_IsViolatedByMitigationType
 
 }
