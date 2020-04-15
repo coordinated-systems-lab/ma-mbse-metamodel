@@ -3,9 +3,9 @@ schema {
 }
 type Query {
   # System Model for: 'Mission Aware' Facility
-  missionAwareSystemModel: MissionAwareSystemModel
+  cpsSystemModel: CPSsystemModel
 }
-type MissionAwareSystemModel {
+type CPSsystemModel {
   # The project identity.
   project: Project
 

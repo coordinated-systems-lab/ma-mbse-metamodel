@@ -294,15 +294,15 @@ namespace genesys_graphql
             Connect(projectName);
 
             // Write GraphQL Schema header
-            schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\ma-meta-model.graphql", false);
+            schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\cps-metamodel.graphql", false);
             schemaFile.WriteLine("schema {");
             schemaFile.WriteLine("  query: Query");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type Query {");
             schemaFile.WriteLine("  # System Model for: '" + facilityName + "' Facility");
-            schemaFile.WriteLine("  missionAwareSystemModel: MissionAwareSystemModel");
+            schemaFile.WriteLine("  cpsSystemModel: CPSsystemModel");
             schemaFile.WriteLine("}");
-            schemaFile.WriteLine("type MissionAwareSystemModel {");
+            schemaFile.WriteLine("type CPSsystemModel {");
             schemaFile.WriteLine("  # The project identity.");
             schemaFile.WriteLine("  project: Project");
             schemaFile.WriteLine("");
@@ -502,7 +502,7 @@ namespace genesys_graphql
             indent += 2;
             dataFile.WriteLine("".PadLeft(indent) + @"""data"": {");
             indent += 2;
-            dataFile.WriteLine("".PadLeft(indent) + @"""missionAwareSystemModel"": {");
+            dataFile.WriteLine("".PadLeft(indent) + @"""cpsSystemModel"": {");
             indent += 2;
             dataFile.WriteLine("".PadLeft(indent) + @"""project"": {");
             indent += 2;

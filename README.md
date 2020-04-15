@@ -1,4 +1,4 @@
-# Mission Aware MBSE Meta-Model
+# Mission Aware (CPS) MBSE Meta-Model
 
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-context.png)
@@ -6,19 +6,20 @@
 * [MBSE](http://www.vitechcorp.com/resources/white_papers/onemodel.pdf)
 * [Hazard Analysis - STPA](http://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf)
 
-## Mission Aware Meta-Model
+## CPS Meta-Model
 ![MA Model](/images/ma-mbse.png)
 
 ### References
 * [SERC Overview Slides](/presentation/MissionAwareOverview.pdf)
+* [Journal Paper](https://github.com/coordinated-systems-lab/cps-metamodel)
 
-## Mission-Aware Schema
+## CPS Schema
 <img src="images/graphql.png" width="200">
 
 * [graphql overview](https://graphql.org/)
-* [ma-meta-model.graphql](/schema/ma-meta-model.graphql)
+* [cps-metamodel.graphql](/schema/cps-metamodel.graphql)
 
 ## Sample Project Models
 
-* [art-004.json](https://gitlab.com/tsherburne/art-004-mbse/blob/master/model/art-004.json)
+* [pipeline-cps.json](https://github.com/coordinated-systems-lab/pipeline-cps/blob/master/export/pipeline-cps.json)
 * [silverfish.json](https://gitlab.com/tsherburne/silverfish-mbse/blob/master/mbse/silverfish.json)
