@@ -1,7 +1,10 @@
 schema {
   query: Query
+  mutation: Mutation
 }
 type Query {
+  # List of Projects
+  cpsProjects: [Project]
   # System Model for: 'Mission Aware' Facility
   cpsSystemModel: CPSsystemModel
 }
@@ -93,6 +96,369 @@ type CPSsystemModel {
   # recursive call structure (select, parallel, loop, etc.) for each function
   callStructure: [CallStructure]
 }
+
+type Mutation {
+  #########################################
+  # Project mutations
+  #########################################
+  createProject(name: String!, description: String, version: String): Project
+  updateProject(
+    id: ID!,
+    name: String,
+    description: String,
+    version: String
+  ): Project
+	# delete project and all associated Entities
+  deleteProject(id: ID!): Project
+	# set 'active' project for Entity queries and mutations
+  setProject(id: ID!): Project
+
+  #########################################
+  # AttackVector mutations
+  #########################################
+  createAttackVector(
+    name: String!,
+    number: String!,
+    attributes: AttackVectorATTR_Input,
+    parameters: [Parameter_Input],
+    relations: AttackVectorREL_Input
+  ): AttackVector
+  updateAttackVector(
+    identity: AttackVectorID_Input!,
+    attributes: AttackVectorATTR_Input,
+    parameters: [Parameter_Input],
+    relations: AttackVectorREL_Input
+  ): AttackVector
+  deleteAttackVector(identity: AttackVectorID_Input!): AttackVectorID
+
+  #########################################
+  # Component mutations
+  #########################################
+  createComponent(
+    name: String!,
+    number: String!,
+    attributes: ComponentATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ComponentREL_Input
+  ): Component
+  updateComponent(
+    identity: ComponentID_Input!,
+    attributes: ComponentATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ComponentREL_Input
+  ): Component
+  deleteComponent(identity: ComponentID_Input!): ComponentID
+
+  #########################################
+  # Context mutations
+  #########################################
+  createContext(
+    name: String!,
+    number: String!,
+    attributes: ContextATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ContextREL_Input
+  ): Context
+  updateContext(
+    identity: ContextID_Input!,
+    attributes: ContextATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ContextREL_Input
+  ): Context
+  deleteContext(identity: ContextID_Input!): ContextID
+
+  #########################################
+  # ControlAction mutations
+  #########################################
+  createControlAction(
+    name: String!,
+    number: String!,
+    attributes: ControlActionATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ControlActionREL_Input
+  ): ControlAction
+  updateControlAction(
+    identity: ControlActionID_Input!,
+    attributes: ControlActionATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ControlActionREL_Input
+  ): ControlAction
+  deleteControlAction(identity: ControlActionID_Input!): ControlActionID
+
+  #########################################
+  # Document mutations
+  #########################################
+  createDocument(
+    name: String!,
+    number: String!,
+    attributes: DocumentATTR_Input,
+    parameters: [Parameter_Input],
+    relations: DocumentREL_Input
+  ): Document
+  updateDocument(
+    identity: DocumentID_Input!,
+    attributes: DocumentATTR_Input,
+    parameters: [Parameter_Input],
+    relations: DocumentREL_Input
+  ): Document
+  deleteDocument(identity: DocumentID_Input!): DocumentID
+
+  #########################################
+  # DomainSet mutations
+  #########################################
+  createDomainSet(
+    name: String!,
+    number: String!,
+    attributes: DomainSetATTR_Input,
+    parameters: [Parameter_Input],
+    relations: DomainSetREL_Input
+  ): DomainSet
+  updateDomainSet(
+    identity: DomainSetID_Input!,
+    attributes: DomainSetATTR_Input,
+    parameters: [Parameter_Input],
+    relations: DomainSetREL_Input
+  ): DomainSet
+  deleteDomainSet(identity: DomainSetID_Input!): DomainSetID
+
+  #########################################
+  # Exit mutations
+  #########################################
+  createExit(
+    name: String!,
+    number: String!,
+    attributes: ExitATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ExitREL_Input
+  ): Exit
+  updateExit(
+    identity: ExitID_Input!,
+    attributes: ExitATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ExitREL_Input
+  ): Exit
+  deleteExit(identity: ExitID_Input!): ExitID
+
+  #########################################
+  # Feedback mutations
+  #########################################
+  createFeedback(
+    name: String!,
+    number: String!,
+    attributes: FeedbackATTR_Input,
+    parameters: [Parameter_Input],
+    relations: FeedbackREL_Input
+  ): Feedback
+  updateFeedback(
+    identity: FeedbackID_Input!,
+    attributes: FeedbackATTR_Input,
+    parameters: [Parameter_Input],
+    relations: FeedbackREL_Input
+  ): Feedback
+  deleteFeedback(identity: FeedbackID_Input!): FeedbackID
+
+  #########################################
+  # Function mutations
+  #########################################
+  createFunction(
+    name: String!,
+    number: String!,
+    attributes: FunctionATTR_Input,
+    parameters: [Parameter_Input],
+    relations: FunctionREL_Input
+  ): Function
+  updateFunction(
+    identity: FunctionID_Input!,
+    attributes: FunctionATTR_Input,
+    parameters: [Parameter_Input],
+    relations: FunctionREL_Input
+  ): Function
+  deleteFunction(identity: FunctionID_Input!): FunctionID
+
+  #########################################
+  # Hazard mutations
+  #########################################
+  createHazard(
+    name: String!,
+    number: String!,
+    attributes: HazardATTR_Input,
+    parameters: [Parameter_Input],
+    relations: HazardREL_Input
+  ): Hazard
+  updateHazard(
+    identity: HazardID_Input!,
+    attributes: HazardATTR_Input,
+    parameters: [Parameter_Input],
+    relations: HazardREL_Input
+  ): Hazard
+  deleteHazard(identity: HazardID_Input!): HazardID
+
+  #########################################
+  # Interface mutations
+  #########################################
+  createInterface(
+    name: String!,
+    number: String!,
+    attributes: InterfaceATTR_Input,
+    parameters: [Parameter_Input],
+    relations: InterfaceREL_Input
+  ): Interface
+  updateInterface(
+    identity: InterfaceID_Input!,
+    attributes: InterfaceATTR_Input,
+    parameters: [Parameter_Input],
+    relations: InterfaceREL_Input
+  ): Interface
+  deleteInterface(identity: InterfaceID_Input!): InterfaceID
+
+  #########################################
+  # Item mutations
+  #########################################
+  createItem(
+    name: String!,
+    number: String!,
+    attributes: ItemATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ItemREL_Input
+  ): Item
+  updateItem(
+    identity: ItemID_Input!,
+    attributes: ItemATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ItemREL_Input
+  ): Item
+  deleteItem(identity: ItemID_Input!): ItemID
+
+  #########################################
+  # Link mutations
+  #########################################
+  createLink(
+    name: String!,
+    number: String!,
+    attributes: LinkATTR_Input,
+    parameters: [Parameter_Input],
+    relations: LinkREL_Input
+  ): Link
+  updateLink(
+    identity: LinkID_Input!,
+    attributes: LinkATTR_Input,
+    parameters: [Parameter_Input],
+    relations: LinkREL_Input
+  ): Link
+  deleteLink(identity: LinkID_Input!): LinkID
+
+  #########################################
+  # Loss mutations
+  #########################################
+  createLoss(
+    name: String!,
+    number: String!,
+    attributes: LossATTR_Input,
+    parameters: [Parameter_Input],
+    relations: LossREL_Input
+  ): Loss
+  updateLoss(
+    identity: LossID_Input!,
+    attributes: LossATTR_Input,
+    parameters: [Parameter_Input],
+    relations: LossREL_Input
+  ): Loss
+  deleteLoss(identity: LossID_Input!): LossID
+
+  #########################################
+  # LossScenario mutations
+  #########################################
+  createLossScenario(
+    name: String!,
+    number: String!,
+    attributes: LossScenarioATTR_Input,
+    parameters: [Parameter_Input],
+    relations: LossScenarioREL_Input
+  ): LossScenario
+  updateLossScenario(
+    identity: LossScenarioID_Input!,
+    attributes: LossScenarioATTR_Input,
+    parameters: [Parameter_Input],
+    relations: LossScenarioREL_Input
+  ): LossScenario
+  deleteLossScenario(identity: LossScenarioID_Input!): LossScenarioID
+
+  #########################################
+  # Requirement mutations
+  #########################################
+  createRequirement(
+    name: String!,
+    number: String!,
+    attributes: RequirementATTR_Input,
+    parameters: [Parameter_Input],
+    relations: RequirementREL_Input
+  ): Requirement
+  updateRequirement(
+    identity: RequirementID_Input!,
+    attributes: RequirementATTR_Input,
+    parameters: [Parameter_Input],
+    relations: RequirementREL_Input
+  ): Requirement
+  deleteRequirement(identity: RequirementID_Input!): RequirementID
+
+  #########################################
+  # ResilientMode mutations
+  #########################################
+  createResilientMode(
+    name: String!,
+    number: String!,
+    attributes: ResilientModeATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ResilientModeREL_Input
+  ): ResilientMode
+  updateResilientMode(
+    identity: ResilientModeID_Input!,
+    attributes: ResilientModeATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ResilientModeREL_Input
+  ): ResilientMode
+  deleteResilientMode(identity: ResilientModeID_Input!): ResilientModeID
+
+  #########################################
+  # Resource mutations
+  #########################################
+  createResource(
+    name: String!,
+    number: String!,
+    attributes: ResourceATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ResourceREL_Input
+  ): Resource
+  updateResource(
+    identity: ResourceID_Input!,
+    attributes: ResourceATTR_Input,
+    parameters: [Parameter_Input],
+    relations: ResourceREL_Input
+  ): Resource
+  deleteResource(identity: ResourceID_Input!): ResourceID
+
+  #########################################
+  # UnsafeAction mutations
+  #########################################
+  createUnsafeAction(
+    name: String!,
+    number: String!,
+    attributes: UnsafeActionATTR_Input,
+    parameters: [Parameter_Input],
+    relations: UnsafeActionREL_Input
+  ): UnsafeAction
+  updateUnsafeAction(
+    identity: UnsafeActionID_Input!,
+    attributes: UnsafeActionATTR_Input,
+    parameters: [Parameter_Input],
+    relations: UnsafeActionREL_Input
+  ): UnsafeAction
+  deleteUnsafeAction(identity: UnsafeActionID_Input!): UnsafeActionID
+
+}
+#########################################
+# Common Definitions
+#########################################
 type Project {
   id: ID!
   name: String!
@@ -108,6 +474,26 @@ type Parameter {
   observed: String
   units: String
 }
+input Parameter_Input {
+  operation: MutationOperation!
+  name: String!
+  description: String
+  objective: String
+  threshold: String
+  design: String
+  observed: String
+  units: String
+}
+# Mutations for List items of an Entity (Parameters, Relations) include an 'instance' operation.
+## NOTE: when 'creating' an Entity, all associated List item instances must be set to 'Create'
+##       when 'updating' an Entity, only include associated List items to be 'Created', 'Updated', or 'Deleted'
+##       when 'deleting' an Entity, all associated List items are automatically deleted
+enum MutationOperation
+{
+  Create
+  Update
+  Delete
+}
 #########################################
 # AttackVector definition
 #########################################
@@ -118,6 +504,12 @@ type AttackVector {
   relations: AttackVectorREL
 }
 type AttackVectorID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input AttackVectorID_Input {
   id: ID!
   name: String!
   number: String!
@@ -168,6 +560,15 @@ enum AttackVectorDomainOfAttack {
   Social_Engineering
   Physical_Security
 }
+# for mutations
+input AttackVectorATTR_Input {
+  likelihood: AttackVectorLikelihood
+  outOfScope: Boolean
+  outOfScopeJustification: String
+  severity: AttackVectorSeverity
+  domainOfAttack: AttackVectorDomainOfAttack
+  description: String
+}
 type AttackVectorREL {
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
@@ -179,6 +580,12 @@ type AttackVectorREL {
   # Identifies Entities that can be violated by an Attack.
   violates: [AttackVector_ViolatesTarget]
 
+}
+# for mutations
+input AttackVectorREL_Input {
+  documentedBy: [AttackVector_DocumentedByTarget_Input]
+  precipitates: [AttackVector_PrecipitatesTarget_Input]
+  violates: [AttackVector_ViolatesTarget_Input]
 }
 type AttackVector_DocumentedByTarget {
   documentTarget: DocumentID
@@ -206,6 +613,23 @@ enum AttackVector_ViolatesMitigationType {
   Harden
   N_A
 }
+# for mutations
+input AttackVector_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input AttackVector_PrecipitatesTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
+input AttackVector_ViolatesTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  linkTarget: LinkID_Input
+  justification: String
+  description: String
+  mitigationType: AttackVector_ViolatesMitigationType
+}
 #########################################
 # Component definition
 #########################################
@@ -216,6 +640,12 @@ type Component {
   relations: ComponentREL
 }
 type ComponentID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ComponentID_Input {
   id: ID!
   name: String!
   number: String!
@@ -302,6 +732,22 @@ enum ComponentType {
   Test_Software
   Threat_Simulator
 }
+# for mutations
+input ComponentATTR_Input {
+  type: ComponentType
+  clin: String
+  outOfScopeAttackAnalysis: Boolean
+  outofScopeJustification: String
+  mission: String
+  operations: [String]
+  puid: String
+  purpose: String
+  cost: Float
+  receptions: [String]
+  abbreviation: String
+  title: String
+  description: String
+}
 type ComponentREL {
   # Built from identifies the entities (children) that make up this entity (the
   # parent).
@@ -354,6 +800,23 @@ type ComponentREL {
   # entity must satisfy.
   specifiedBy: [Component_SpecifiedByTarget]
 
+}
+# for mutations
+input ComponentREL_Input {
+  builtFrom: [Component_BuiltFromTarget_Input]
+  builtIn: [Component_BuiltInTarget_Input]
+  connectedTo: [Component_ConnectedToTarget_Input]
+  documentedBy: [Component_DocumentedByTarget_Input]
+  enablesDetectionOf: [Component_EnablesDetectionOfTarget_Input]
+  generalizationOf: [Component_GeneralizationOfTarget_Input]
+  isViolatedBy: [Component_IsViolatedByTarget_Input]
+  joinedTo: [Component_JoinedToTarget_Input]
+  kindOf: [Component_KindOfTarget_Input]
+  performs: [Component_PerformsTarget_Input]
+  protectsAgainst: [Component_ProtectsAgainstTarget_Input]
+  reportedBy: [Component_ReportedByTarget_Input]
+  simulates: [Component_SimulatesTarget_Input]
+  specifiedBy: [Component_SpecifiedByTarget_Input]
 }
 type Component_BuiltFromTarget {
   componentTarget: ComponentID
@@ -488,6 +951,78 @@ type Component_SpecifiedByTarget {
   governs: String
 
 }
+# for mutations
+input Component_BuiltFromTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  wholeMultiplicity: Component_BuiltFromWholeMultiplicity
+  partRole: String
+  partMultiplicity: String
+}
+input Component_BuiltInTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  wholeMultiplicity: Component_BuiltInWholeMultiplicity
+  partRole: String
+  partMultiplicity: String
+}
+input Component_ConnectedToTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+  portID: String
+}
+input Component_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Component_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Component_GeneralizationOfTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  type: Component_GeneralizationOfType
+}
+input Component_IsViolatedByTarget_Input {
+  operation: MutationOperation!
+  attackVectorTarget: AttackVectorID_Input
+  justification: String
+  description: String
+  mitigationType: Component_IsViolatedByMitigationType
+}
+input Component_JoinedToTarget_Input {
+  operation: MutationOperation!
+  interfaceTarget: InterfaceID_Input
+}
+input Component_KindOfTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  type: Component_KindOfType
+}
+input Component_PerformsTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  behaviorType: Component_PerformsBehaviorType
+}
+input Component_ProtectsAgainstTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
+input Component_ReportedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Component_SimulatesTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
+input Component_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
 #########################################
 # Context definition
 #########################################
@@ -498,6 +1033,12 @@ type Context {
   relations: ContextREL
 }
 type ContextID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ContextID_Input {
   id: ID!
   name: String!
   number: String!
@@ -554,6 +1095,21 @@ enum ContextType {
   Physical
   Mixed
 }
+# for mutations
+input ContextATTR_Input {
+  range: String
+  units: String
+  accuracy: String
+  fields: [String]
+  precision: String
+  puid: String
+  size: String
+  sizeUnits: String
+  priority: String
+  type: ContextType
+  title: String
+  description: String
+}
 type ContextREL {
   # Decomposed by identifies the children of this entity.
   decomposedBy: [Context_DecomposedByTarget]
@@ -590,6 +1146,19 @@ type ContextREL {
   # available.
   triggers: [Context_TriggersTarget]
 
+}
+# for mutations
+input ContextREL_Input {
+  decomposedBy: [Context_DecomposedByTarget_Input]
+  decomposes: [Context_DecomposesTarget_Input]
+  documentedBy: [Context_DocumentedByTarget_Input]
+  enablesDetectionOf: [Context_EnablesDetectionOfTarget_Input]
+  inputTo: [Context_InputToTarget_Input]
+  outputFrom: [Context_OutputFromTarget_Input]
+  providesProcessModelFor: [Context_ProvidesProcessModelForTarget_Input]
+  specifiedBy: [Context_SpecifiedByTarget_Input]
+  transferredBy: [Context_TransferredByTarget_Input]
+  triggers: [Context_TriggersTarget_Input]
 }
 type Context_DecomposedByTarget {
   itemTarget: ItemID
@@ -643,6 +1212,51 @@ enum Context_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+# for mutations
+input Context_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Context_DecomposesTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Context_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Context_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Context_InputToTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Context_OutputFromTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Context_ProvidesProcessModelForTarget_Input {
+  operation: MutationOperation!
+  unsafeActionTarget: UnsafeActionID_Input
+  processModelAttributes: [String]
+}
+input Context_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input Context_TransferredByTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Context_TriggersTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  queueType: Context_TriggersQueueType
+}
 #########################################
 # ControlAction definition
 #########################################
@@ -653,6 +1267,12 @@ type ControlAction {
   relations: ControlActionREL
 }
 type ControlActionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ControlActionID_Input {
   id: ID!
   name: String!
   number: String!
@@ -709,6 +1329,21 @@ enum ControlActionType {
   Physical
   Mixed
 }
+# for mutations
+input ControlActionATTR_Input {
+  range: String
+  units: String
+  accuracy: String
+  fields: [String]
+  precision: String
+  puid: String
+  size: String
+  sizeUnits: String
+  priority: String
+  type: ControlActionType
+  title: String
+  description: String
+}
 type ControlActionREL {
   # Decomposed by identifies the children of this entity.
   decomposedBy: [ControlAction_DecomposedByTarget]
@@ -748,6 +1383,20 @@ type ControlActionREL {
   # available.
   triggers: [ControlAction_TriggersTarget]
 
+}
+# for mutations
+input ControlActionREL_Input {
+  decomposedBy: [ControlAction_DecomposedByTarget_Input]
+  decomposes: [ControlAction_DecomposesTarget_Input]
+  documentedBy: [ControlAction_DocumentedByTarget_Input]
+  enablesDetectionOf: [ControlAction_EnablesDetectionOfTarget_Input]
+  hasVariation: [ControlAction_HasVariationTarget_Input]
+  inputTo: [ControlAction_InputToTarget_Input]
+  manages: [ControlAction_ManagesTarget_Input]
+  outputFrom: [ControlAction_OutputFromTarget_Input]
+  specifiedBy: [ControlAction_SpecifiedByTarget_Input]
+  transferredBy: [ControlAction_TransferredByTarget_Input]
+  triggers: [ControlAction_TriggersTarget_Input]
 }
 type ControlAction_DecomposedByTarget {
   itemTarget: ItemID
@@ -809,6 +1458,55 @@ enum ControlAction_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+# for mutations
+input ControlAction_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input ControlAction_DecomposesTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input ControlAction_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input ControlAction_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input ControlAction_HasVariationTarget_Input {
+  operation: MutationOperation!
+  unsafeActionTarget: UnsafeActionID_Input
+}
+input ControlAction_InputToTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input ControlAction_ManagesTarget_Input {
+  operation: MutationOperation!
+  resilientModeTarget: ResilientModeID_Input
+  actionType: ControlAction_ManagesActionType
+}
+input ControlAction_OutputFromTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input ControlAction_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input ControlAction_TransferredByTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input ControlAction_TriggersTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  queueType: ControlAction_TriggersQueueType
+}
 #########################################
 # Document definition
 #########################################
@@ -819,6 +1517,12 @@ type Document {
   relations: DocumentREL
 }
 type DocumentID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input DocumentID_Input {
   id: ID!
   name: String!
   number: String!
@@ -943,6 +1647,24 @@ enum DocumentType {
   Threat
   Trade_Study
 }
+# for mutations
+input DocumentATTR_Input {
+  documentDate: String
+  nonGovernmentCategory: DocumentNonGovernmentCategory
+  clin: String
+  externalFilePath: String
+  documentNumber: String
+  title: String
+  identification: String
+  governmentCategory: DocumentGovernmentCategory
+  revisionNumber: String
+  cdrlNumber: String
+  documentOverview: String
+  documentScript: DocumentDocumentScript
+  type: DocumentType
+  scope: String
+  description: String
+}
 type DocumentREL {
   # Referenced by identifies documents for which the subject document is an
   # applicable or reference document.
@@ -971,6 +1693,16 @@ type DocumentREL {
   tracesTo: [Document_TracesToTarget]
 
 }
+# for mutations
+input DocumentREL_Input {
+  referencedBy: [Document_ReferencedByTarget_Input]
+  references: [Document_ReferencesTarget_Input]
+  refinedBy: [Document_RefinedByTarget_Input]
+  refines: [Document_RefinesTarget_Input]
+  reportsOn: [Document_ReportsOnTarget_Input]
+  tracedFrom: [Document_TracedFromTarget_Input]
+  tracesTo: [Document_TracesToTarget_Input]
+}
 type Document_ReferencedByTarget {
   documentTarget: DocumentID
 }
@@ -992,6 +1724,35 @@ type Document_TracedFromTarget {
 type Document_TracesToTarget {
   documentTarget: DocumentID
 }
+# for mutations
+input Document_ReferencedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Document_ReferencesTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Document_RefinedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Document_RefinesTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Document_ReportsOnTarget_Input {
+  operation: MutationOperation!
+  interfaceTarget: InterfaceID_Input
+}
+input Document_TracedFromTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Document_TracesToTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
 #########################################
 # DomainSet definition
 #########################################
@@ -1006,6 +1767,12 @@ type DomainSetID {
   name: String!
   number: String!
 }
+# for mutations
+input DomainSetID_Input {
+  id: ID!
+  name: String!
+  number: String!
+}
 type DomainSetATTR {
   # Count specifies the number of iterations or replications depending upon the
   # associated construct.
@@ -1015,14 +1782,28 @@ type DomainSetATTR {
   description: String
 
 }
+# for mutations
+input DomainSetATTR_Input {
+  count: String
+  description: String
+}
 type DomainSetREL {
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
   documentedBy: [DomainSet_DocumentedByTarget]
 
 }
+# for mutations
+input DomainSetREL_Input {
+  documentedBy: [DomainSet_DocumentedByTarget_Input]
+}
 type DomainSet_DocumentedByTarget {
   documentTarget: DocumentID
+}
+# for mutations
+input DomainSet_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
 }
 #########################################
 # Exit definition
@@ -1038,10 +1819,20 @@ type ExitID {
   name: String!
   number: String!
 }
+# for mutations
+input ExitID_Input {
+  id: ID!
+  name: String!
+  number: String!
+}
 type ExitATTR {
   # Description is the written statement of this entity.
   description: String
 
+}
+# for mutations
+input ExitATTR_Input {
+  description: String
 }
 type ExitREL {
   # Documented by identifies the source document which specifies and/or enhances the
@@ -1049,8 +1840,17 @@ type ExitREL {
   documentedBy: [Exit_DocumentedByTarget]
 
 }
+# for mutations
+input ExitREL_Input {
+  documentedBy: [Exit_DocumentedByTarget_Input]
+}
 type Exit_DocumentedByTarget {
   documentTarget: DocumentID
+}
+# for mutations
+input Exit_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
 }
 #########################################
 # Feedback definition
@@ -1062,6 +1862,12 @@ type Feedback {
   relations: FeedbackREL
 }
 type FeedbackID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input FeedbackID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1118,6 +1924,21 @@ enum FeedbackType {
   Physical
   Mixed
 }
+# for mutations
+input FeedbackATTR_Input {
+  range: String
+  units: String
+  accuracy: String
+  fields: [String]
+  precision: String
+  puid: String
+  size: String
+  sizeUnits: String
+  priority: String
+  type: FeedbackType
+  title: String
+  description: String
+}
 type FeedbackREL {
   # Decomposed by identifies the children of this entity.
   decomposedBy: [Feedback_DecomposedByTarget]
@@ -1151,6 +1972,18 @@ type FeedbackREL {
   # available.
   triggers: [Feedback_TriggersTarget]
 
+}
+# for mutations
+input FeedbackREL_Input {
+  decomposedBy: [Feedback_DecomposedByTarget_Input]
+  decomposes: [Feedback_DecomposesTarget_Input]
+  documentedBy: [Feedback_DocumentedByTarget_Input]
+  enablesDetectionOf: [Feedback_EnablesDetectionOfTarget_Input]
+  inputTo: [Feedback_InputToTarget_Input]
+  outputFrom: [Feedback_OutputFromTarget_Input]
+  specifiedBy: [Feedback_SpecifiedByTarget_Input]
+  transferredBy: [Feedback_TransferredByTarget_Input]
+  triggers: [Feedback_TriggersTarget_Input]
 }
 type Feedback_DecomposedByTarget {
   itemTarget: ItemID
@@ -1197,6 +2030,46 @@ enum Feedback_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+# for mutations
+input Feedback_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Feedback_DecomposesTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Feedback_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Feedback_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Feedback_InputToTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Feedback_OutputFromTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Feedback_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input Feedback_TransferredByTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Feedback_TriggersTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  queueType: Feedback_TriggersQueueType
+}
 #########################################
 # Function definition
 #########################################
@@ -1207,6 +2080,12 @@ type Function {
   relations: FunctionREL
 }
 type FunctionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input FunctionID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1240,6 +2119,16 @@ type FunctionATTR {
   # Description is the written statement of this entity.
   description: String
 
+}
+# for mutations
+input FunctionATTR_Input {
+  puid: String
+  duration: String
+  executeDecomposition: Boolean
+  logMessage: String
+  timeout: String
+  title: String
+  description: String
 }
 type FunctionREL {
   # Allocated to identifies the entity that implements this processing unit.
@@ -1315,6 +2204,29 @@ type FunctionREL {
   # its triggers have arrived, and its necessary resources are available.
   triggeredBy: [Function_TriggeredByTarget]
 
+}
+# for mutations
+input FunctionREL_Input {
+  allocatedTo: [Function_AllocatedToTarget_Input]
+  basedOn: [Function_BasedOnTarget_Input]
+  captures: [Function_CapturesTarget_Input]
+  consumes: [Function_ConsumesTarget_Input]
+  decomposedBy: [Function_DecomposedByTarget_Input]
+  decomposes: [Function_DecomposesTarget_Input]
+  documentedBy: [Function_DocumentedByTarget_Input]
+  enablesDetectionOf: [Function_EnablesDetectionOfTarget_Input]
+  exitsBy: [Function_ExitsByTarget_Input]
+  inputs: [Function_InputsTarget_Input]
+  isRecoveredBy: [Function_IsRecoveredByTarget_Input]
+  manages: [Function_ManagesTarget_Input]
+  outputs: [Function_OutputsTarget_Input]
+  produces: [Function_ProducesTarget_Input]
+  reflectedIn: [Function_ReflectedInTarget_Input]
+  reflects: [Function_ReflectsTarget_Input]
+  relatesTo: [Function_RelatesToTarget_Input]
+  services: [Function_ServicesTarget_Input]
+  specifiedBy: [Function_SpecifiedByTarget_Input]
+  triggeredBy: [Function_TriggeredByTarget_Input]
 }
 type Function_AllocatedToTarget {
   componentTarget: ComponentID
@@ -1454,6 +2366,101 @@ enum Function_TriggeredByQueueType {
   Priority
   Reverse_Priority
 }
+# for mutations
+input Function_AllocatedToTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  behaviorType: Function_AllocatedToBehaviorType
+}
+input Function_BasedOnTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input Function_CapturesTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  acquireAvailable: Boolean
+  amount: String
+}
+input Function_ConsumesTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  amount: String
+  acquireAvailable: Boolean
+}
+input Function_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Function_DecomposesTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Function_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Function_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Function_ExitsByTarget_Input {
+  operation: MutationOperation!
+  exitTarget: ExitID_Input
+  selectionProbability: Float
+  type: Function_ExitsByType
+}
+input Function_InputsTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Function_IsRecoveredByTarget_Input {
+  operation: MutationOperation!
+  resilientModeTarget: ResilientModeID_Input
+  recoveryRatio: [String]
+}
+input Function_ManagesTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  resilientModeTarget: ResilientModeID_Input
+  actionType: Function_ManagesActionType
+}
+input Function_OutputsTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Function_ProducesTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  amount: String
+}
+input Function_ReflectedInTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Function_ReflectsTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Function_RelatesToTarget_Input {
+  operation: MutationOperation!
+  domainSetTarget: DomainSetID_Input
+}
+input Function_ServicesTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Function_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input Function_TriggeredByTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+  queueType: Function_TriggeredByQueueType
+}
 #########################################
 # Hazard definition
 #########################################
@@ -1468,10 +2475,20 @@ type HazardID {
   name: String!
   number: String!
 }
+# for mutations
+input HazardID_Input {
+  id: ID!
+  name: String!
+  number: String!
+}
 type HazardATTR {
   # Description is the written statement of this entity.
   description: String
 
+}
+# for mutations
+input HazardATTR_Input {
+  description: String
 }
 type HazardREL {
   # Documented by identifies the source document which specifies and/or enhances the
@@ -1489,6 +2506,13 @@ type HazardREL {
   leadsTo: [Hazard_LeadsToTarget]
 
 }
+# for mutations
+input HazardREL_Input {
+  documentedBy: [Hazard_DocumentedByTarget_Input]
+  elicits: [Hazard_ElicitsTarget_Input]
+  isCausedBy: [Hazard_IsCausedByTarget_Input]
+  leadsTo: [Hazard_LeadsToTarget_Input]
+}
 type Hazard_DocumentedByTarget {
   documentTarget: DocumentID
 }
@@ -1501,6 +2525,23 @@ type Hazard_IsCausedByTarget {
 type Hazard_LeadsToTarget {
   lossTarget: LossID
 }
+# for mutations
+input Hazard_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Hazard_ElicitsTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input Hazard_IsCausedByTarget_Input {
+  operation: MutationOperation!
+  unsafeActionTarget: UnsafeActionID_Input
+}
+input Hazard_LeadsToTarget_Input {
+  operation: MutationOperation!
+  lossTarget: LossID_Input
+}
 #########################################
 # Interface definition
 #########################################
@@ -1511,6 +2552,12 @@ type Interface {
   relations: InterfaceREL
 }
 type InterfaceID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input InterfaceID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1529,6 +2576,12 @@ type InterfaceATTR {
   # Description is the written statement of this entity.
   description: String
 
+}
+# for mutations
+input InterfaceATTR_Input {
+  title: String
+  puid: String
+  description: String
 }
 type InterfaceREL {
   # Comprised of identifies the physical units which make up this entity.
@@ -1557,6 +2610,16 @@ type InterfaceREL {
   specifiedBy: [Interface_SpecifiedByTarget]
 
 }
+# for mutations
+input InterfaceREL_Input {
+  comprisedOf: [Interface_ComprisedOfTarget_Input]
+  documentedBy: [Interface_DocumentedByTarget_Input]
+  includedIn: [Interface_IncludedInTarget_Input]
+  includes: [Interface_IncludesTarget_Input]
+  joins: [Interface_JoinsTarget_Input]
+  reportedBy: [Interface_ReportedByTarget_Input]
+  specifiedBy: [Interface_SpecifiedByTarget_Input]
+}
 type Interface_ComprisedOfTarget {
   linkTarget: LinkID
 }
@@ -1583,6 +2646,36 @@ type Interface_SpecifiedByTarget {
   governs: String
 
 }
+# for mutations
+input Interface_ComprisedOfTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Interface_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Interface_IncludedInTarget_Input {
+  operation: MutationOperation!
+  interfaceTarget: InterfaceID_Input
+}
+input Interface_IncludesTarget_Input {
+  operation: MutationOperation!
+  interfaceTarget: InterfaceID_Input
+}
+input Interface_JoinsTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+}
+input Interface_ReportedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Interface_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
 #########################################
 # Item definition
 #########################################
@@ -1593,6 +2686,12 @@ type Item {
   relations: ItemREL
 }
 type ItemID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ItemID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1649,6 +2748,21 @@ enum ItemType {
   Physical
   Mixed
 }
+# for mutations
+input ItemATTR_Input {
+  range: String
+  units: String
+  accuracy: String
+  fields: [String]
+  precision: String
+  puid: String
+  size: String
+  sizeUnits: String
+  priority: String
+  type: ItemType
+  title: String
+  description: String
+}
 type ItemREL {
   # Decomposed by identifies the children of this entity.
   decomposedBy: [Item_DecomposedByTarget]
@@ -1682,6 +2796,18 @@ type ItemREL {
   # available.
   triggers: [Item_TriggersTarget]
 
+}
+# for mutations
+input ItemREL_Input {
+  decomposedBy: [Item_DecomposedByTarget_Input]
+  decomposes: [Item_DecomposesTarget_Input]
+  documentedBy: [Item_DocumentedByTarget_Input]
+  enablesDetectionOf: [Item_EnablesDetectionOfTarget_Input]
+  inputTo: [Item_InputToTarget_Input]
+  outputFrom: [Item_OutputFromTarget_Input]
+  specifiedBy: [Item_SpecifiedByTarget_Input]
+  transferredBy: [Item_TransferredByTarget_Input]
+  triggers: [Item_TriggersTarget_Input]
 }
 type Item_DecomposedByTarget {
   itemTarget: ItemID
@@ -1728,6 +2854,46 @@ enum Item_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+# for mutations
+input Item_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Item_DecomposesTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
+input Item_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Item_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Item_InputToTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Item_OutputFromTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Item_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input Item_TransferredByTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Item_TriggersTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  queueType: Item_TriggersQueueType
+}
 #########################################
 # Link definition
 #########################################
@@ -1738,6 +2904,12 @@ type Link {
   relations: LinkREL
 }
 type LinkID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input LinkID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1782,6 +2954,19 @@ type LinkATTR {
   description: String
 
 }
+# for mutations
+input LinkATTR_Input {
+  outOfScopeJustification: String
+  protocol: String
+  outOfScopeAttackAnalysis: Boolean
+  delay: String
+  capacity: String
+  title: String
+  puid: String
+  delayUnits: String
+  capacityUnits: String
+  description: String
+}
 type LinkREL {
   # Comprises identifies the logical interface which is in part implemented
   # (physically) by this entity.
@@ -1818,6 +3003,19 @@ type LinkREL {
   # implementation units.
   transfers: [Link_TransfersTarget]
 
+}
+# for mutations
+input LinkREL_Input {
+  comprises: [Link_ComprisesTarget_Input]
+  connectsTo: [Link_ConnectsToTarget_Input]
+  documentedBy: [Link_DocumentedByTarget_Input]
+  enablesDetectionOf: [Link_EnablesDetectionOfTarget_Input]
+  includedIn: [Link_IncludedInTarget_Input]
+  includes: [Link_IncludesTarget_Input]
+  isViolatedBy: [Link_IsViolatedByTarget_Input]
+  servicedBy: [Link_ServicedByTarget_Input]
+  specifiedBy: [Link_SpecifiedByTarget_Input]
+  transfers: [Link_TransfersTarget_Input]
 }
 type Link_ComprisesTarget {
   interfaceTarget: InterfaceID
@@ -1877,6 +3075,53 @@ type Link_SpecifiedByTarget {
 type Link_TransfersTarget {
   itemTarget: ItemID
 }
+# for mutations
+input Link_ComprisesTarget_Input {
+  operation: MutationOperation!
+  interfaceTarget: InterfaceID_Input
+}
+input Link_ConnectsToTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  portID: String
+}
+input Link_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Link_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Link_IncludedInTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Link_IncludesTarget_Input {
+  operation: MutationOperation!
+  linkTarget: LinkID_Input
+}
+input Link_IsViolatedByTarget_Input {
+  operation: MutationOperation!
+  attackVectorTarget: AttackVectorID_Input
+  justification: String
+  description: String
+  mitigationType: Link_IsViolatedByMitigationType
+}
+input Link_ServicedByTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Link_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input Link_TransfersTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+}
 #########################################
 # Loss definition
 #########################################
@@ -1887,6 +3132,12 @@ type Loss {
   relations: LossREL
 }
 type LossID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input LossID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1908,6 +3159,11 @@ enum LossPriority {
   E_3
   E_4
 }
+# for mutations
+input LossATTR_Input {
+  priority: LossPriority
+  description: String
+}
 type LossREL {
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
@@ -1917,11 +3173,25 @@ type LossREL {
   isCausedBy: [Loss_IsCausedByTarget]
 
 }
+# for mutations
+input LossREL_Input {
+  documentedBy: [Loss_DocumentedByTarget_Input]
+  isCausedBy: [Loss_IsCausedByTarget_Input]
+}
 type Loss_DocumentedByTarget {
   documentTarget: DocumentID
 }
 type Loss_IsCausedByTarget {
   hazardTarget: HazardID
+}
+# for mutations
+input Loss_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Loss_IsCausedByTarget_Input {
+  operation: MutationOperation!
+  hazardTarget: HazardID_Input
 }
 #########################################
 # LossScenario definition
@@ -1933,6 +3203,12 @@ type LossScenario {
   relations: LossScenarioREL
 }
 type LossScenarioID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input LossScenarioID_Input {
   id: ID!
   name: String!
   number: String!
@@ -1956,6 +3232,13 @@ enum LossScenarioDetect_pattern {
   Data_Consistency
   Introspection
   Other
+}
+# for mutations
+input LossScenarioATTR_Input {
+  detectTime: Float
+  isolateTime: Float
+  detect_pattern: LossScenarioDetect_pattern
+  description: String
 }
 type LossScenarioREL {
   # The Loss Scenario is detected by monitoring:  Item – Control Action / Feedback /
@@ -1988,6 +3271,17 @@ type LossScenarioREL {
   # The resilient mode is managed (enabled / disabled / tested) by control action.
   managedBy: [LossScenario_ManagedByTarget]
 
+}
+# for mutations
+input LossScenarioREL_Input {
+  detectedByMonitoring: [LossScenario_DetectedByMonitoringTarget_Input]
+  documentedBy: [LossScenario_DocumentedByTarget_Input]
+  isPrecipitatedBy: [LossScenario_IsPrecipitatedByTarget_Input]
+  isProtectedBy: [LossScenario_IsProtectedByTarget_Input]
+  isRemediatedBy: [LossScenario_IsRemediatedByTarget_Input]
+  isSimulatedBy: [LossScenario_IsSimulatedByTarget_Input]
+  leadsTo: [LossScenario_LeadsToTarget_Input]
+  managedBy: [LossScenario_ManagedByTarget_Input]
 }
 type LossScenario_DetectedByMonitoringTarget {
   itemTarget: ItemID
@@ -2029,6 +3323,45 @@ enum LossScenario_ManagedByActionType {
   deactivate
   selfTest
 }
+# for mutations
+input LossScenario_DetectedByMonitoringTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+  resourceTarget: ResourceID_Input
+  componentTarget: ComponentID_Input
+  functionTarget: FunctionID_Input
+  linkTarget: LinkID_Input
+  constraint: [String]
+}
+input LossScenario_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input LossScenario_IsPrecipitatedByTarget_Input {
+  operation: MutationOperation!
+  attackVectorTarget: AttackVectorID_Input
+}
+input LossScenario_IsProtectedByTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+}
+input LossScenario_IsRemediatedByTarget_Input {
+  operation: MutationOperation!
+  resilientModeTarget: ResilientModeID_Input
+}
+input LossScenario_IsSimulatedByTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+}
+input LossScenario_LeadsToTarget_Input {
+  operation: MutationOperation!
+  unsafeActionTarget: UnsafeActionID_Input
+}
+input LossScenario_ManagedByTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  actionType: LossScenario_ManagedByActionType
+}
 #########################################
 # Requirement definition
 #########################################
@@ -2039,6 +3372,12 @@ type Requirement {
   relations: RequirementREL
 }
 type RequirementID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input RequirementID_Input {
   id: ID!
   name: String!
   number: String!
@@ -2137,6 +3476,23 @@ enum RequirementPerformanceParameterType {
   MOE
   MOP
 }
+# for mutations
+input RequirementATTR_Input {
+  weightFactor: Float
+  title: String
+  type: RequirementType
+  rationale: String
+  incentivePerformanceParameter: Boolean
+  keyPerformanceParameter: Boolean
+  value: String
+  paragraphNumber: String
+  paragraphTitle: String
+  puid: String
+  origin: RequirementOrigin
+  performanceParameterType: RequirementPerformanceParameterType
+  units: String
+  description: String
+}
 type RequirementREL {
   # Basis of identifies the entities needed to fulfill one or more originating
   # requirements or operational activities.
@@ -2159,6 +3515,15 @@ type RequirementREL {
   # are bounded by the requirement.
   specifies: [Requirement_SpecifiesTarget]
 
+}
+# for mutations
+input RequirementREL_Input {
+  basisOf: [Requirement_BasisOfTarget_Input]
+  documentedBy: [Requirement_DocumentedByTarget_Input]
+  elicitedBy: [Requirement_ElicitedByTarget_Input]
+  refinedBy: [Requirement_RefinedByTarget_Input]
+  refines: [Requirement_RefinesTarget_Input]
+  specifies: [Requirement_SpecifiesTarget_Input]
 }
 type Requirement_BasisOfTarget {
   functionTarget: FunctionID
@@ -2186,6 +3551,35 @@ type Requirement_SpecifiesTarget {
   governs: String
 
 }
+# for mutations
+input Requirement_BasisOfTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Requirement_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Requirement_ElicitedByTarget_Input {
+  operation: MutationOperation!
+  hazardTarget: HazardID_Input
+  unsafeActionTarget: UnsafeActionID_Input
+}
+input Requirement_RefinedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input Requirement_RefinesTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input Requirement_SpecifiesTarget_Input {
+  operation: MutationOperation!
+  itemTarget: ItemID_Input
+  functionTarget: FunctionID_Input
+  interfaceTarget: InterfaceID_Input
+  governs: String
+}
 #########################################
 # ResilientMode definition
 #########################################
@@ -2196,6 +3590,12 @@ type ResilientMode {
   relations: ResilientModeREL
 }
 type ResilientModeID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ResilientModeID_Input {
   id: ID!
   name: String!
   number: String!
@@ -2251,6 +3651,17 @@ enum ResilientModeOperationalImpact {
   Med
   Low
 }
+# for mutations
+input ResilientModeATTR_Input {
+  effectiveness: ResilientModeEffectiveness
+  complexity: ResilientModeComplexity
+  operationalImpact: ResilientModeOperationalImpact
+  restoreTime: Float
+  operatorDecisionTime: Float
+  title: String
+  puid: String
+  description: String
+}
 type ResilientModeREL {
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
@@ -2269,6 +3680,14 @@ type ResilientModeREL {
   # entity must satisfy.
   specifiedBy: [ResilientMode_SpecifiedByTarget]
 
+}
+# for mutations
+input ResilientModeREL_Input {
+  documentedBy: [ResilientMode_DocumentedByTarget_Input]
+  managedBy: [ResilientMode_ManagedByTarget_Input]
+  recovers: [ResilientMode_RecoversTarget_Input]
+  remediates: [ResilientMode_RemediatesTarget_Input]
+  specifiedBy: [ResilientMode_SpecifiedByTarget_Input]
 }
 type ResilientMode_DocumentedByTarget {
   documentTarget: DocumentID
@@ -2308,6 +3727,31 @@ type ResilientMode_SpecifiedByTarget {
   governs: String
 
 }
+# for mutations
+input ResilientMode_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input ResilientMode_ManagedByTarget_Input {
+  operation: MutationOperation!
+  controlActionTarget: ControlActionID_Input
+  functionTarget: FunctionID_Input
+  actionType: ResilientMode_ManagedByActionType
+}
+input ResilientMode_RecoversTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  recoveryRatio: [String]
+}
+input ResilientMode_RemediatesTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
+input ResilientMode_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
 #########################################
 # Resource definition
 #########################################
@@ -2318,6 +3762,12 @@ type Resource {
   relations: ResourceREL
 }
 type ResourceID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ResourceID_Input {
   id: ID!
   name: String!
   number: String!
@@ -2347,6 +3797,14 @@ enum ResourceAmountType {
   Float
   Integer
 }
+# for mutations
+input ResourceATTR_Input {
+  maximumAmount: String
+  amountType: ResourceAmountType
+  units: String
+  initialAmount: String
+  description: String
+}
 type ResourceREL {
   # Documented by identifies the source document which specifies and/or enhances the
   # definition of this entity.
@@ -2356,6 +3814,11 @@ type ResourceREL {
   enablesDetectionOf: [Resource_EnablesDetectionOfTarget]
 
 }
+# for mutations
+input ResourceREL_Input {
+  documentedBy: [Resource_DocumentedByTarget_Input]
+  enablesDetectionOf: [Resource_EnablesDetectionOfTarget_Input]
+}
 type Resource_DocumentedByTarget {
   documentTarget: DocumentID
 }
@@ -2364,6 +3827,16 @@ type Resource_EnablesDetectionOfTarget {
   # constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   constraint: [String]
 
+}
+# for mutations
+input Resource_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Resource_EnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
 }
 #########################################
 # UnsafeAction definition
@@ -2375,6 +3848,12 @@ type UnsafeAction {
   relations: UnsafeActionREL
 }
 type UnsafeActionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input UnsafeActionID_Input {
   id: ID!
   name: String!
   number: String!
@@ -2396,6 +3875,11 @@ enum UnsafeActionVariationType {
   Providing
   TooEarlyTooLate
   TooLongTooSoon
+}
+# for mutations
+input UnsafeActionATTR_Input {
+  variationType: UnsafeActionVariationType
+  description: String
 }
 type UnsafeActionREL {
   # Documented by identifies the source document which specifies and/or enhances the
@@ -2419,6 +3903,15 @@ type UnsafeActionREL {
   variationOf: [UnsafeAction_VariationOfTarget]
 
 }
+# for mutations
+input UnsafeActionREL_Input {
+  documentedBy: [UnsafeAction_DocumentedByTarget_Input]
+  elicits: [UnsafeAction_ElicitsTarget_Input]
+  hasProcessModel: [UnsafeAction_HasProcessModelTarget_Input]
+  isCausedBy: [UnsafeAction_IsCausedByTarget_Input]
+  leadsTo: [UnsafeAction_LeadsToTarget_Input]
+  variationOf: [UnsafeAction_VariationOfTarget_Input]
+}
 type UnsafeAction_DocumentedByTarget {
   documentTarget: DocumentID
 }
@@ -2440,6 +3933,32 @@ type UnsafeAction_LeadsToTarget {
 }
 type UnsafeAction_VariationOfTarget {
   controlActionTarget: ControlActionID
+}
+# for mutations
+input UnsafeAction_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input UnsafeAction_ElicitsTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input UnsafeAction_HasProcessModelTarget_Input {
+  operation: MutationOperation!
+  contextTarget: ContextID_Input
+  processModelAttributes: [String]
+}
+input UnsafeAction_IsCausedByTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
+input UnsafeAction_LeadsToTarget_Input {
+  operation: MutationOperation!
+  hazardTarget: HazardID_Input
+}
+input UnsafeAction_VariationOfTarget_Input {
+  operation: MutationOperation!
+  controlActionTarget: ControlActionID_Input
 }
 type CallStructure {
   function: FunctionID

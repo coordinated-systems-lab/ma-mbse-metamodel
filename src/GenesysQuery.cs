@@ -297,8 +297,12 @@ namespace genesys_graphql
             schemaFile = new System.IO.StreamWriter(@"..\..\..\schema\cps-metamodel.graphql", false);
             schemaFile.WriteLine("schema {");
             schemaFile.WriteLine("  query: Query");
+            schemaFile.WriteLine("  mutation: Mutation");
+
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type Query {");
+            schemaFile.WriteLine("  # List of Projects");
+            schemaFile.WriteLine("  cpsProjects: [Project]");
             schemaFile.WriteLine("  # System Model for: '" + facilityName + "' Facility");
             schemaFile.WriteLine("  cpsSystemModel: CPSsystemModel");
             schemaFile.WriteLine("}");
@@ -325,9 +329,60 @@ namespace genesys_graphql
             // Output call Structure
             schemaFile.WriteLine("  # recursive call structure (select, parallel, loop, etc.) for each function");
             schemaFile.WriteLine("  callStructure: [CallStructure]");
-
-            // Output Project Definition
             schemaFile.WriteLine("}");
+            schemaFile.WriteLine("");
+
+
+            //Output Mutations
+            schemaFile.WriteLine("type Mutation {");
+            schemaFile.WriteLine("  #########################################");
+            schemaFile.WriteLine("  # Project mutations");
+            schemaFile.WriteLine("  #########################################");
+            schemaFile.WriteLine("  createProject(name: String!, description: String, version: String): Project");
+            schemaFile.WriteLine("  updateProject(");
+            schemaFile.WriteLine("    id: ID!,");
+            schemaFile.WriteLine("    name: String,");
+            schemaFile.WriteLine("    description: String,");
+            schemaFile.WriteLine("    version: String");
+            schemaFile.WriteLine("  ): Project");
+            schemaFile.WriteLine("	# delete project and all associated Entities");
+            schemaFile.WriteLine("  deleteProject(id: ID!): Project");
+            schemaFile.WriteLine("	# set 'active' project for Entity queries and mutations");
+            schemaFile.WriteLine("  setProject(id: ID!): Project");
+            schemaFile.WriteLine("");
+
+            foreach (String entity in sortedEntityDefinitionList)
+            {
+                IEntityDefinition entityDefinition = schema.GetEntityDefinition(entity);
+
+                schemaFile.WriteLine("  #########################################");
+                schemaFile.WriteLine("  # " + entityDefinition.Name + " mutations");
+                schemaFile.WriteLine("  #########################################");
+                schemaFile.WriteLine("  create" + entityDefinition.Name + "(");
+                schemaFile.WriteLine("    name: String!,");
+                schemaFile.WriteLine("    number: String!,");
+                schemaFile.WriteLine("    attributes: " + entityDefinition.Name + "ATTR_Input,");
+                schemaFile.WriteLine("    parameters: [Parameter_Input],");
+                schemaFile.WriteLine("    relations: " + entityDefinition.Name + "REL_Input");
+                schemaFile.WriteLine("  ): " + entityDefinition.Name);
+
+                schemaFile.WriteLine("  update" + entityDefinition.Name + "(");
+                schemaFile.WriteLine("    identity: " + entityDefinition.Name + "ID_Input!,");
+                schemaFile.WriteLine("    attributes: " + entityDefinition.Name + "ATTR_Input,");
+                schemaFile.WriteLine("    parameters: [Parameter_Input],");
+                schemaFile.WriteLine("    relations: " + entityDefinition.Name + "REL_Input");
+                schemaFile.WriteLine("  ): " + entityDefinition.Name);
+
+                schemaFile.WriteLine("  delete" + entityDefinition.Name + "(identity: " + entityDefinition.Name + "ID_Input!): " + entityDefinition.Name + "ID");
+                schemaFile.WriteLine("");
+            }
+            schemaFile.WriteLine("}");
+
+
+            schemaFile.WriteLine("#########################################");
+            schemaFile.WriteLine("# Common Definitions");
+            schemaFile.WriteLine("#########################################");
+            // Output Project Definition
             schemaFile.WriteLine("type Project {");
             schemaFile.WriteLine("  id: ID!");
             schemaFile.WriteLine("  name: String!");
@@ -346,7 +401,30 @@ namespace genesys_graphql
             schemaFile.WriteLine("  units: String");
             schemaFile.WriteLine("}");
 
-            // Output Schema (GraphQL & C#) for each Entity
+            // Ouput Parameter Definition as mutation input
+            schemaFile.WriteLine("input Parameter_Input {");
+            schemaFile.WriteLine("  operation: MutationOperation!");
+            schemaFile.WriteLine("  name: String!");
+            schemaFile.WriteLine("  description: String");
+            schemaFile.WriteLine("  objective: String");
+            schemaFile.WriteLine("  threshold: String");
+            schemaFile.WriteLine("  design: String");
+            schemaFile.WriteLine("  observed: String");
+            schemaFile.WriteLine("  units: String");
+            schemaFile.WriteLine("}");
+
+            schemaFile.WriteLine("# Mutations for List items of an Entity (Parameters, Relations) include an 'instance' operation.");
+            schemaFile.WriteLine("## NOTE: when 'creating' an Entity, all associated List item instances must be set to 'Create'");
+            schemaFile.WriteLine("##       when 'updating' an Entity, only include associated List items to be 'Created', 'Updated', or 'Deleted'");
+            schemaFile.WriteLine("##       when 'deleting' an Entity, all associated List items are automatically deleted");
+            schemaFile.WriteLine("enum MutationOperation");
+            schemaFile.WriteLine("{");
+            schemaFile.WriteLine("  Create");
+            schemaFile.WriteLine("  Update");
+            schemaFile.WriteLine("  Delete");
+            schemaFile.WriteLine("}");
+
+            // Output Schema for each Entity
             foreach (String entity in sortedEntityDefinitionList)
             {
                 IEntityDefinition entityDefinition = schema.GetEntityDefinition(entity);
@@ -367,11 +445,23 @@ namespace genesys_graphql
                 schemaFile.WriteLine("  number: String!");
                 schemaFile.WriteLine("}");
 
+                // Output entity identity as input for mutations
+                schemaFile.WriteLine("# for mutations");
+                schemaFile.WriteLine("input " + entityDefinition.Name + "ID_Input {");
+                schemaFile.WriteLine("  id: ID!");
+                schemaFile.WriteLine("  name: String!");
+                schemaFile.WriteLine("  number: String!");
+                schemaFile.WriteLine("}");
+
                 IEnumerable<IAttributeDefinition> attributeDefinitionList = entityDefinition.GetAttributeDefinitions() as IEnumerable<IAttributeDefinition>;
 
                 // Ouput Attributes
                 schemaFile.WriteLine("type " + entityDefinition.Name + "ATTR {");
-                OutputAttribute(attributeDefinitionList, entityDefinition.Name);
+                OutputAttribute(attributeDefinitionList, entityDefinition.Name, true);
+                // Ouput Attributes as input for mutations
+                schemaFile.WriteLine("# for mutations");
+                schemaFile.WriteLine("input " + entityDefinition.Name + "ATTR_Input {");
+                OutputAttribute(attributeDefinitionList, entityDefinition.Name, false);
 
                 IEnumerable<IRelationDefinition> entityRelationDefinitionList = entityDefinition.GetRelationDefinitions();
                 // Create a sorted list of Relations for Entity
@@ -418,6 +508,36 @@ namespace genesys_graphql
                     }
                 }
                 schemaFile.WriteLine("}");
+                // output relation input for mutations
+                schemaFile.WriteLine("# for mutations");
+                schemaFile.WriteLine("input " + entityDefinition.Name + "REL_Input {");
+                foreach (String relationDefinitionName in sortedEntityRelationList)
+                {
+                    String camelRelationName = GetCamelCaseRelation(relationDefinitionName);
+
+                    IRelationDefinition relationDefinition = schema.GetRelationDefinition(relationDefinitionName);
+
+                    // Check if at least one of the Targets is part of the selected "Facility"
+                    IEnumerable<IEntityDefinition> targetEntityDefinitionList =
+                        entityDefinition.GetTargetEntityDefinitions(relationDefinition);
+                    Boolean found = false;
+                    foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
+                    {
+                        if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found == true)
+                    {   // at least one Target found in 'Facility'
+                        schemaFile.WriteLine("  " + camelRelationName + ": [" +
+                            Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
+                            Char.ToUpper(camelRelationName[0]) +
+                            camelRelationName.Substring(1) + "Target_Input]");
+                    }
+                }
+                schemaFile.WriteLine("}");
                 // Output Relationship Target
                 foreach (String relationDefinitionName in sortedEntityRelationList)
                 {
@@ -460,7 +580,55 @@ namespace genesys_graphql
 
                         // Relationship Attribute Type name is: <Component>_<Relationship><EnumName>
                         OutputAttribute(relAttributeDefinitionList, entityDefinition.Name + "_" +
-                            Char.ToUpper(camelCaseRelationName[0]) + camelCaseRelationName.Substring(1));
+                            Char.ToUpper(camelCaseRelationName[0]) + camelCaseRelationName.Substring(1), true);
+                    }
+                }
+                // Output Relationship Target as input for mutation
+                schemaFile.WriteLine("# for mutations");
+                foreach (String relationDefinitionName in sortedEntityRelationList)
+                {
+                    String camelRelationName = GetCamelCaseRelation(relationDefinitionName);
+                    IRelationDefinition relationDefinition = schema.GetRelationDefinition(relationDefinitionName);
+                    IEnumerable<IEntityDefinition> targetEntityDefinitionList =
+                        entityDefinition.GetTargetEntityDefinitions(relationDefinition);
+                    Boolean found = false;
+                    foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
+                    {
+                        if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found == true)
+                    {   // at least one Target found in 'Facility'
+
+                        schemaFile.WriteLine("input " +
+                        Char.ToUpper(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) + "_" +
+                        Char.ToUpper(camelRelationName[0]) +
+                        camelRelationName.Substring(1) + "Target_Input {");
+
+                        schemaFile.WriteLine("  operation: MutationOperation!");
+
+                        foreach (IEntityDefinition targetEntityDefinition in targetEntityDefinitionList)
+                        {
+                            if (sortedEntityDefinitionList.Contains(targetEntityDefinition.Name))
+                            {
+                                // Only include Target if included in selected "Facility"
+                                schemaFile.WriteLine("  " + Char.ToLower(targetEntityDefinition.Name[0]) +
+                                    targetEntityDefinition.Name.Substring(1) + "Target: " +
+                                    Char.ToUpper(targetEntityDefinition.Name[0]) +
+                                    targetEntityDefinition.Name.Substring(1) + "ID_Input");
+                            }
+                        }
+
+                        IEnumerable<IAttributeDefinition> relAttributeDefinitionList = relationDefinition.GetAttributeDefinitions() as IEnumerable<IAttributeDefinition>;
+                        // Ouput Relationship Attributes
+                        string camelCaseRelationName = GetCamelCaseRelation(relationDefinition.Name);
+
+                        // Relationship Attribute Type name is: <Component>_<Relationship><EnumName>
+                        OutputAttribute(relAttributeDefinitionList, entityDefinition.Name + "_" +
+                            Char.ToUpper(camelCaseRelationName[0]) + camelCaseRelationName.Substring(1), false);
                     }
                 }
             }
@@ -847,7 +1015,7 @@ namespace genesys_graphql
             }
         }
         // Output Attributes (Entity or Relationship)
-        static void OutputAttribute(IEnumerable<IAttributeDefinition> attributeDefinitionList, string ownerName)
+        static void OutputAttribute(IEnumerable<IAttributeDefinition> attributeDefinitionList, string ownerName, bool fullDefinition)
         {
             foreach (IAttributeDefinition attributeDefinition in attributeDefinitionList)
             {
@@ -860,11 +1028,14 @@ namespace genesys_graphql
                 {
                     continue; // Skip script attributes
                 }
-                List<string> commentLine = WrapLineComment(attributeDefinition.Description.ToString());
-                foreach (string line in commentLine)
+                if (fullDefinition == true)
                 {
-                    // Entity description
-                    schemaFile.WriteLine("  " + line);
+                    List<string> commentLine = WrapLineComment(attributeDefinition.Description.ToString());
+                    foreach (string line in commentLine)
+                    {
+                        // Entity description
+                        schemaFile.WriteLine("  " + line);
+                    }
                 }
 
                 string attributeDefinitionName = attributeDefinition.Name.Replace("-", "_");
@@ -912,29 +1083,35 @@ namespace genesys_graphql
                         Console.WriteLine("Missing Type!");
                         break;
                 }
-                schemaFile.WriteLine(""); // leave space between attribute definitions
+                if (fullDefinition == true)
+                {
+                    schemaFile.WriteLine(""); // leave space between attribute definitions
+                }
 
             }
             schemaFile.WriteLine("}");
 
-            // Ouput Enum types
-            foreach (IAttributeDefinition attributeDefinition in attributeDefinitionList)
+            if (fullDefinition == true)
             {
-                DataTypeDefinition attributeType = attributeDefinition.DataType;
-                if (attributeType.ToString() == "Vitech.Genesys.Common.EnumerationTypeDefinition")
+                // Ouput Enum types
+                foreach (IAttributeDefinition attributeDefinition in attributeDefinitionList)
                 {
-                    var capEnumAttributeName = Char.ToUpper(attributeDefinition.Name[0]) +
-                        attributeDefinition.Name.Substring(1);
-                    schemaFile.WriteLine("enum " + ownerName + capEnumAttributeName.Replace("-", "_") + " {");
-
-                    EnumerationTypeDefinition enumDefinition = attributeDefinition.DataType as EnumerationTypeDefinition;
-                    EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
-                    for (var i = 0; i < enumPossibleValues.Length; i++)
+                    DataTypeDefinition attributeType = attributeDefinition.DataType;
+                    if (attributeType.ToString() == "Vitech.Genesys.Common.EnumerationTypeDefinition")
                     {
-                        String enumValue = AdjustEnumValue(enumPossibleValues[i].ToString());
-                        schemaFile.WriteLine("  " + enumValue);
+                        var capEnumAttributeName = Char.ToUpper(attributeDefinition.Name[0]) +
+                            attributeDefinition.Name.Substring(1);
+                        schemaFile.WriteLine("enum " + ownerName + capEnumAttributeName.Replace("-", "_") + " {");
+
+                        EnumerationTypeDefinition enumDefinition = attributeDefinition.DataType as EnumerationTypeDefinition;
+                        EnumPossibleValue[] enumPossibleValues = enumDefinition.PossibleValues;
+                        for (var i = 0; i < enumPossibleValues.Length; i++)
+                        {
+                            String enumValue = AdjustEnumValue(enumPossibleValues[i].ToString());
+                            schemaFile.WriteLine("  " + enumValue);
+                        }
+                        schemaFile.WriteLine("}");
                     }
-                    schemaFile.WriteLine("}");
                 }
             }
         }
