@@ -18,6 +18,7 @@
 
 * [graphql overview](https://graphql.org/)
 * [cps-metamodel.graphql](/schema/cps-metamodel.graphql)
+* [sample-queries](https://gist.github.com/tsherburne/3d3fd799771016ff0535388e1145b56e)
 
 ## Sample Project Models
 
