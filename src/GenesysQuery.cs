@@ -304,7 +304,7 @@ namespace genesys_graphql
             schemaFile.WriteLine("  # List of Projects");
             schemaFile.WriteLine("  cpsProjects: [Project]");
             schemaFile.WriteLine("  # System Model for: '" + facilityName + "' Facility");
-            schemaFile.WriteLine("  cpsSystemModel: CPSsystemModel");
+            schemaFile.WriteLine("  cpsSystemModel(projectId: ID!): CPSsystemModel");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type CPSsystemModel {");
             schemaFile.WriteLine("  # The project identity.");
@@ -347,8 +347,6 @@ namespace genesys_graphql
             schemaFile.WriteLine("  ): Project");
             schemaFile.WriteLine("	# delete project and all associated Entities");
             schemaFile.WriteLine("  deleteProject(id: ID!): Project");
-            schemaFile.WriteLine("	# set 'active' project for Entity queries and mutations");
-            schemaFile.WriteLine("  setProject(id: ID!): Project");
             schemaFile.WriteLine("");
 
             foreach (String entity in sortedEntityDefinitionList)
@@ -359,6 +357,7 @@ namespace genesys_graphql
                 schemaFile.WriteLine("  # " + entityDefinition.Name + " mutations");
                 schemaFile.WriteLine("  #########################################");
                 schemaFile.WriteLine("  create" + entityDefinition.Name + "(");
+                schemaFile.WriteLine("    projectId: ID!,");
                 schemaFile.WriteLine("    name: String!,");
                 schemaFile.WriteLine("    number: String!,");
                 schemaFile.WriteLine("    attributes: " + entityDefinition.Name + "ATTR_Input,");
@@ -367,13 +366,14 @@ namespace genesys_graphql
                 schemaFile.WriteLine("  ): " + entityDefinition.Name);
 
                 schemaFile.WriteLine("  update" + entityDefinition.Name + "(");
+                schemaFile.WriteLine("    projectId: ID!,");
                 schemaFile.WriteLine("    identity: " + entityDefinition.Name + "ID_Input!,");
                 schemaFile.WriteLine("    attributes: " + entityDefinition.Name + "ATTR_Input,");
                 schemaFile.WriteLine("    parameters: [Parameter_Input],");
                 schemaFile.WriteLine("    relations: " + entityDefinition.Name + "REL_Input");
                 schemaFile.WriteLine("  ): " + entityDefinition.Name);
 
-                schemaFile.WriteLine("  delete" + entityDefinition.Name + "(identity: " + entityDefinition.Name + "ID_Input!): " + entityDefinition.Name + "ID");
+                schemaFile.WriteLine("  delete" + entityDefinition.Name + "(projectId: ID!, identity: " + entityDefinition.Name + "ID_Input!): " + entityDefinition.Name + "ID");
                 schemaFile.WriteLine("");
             }
             schemaFile.WriteLine("}");

@@ -6,7 +6,7 @@ type Query {
   # List of Projects
   cpsProjects: [Project]
   # System Model for: 'Mission Aware' Facility
-  cpsSystemModel: CPSsystemModel
+  cpsSystemModel(projectId: ID!): CPSsystemModel
 }
 type CPSsystemModel {
   # The project identity.
@@ -110,13 +110,12 @@ type Mutation {
   ): Project
 	# delete project and all associated Entities
   deleteProject(id: ID!): Project
-	# set 'active' project for Entity queries and mutations
-  setProject(id: ID!): Project
 
   #########################################
   # AttackVector mutations
   #########################################
   createAttackVector(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: AttackVectorATTR_Input,
@@ -124,17 +123,19 @@ type Mutation {
     relations: AttackVectorREL_Input
   ): AttackVector
   updateAttackVector(
+    projectId: ID!,
     identity: AttackVectorID_Input!,
     attributes: AttackVectorATTR_Input,
     parameters: [Parameter_Input],
     relations: AttackVectorREL_Input
   ): AttackVector
-  deleteAttackVector(identity: AttackVectorID_Input!): AttackVectorID
+  deleteAttackVector(projectId: ID!, identity: AttackVectorID_Input!): AttackVectorID
 
   #########################################
   # Component mutations
   #########################################
   createComponent(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ComponentATTR_Input,
@@ -142,17 +143,19 @@ type Mutation {
     relations: ComponentREL_Input
   ): Component
   updateComponent(
+    projectId: ID!,
     identity: ComponentID_Input!,
     attributes: ComponentATTR_Input,
     parameters: [Parameter_Input],
     relations: ComponentREL_Input
   ): Component
-  deleteComponent(identity: ComponentID_Input!): ComponentID
+  deleteComponent(projectId: ID!, identity: ComponentID_Input!): ComponentID
 
   #########################################
   # Context mutations
   #########################################
   createContext(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ContextATTR_Input,
@@ -160,17 +163,19 @@ type Mutation {
     relations: ContextREL_Input
   ): Context
   updateContext(
+    projectId: ID!,
     identity: ContextID_Input!,
     attributes: ContextATTR_Input,
     parameters: [Parameter_Input],
     relations: ContextREL_Input
   ): Context
-  deleteContext(identity: ContextID_Input!): ContextID
+  deleteContext(projectId: ID!, identity: ContextID_Input!): ContextID
 
   #########################################
   # ControlAction mutations
   #########################################
   createControlAction(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ControlActionATTR_Input,
@@ -178,17 +183,19 @@ type Mutation {
     relations: ControlActionREL_Input
   ): ControlAction
   updateControlAction(
+    projectId: ID!,
     identity: ControlActionID_Input!,
     attributes: ControlActionATTR_Input,
     parameters: [Parameter_Input],
     relations: ControlActionREL_Input
   ): ControlAction
-  deleteControlAction(identity: ControlActionID_Input!): ControlActionID
+  deleteControlAction(projectId: ID!, identity: ControlActionID_Input!): ControlActionID
 
   #########################################
   # Document mutations
   #########################################
   createDocument(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: DocumentATTR_Input,
@@ -196,17 +203,19 @@ type Mutation {
     relations: DocumentREL_Input
   ): Document
   updateDocument(
+    projectId: ID!,
     identity: DocumentID_Input!,
     attributes: DocumentATTR_Input,
     parameters: [Parameter_Input],
     relations: DocumentREL_Input
   ): Document
-  deleteDocument(identity: DocumentID_Input!): DocumentID
+  deleteDocument(projectId: ID!, identity: DocumentID_Input!): DocumentID
 
   #########################################
   # DomainSet mutations
   #########################################
   createDomainSet(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: DomainSetATTR_Input,
@@ -214,17 +223,19 @@ type Mutation {
     relations: DomainSetREL_Input
   ): DomainSet
   updateDomainSet(
+    projectId: ID!,
     identity: DomainSetID_Input!,
     attributes: DomainSetATTR_Input,
     parameters: [Parameter_Input],
     relations: DomainSetREL_Input
   ): DomainSet
-  deleteDomainSet(identity: DomainSetID_Input!): DomainSetID
+  deleteDomainSet(projectId: ID!, identity: DomainSetID_Input!): DomainSetID
 
   #########################################
   # Exit mutations
   #########################################
   createExit(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ExitATTR_Input,
@@ -232,17 +243,19 @@ type Mutation {
     relations: ExitREL_Input
   ): Exit
   updateExit(
+    projectId: ID!,
     identity: ExitID_Input!,
     attributes: ExitATTR_Input,
     parameters: [Parameter_Input],
     relations: ExitREL_Input
   ): Exit
-  deleteExit(identity: ExitID_Input!): ExitID
+  deleteExit(projectId: ID!, identity: ExitID_Input!): ExitID
 
   #########################################
   # Feedback mutations
   #########################################
   createFeedback(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: FeedbackATTR_Input,
@@ -250,17 +263,19 @@ type Mutation {
     relations: FeedbackREL_Input
   ): Feedback
   updateFeedback(
+    projectId: ID!,
     identity: FeedbackID_Input!,
     attributes: FeedbackATTR_Input,
     parameters: [Parameter_Input],
     relations: FeedbackREL_Input
   ): Feedback
-  deleteFeedback(identity: FeedbackID_Input!): FeedbackID
+  deleteFeedback(projectId: ID!, identity: FeedbackID_Input!): FeedbackID
 
   #########################################
   # Function mutations
   #########################################
   createFunction(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: FunctionATTR_Input,
@@ -268,17 +283,19 @@ type Mutation {
     relations: FunctionREL_Input
   ): Function
   updateFunction(
+    projectId: ID!,
     identity: FunctionID_Input!,
     attributes: FunctionATTR_Input,
     parameters: [Parameter_Input],
     relations: FunctionREL_Input
   ): Function
-  deleteFunction(identity: FunctionID_Input!): FunctionID
+  deleteFunction(projectId: ID!, identity: FunctionID_Input!): FunctionID
 
   #########################################
   # Hazard mutations
   #########################################
   createHazard(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: HazardATTR_Input,
@@ -286,17 +303,19 @@ type Mutation {
     relations: HazardREL_Input
   ): Hazard
   updateHazard(
+    projectId: ID!,
     identity: HazardID_Input!,
     attributes: HazardATTR_Input,
     parameters: [Parameter_Input],
     relations: HazardREL_Input
   ): Hazard
-  deleteHazard(identity: HazardID_Input!): HazardID
+  deleteHazard(projectId: ID!, identity: HazardID_Input!): HazardID
 
   #########################################
   # Interface mutations
   #########################################
   createInterface(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: InterfaceATTR_Input,
@@ -304,17 +323,19 @@ type Mutation {
     relations: InterfaceREL_Input
   ): Interface
   updateInterface(
+    projectId: ID!,
     identity: InterfaceID_Input!,
     attributes: InterfaceATTR_Input,
     parameters: [Parameter_Input],
     relations: InterfaceREL_Input
   ): Interface
-  deleteInterface(identity: InterfaceID_Input!): InterfaceID
+  deleteInterface(projectId: ID!, identity: InterfaceID_Input!): InterfaceID
 
   #########################################
   # Item mutations
   #########################################
   createItem(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ItemATTR_Input,
@@ -322,17 +343,19 @@ type Mutation {
     relations: ItemREL_Input
   ): Item
   updateItem(
+    projectId: ID!,
     identity: ItemID_Input!,
     attributes: ItemATTR_Input,
     parameters: [Parameter_Input],
     relations: ItemREL_Input
   ): Item
-  deleteItem(identity: ItemID_Input!): ItemID
+  deleteItem(projectId: ID!, identity: ItemID_Input!): ItemID
 
   #########################################
   # Link mutations
   #########################################
   createLink(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: LinkATTR_Input,
@@ -340,17 +363,19 @@ type Mutation {
     relations: LinkREL_Input
   ): Link
   updateLink(
+    projectId: ID!,
     identity: LinkID_Input!,
     attributes: LinkATTR_Input,
     parameters: [Parameter_Input],
     relations: LinkREL_Input
   ): Link
-  deleteLink(identity: LinkID_Input!): LinkID
+  deleteLink(projectId: ID!, identity: LinkID_Input!): LinkID
 
   #########################################
   # Loss mutations
   #########################################
   createLoss(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: LossATTR_Input,
@@ -358,17 +383,19 @@ type Mutation {
     relations: LossREL_Input
   ): Loss
   updateLoss(
+    projectId: ID!,
     identity: LossID_Input!,
     attributes: LossATTR_Input,
     parameters: [Parameter_Input],
     relations: LossREL_Input
   ): Loss
-  deleteLoss(identity: LossID_Input!): LossID
+  deleteLoss(projectId: ID!, identity: LossID_Input!): LossID
 
   #########################################
   # LossScenario mutations
   #########################################
   createLossScenario(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: LossScenarioATTR_Input,
@@ -376,17 +403,19 @@ type Mutation {
     relations: LossScenarioREL_Input
   ): LossScenario
   updateLossScenario(
+    projectId: ID!,
     identity: LossScenarioID_Input!,
     attributes: LossScenarioATTR_Input,
     parameters: [Parameter_Input],
     relations: LossScenarioREL_Input
   ): LossScenario
-  deleteLossScenario(identity: LossScenarioID_Input!): LossScenarioID
+  deleteLossScenario(projectId: ID!, identity: LossScenarioID_Input!): LossScenarioID
 
   #########################################
   # Requirement mutations
   #########################################
   createRequirement(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: RequirementATTR_Input,
@@ -394,17 +423,19 @@ type Mutation {
     relations: RequirementREL_Input
   ): Requirement
   updateRequirement(
+    projectId: ID!,
     identity: RequirementID_Input!,
     attributes: RequirementATTR_Input,
     parameters: [Parameter_Input],
     relations: RequirementREL_Input
   ): Requirement
-  deleteRequirement(identity: RequirementID_Input!): RequirementID
+  deleteRequirement(projectId: ID!, identity: RequirementID_Input!): RequirementID
 
   #########################################
   # ResilientMode mutations
   #########################################
   createResilientMode(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ResilientModeATTR_Input,
@@ -412,17 +443,19 @@ type Mutation {
     relations: ResilientModeREL_Input
   ): ResilientMode
   updateResilientMode(
+    projectId: ID!,
     identity: ResilientModeID_Input!,
     attributes: ResilientModeATTR_Input,
     parameters: [Parameter_Input],
     relations: ResilientModeREL_Input
   ): ResilientMode
-  deleteResilientMode(identity: ResilientModeID_Input!): ResilientModeID
+  deleteResilientMode(projectId: ID!, identity: ResilientModeID_Input!): ResilientModeID
 
   #########################################
   # Resource mutations
   #########################################
   createResource(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: ResourceATTR_Input,
@@ -430,17 +463,19 @@ type Mutation {
     relations: ResourceREL_Input
   ): Resource
   updateResource(
+    projectId: ID!,
     identity: ResourceID_Input!,
     attributes: ResourceATTR_Input,
     parameters: [Parameter_Input],
     relations: ResourceREL_Input
   ): Resource
-  deleteResource(identity: ResourceID_Input!): ResourceID
+  deleteResource(projectId: ID!, identity: ResourceID_Input!): ResourceID
 
   #########################################
   # UnsafeAction mutations
   #########################################
   createUnsafeAction(
+    projectId: ID!,
     name: String!,
     number: String!,
     attributes: UnsafeActionATTR_Input,
@@ -448,12 +483,13 @@ type Mutation {
     relations: UnsafeActionREL_Input
   ): UnsafeAction
   updateUnsafeAction(
+    projectId: ID!,
     identity: UnsafeActionID_Input!,
     attributes: UnsafeActionATTR_Input,
     parameters: [Parameter_Input],
     relations: UnsafeActionREL_Input
   ): UnsafeAction
-  deleteUnsafeAction(identity: UnsafeActionID_Input!): UnsafeActionID
+  deleteUnsafeAction(projectId: ID!, identity: UnsafeActionID_Input!): UnsafeActionID
 
 }
 #########################################
