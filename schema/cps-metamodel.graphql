@@ -108,7 +108,7 @@ type Mutation {
     description: String,
     version: String
   ): Project
-	# delete project and all associated Entities
+  # delete project and all associated Entities
   deleteProject(id: ID!): Project
 
   #########################################

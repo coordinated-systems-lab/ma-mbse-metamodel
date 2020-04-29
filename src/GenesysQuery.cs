@@ -345,7 +345,7 @@ namespace genesys_graphql
             schemaFile.WriteLine("    description: String,");
             schemaFile.WriteLine("    version: String");
             schemaFile.WriteLine("  ): Project");
-            schemaFile.WriteLine("	# delete project and all associated Entities");
+            schemaFile.WriteLine("  # delete project and all associated Entities");
             schemaFile.WriteLine("  deleteProject(id: ID!): Project");
             schemaFile.WriteLine("");
 
