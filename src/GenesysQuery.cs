@@ -301,13 +301,20 @@ namespace genesys_graphql
 
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type Query {");
-            schemaFile.WriteLine("  # List of Projects");
+            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine("  List of Projects");
+            schemaFile.WriteLine(@"""""""");
             schemaFile.WriteLine("  cpsProjects: [Project]");
-            schemaFile.WriteLine("  # System Model for: '" + facilityName + "' Facility");
+
+            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine("  System Model for: '" + facilityName + "' Facility");
+            schemaFile.WriteLine(@"""""""");
             schemaFile.WriteLine("  cpsSystemModel(projectId: ID!): CPSsystemModel");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type CPSsystemModel {");
-            schemaFile.WriteLine("  # The project identity.");
+            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine("  The project identity.");
+            schemaFile.WriteLine(@"""""""");
             schemaFile.WriteLine("  project: Project");
             schemaFile.WriteLine("");
 
@@ -327,7 +334,9 @@ namespace genesys_graphql
                 schemaFile.WriteLine("");
             }
             // Output call Structure
-            schemaFile.WriteLine("  # recursive call structure (select, parallel, loop, etc.) for each function");
+            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine("  recursive call structure (select, parallel, loop, etc.) for each function");
+            schemaFile.WriteLine(@"""""""");
             schemaFile.WriteLine("  callStructure: [CallStructure]");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("");
@@ -345,7 +354,11 @@ namespace genesys_graphql
             schemaFile.WriteLine("    description: String,");
             schemaFile.WriteLine("    version: String");
             schemaFile.WriteLine("  ): Project");
-            schemaFile.WriteLine("  # delete project and all associated Entities");
+
+            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine("  Delete project and all associated Entities");
+            schemaFile.WriteLine(@"""""""");
+
             schemaFile.WriteLine("  deleteProject(id: ID!): Project");
             schemaFile.WriteLine("");
 
@@ -1159,22 +1172,30 @@ namespace genesys_graphql
             int start = 0, margin = 80, end;
             var lines = new List<string>();
             text = Regex.Replace(text, @"\s", " ").Trim();
+            // replace any \ in comments with /
+            text = Regex.Replace(text, @"\\", "/").Trim();
 
-            while ((end = start + margin) < text.Length)
+            if (text.Length > 0)
             {
-                while (text[end] != ' ' && end > start)
-                    end -= 1;
+                lines.Add(@"""""""");
+                while ((end = start + margin) < text.Length)
+                {
+                    while (text[end] != ' ' && end > start)
+                        end -= 1;
 
-                if (end == start)
-                    end = start + margin;
+                    if (end == start)
+                        end = start + margin;
 
-                lines.Add("# " + text.Substring(start, end - start));
-                start = end + 1;
+                    lines.Add(text.Substring(start, end - start));
+                    start = end + 1;
+                }
+
+                if (start < text.Length)
+                    lines.Add(text.Substring(start));
+
+                lines.Add(@"""""""");
+
             }
-
-            if (start < text.Length)
-                lines.Add("# " + text.Substring(start));
-
             return lines;
         }
     }
