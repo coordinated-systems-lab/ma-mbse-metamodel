@@ -301,20 +301,20 @@ namespace genesys_graphql
 
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type Query {");
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  List of Projects");
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  cpsProjects: [Project]");
 
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  System Model for: '" + facilityName + "' Facility");
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  cpsSystemModel(projectId: ID!): CPSsystemModel");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("type CPSsystemModel {");
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  The project identity.");
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  project: Project");
             schemaFile.WriteLine("");
 
@@ -334,9 +334,9 @@ namespace genesys_graphql
                 schemaFile.WriteLine("");
             }
             // Output call Structure
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  recursive call structure (select, parallel, loop, etc.) for each function");
-            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  callStructure: [CallStructure]");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("");
@@ -344,52 +344,27 @@ namespace genesys_graphql
 
             //Output Mutations
             schemaFile.WriteLine("type Mutation {");
-            schemaFile.WriteLine("  #########################################");
-            schemaFile.WriteLine("  # Project mutations");
-            schemaFile.WriteLine("  #########################################");
-            schemaFile.WriteLine("  createProject(name: String!, description: String, version: String): Project");
-            schemaFile.WriteLine("  updateProject(");
-            schemaFile.WriteLine("    id: ID!,");
-            schemaFile.WriteLine("    name: String,");
-            schemaFile.WriteLine("    description: String,");
-            schemaFile.WriteLine("    version: String");
-            schemaFile.WriteLine("  ): Project");
-
-            schemaFile.WriteLine(@"""""""");
-            schemaFile.WriteLine("  Delete project and all associated Entities");
-            schemaFile.WriteLine(@"""""""");
-
-            schemaFile.WriteLine("  deleteProject(id: ID!): Project");
+            schemaFile.WriteLine(@"  """"""");
+            schemaFile.WriteLine("  Mutate Project");
+            schemaFile.WriteLine(@"  """"""");
+            schemaFile.WriteLine("  cpsProject(project: Project_Input): Project");
+            schemaFile.WriteLine(@"  """"""");
+            schemaFile.WriteLine("  Mutate CPS System Model");
+            schemaFile.WriteLine(@"  """"""");
+            schemaFile.WriteLine("  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSSystemModel");
+            schemaFile.WriteLine("}");
             schemaFile.WriteLine("");
 
+            //Sytem Model input for mutation
+            schemaFile.WriteLine("input CPSsystemModel_Input {");
             foreach (String entity in sortedEntityDefinitionList)
             {
                 IEntityDefinition entityDefinition = schema.GetEntityDefinition(entity);
-
-                schemaFile.WriteLine("  #########################################");
-                schemaFile.WriteLine("  # " + entityDefinition.Name + " mutations");
-                schemaFile.WriteLine("  #########################################");
-                schemaFile.WriteLine("  create" + entityDefinition.Name + "(");
-                schemaFile.WriteLine("    projectId: ID!,");
-                schemaFile.WriteLine("    name: String!,");
-                schemaFile.WriteLine("    number: String!,");
-                schemaFile.WriteLine("    attributes: " + entityDefinition.Name + "ATTR_Input,");
-                schemaFile.WriteLine("    parameters: [Parameter_Input],");
-                schemaFile.WriteLine("    relations: " + entityDefinition.Name + "REL_Input");
-                schemaFile.WriteLine("  ): " + entityDefinition.Name);
-
-                schemaFile.WriteLine("  update" + entityDefinition.Name + "(");
-                schemaFile.WriteLine("    projectId: ID!,");
-                schemaFile.WriteLine("    identity: " + entityDefinition.Name + "ID_Input!,");
-                schemaFile.WriteLine("    attributes: " + entityDefinition.Name + "ATTR_Input,");
-                schemaFile.WriteLine("    parameters: [Parameter_Input],");
-                schemaFile.WriteLine("    relations: " + entityDefinition.Name + "REL_Input");
-                schemaFile.WriteLine("  ): " + entityDefinition.Name);
-
-                schemaFile.WriteLine("  delete" + entityDefinition.Name + "(projectId: ID!, identity: " + entityDefinition.Name + "ID_Input!): " + entityDefinition.Name + "ID");
-                schemaFile.WriteLine("");
+                schemaFile.WriteLine("  " + Char.ToLower(entityDefinition.Name[0]) + entityDefinition.Name.Substring(1) +
+                    ": [" + entityDefinition.Name + "_Input]");
             }
             schemaFile.WriteLine("}");
+            schemaFile.WriteLine("");
 
 
             schemaFile.WriteLine("#########################################");
@@ -398,6 +373,15 @@ namespace genesys_graphql
             // Output Project Definition
             schemaFile.WriteLine("type Project {");
             schemaFile.WriteLine("  id: ID!");
+            schemaFile.WriteLine("  name: String!");
+            schemaFile.WriteLine("  description: String");
+            schemaFile.WriteLine("  version: String");
+            schemaFile.WriteLine("}");
+
+            schemaFile.WriteLine("# for mutations");
+            schemaFile.WriteLine("input Project_Input {");
+            schemaFile.WriteLine("  operation: MutationOperation!");
+            schemaFile.WriteLine("  id: ID # autogenerated on Create, required for Update / Delete");
             schemaFile.WriteLine("  name: String!");
             schemaFile.WriteLine("  description: String");
             schemaFile.WriteLine("  version: String");
@@ -426,10 +410,13 @@ namespace genesys_graphql
             schemaFile.WriteLine("  units: String");
             schemaFile.WriteLine("}");
 
-            schemaFile.WriteLine("# Mutations for List items of an Entity (Parameters, Relations) include an 'instance' operation.");
-            schemaFile.WriteLine("## NOTE: when 'creating' an Entity, all associated List item instances must be set to 'Create'");
-            schemaFile.WriteLine("##       when 'updating' an Entity, only include associated List items to be 'Created', 'Updated', or 'Deleted'");
-            schemaFile.WriteLine("##       when 'deleting' an Entity, all associated List items are automatically deleted");
+            schemaFile.WriteLine(@"""""""");
+            schemaFile.WriteLine("Mutations for List items of an Entity (Parameters, Relations) include an 'instance' operation.");
+            schemaFile.WriteLine("NOTE: when 'creating' an Entity, all associated List item instances must be set to 'Create'");
+            schemaFile.WriteLine("      when 'updating' an Entity, only include associated List items to be 'Created', 'Updated', or 'Deleted'");
+            schemaFile.WriteLine("      when 'deleting' an Entity, all associated List items are automatically deleted");
+            schemaFile.WriteLine(@"""""""");
+
             schemaFile.WriteLine("enum MutationOperation");
             schemaFile.WriteLine("{");
             schemaFile.WriteLine("  Create");
@@ -451,6 +438,15 @@ namespace genesys_graphql
                 schemaFile.WriteLine("  relations: " + entityDefinition.Name + "REL");
                 schemaFile.WriteLine("}");
 
+                schemaFile.WriteLine("# for mutations");
+                schemaFile.WriteLine("input " + entityDefinition.Name + " {");
+                schemaFile.WriteLine("  operation: MutationOperation!");
+                schemaFile.WriteLine("  identity: " + entityDefinition.Name + "ID_Input!");
+                schemaFile.WriteLine("  attributes: " + entityDefinition.Name + "ATTR_Input");
+                schemaFile.WriteLine("  parameters: [Parameter_Input]");
+                schemaFile.WriteLine("  relations: " + entityDefinition.Name + "REL_Input");
+                schemaFile.WriteLine("}");
+
                 // Output entity identity
                 schemaFile.WriteLine("type " + entityDefinition.Name + "ID {");
                 schemaFile.WriteLine("  id: ID!");
@@ -461,7 +457,7 @@ namespace genesys_graphql
                 // Output entity identity as input for mutations
                 schemaFile.WriteLine("# for mutations");
                 schemaFile.WriteLine("input " + entityDefinition.Name + "ID_Input {");
-                schemaFile.WriteLine("  id: ID!");
+                schemaFile.WriteLine("  id: ID # autogenerated on Create, required for Update / Delete");
                 schemaFile.WriteLine("  name: String!");
                 schemaFile.WriteLine("  number: String!");
                 schemaFile.WriteLine("}");

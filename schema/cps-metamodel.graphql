@@ -3,19 +3,19 @@ schema {
   mutation: Mutation
 }
 type Query {
-"""
+  """
   List of Projects
-"""
+  """
   cpsProjects: [Project]
-"""
+  """
   System Model for: 'Mission Aware' Facility
-"""
+  """
   cpsSystemModel(projectId: ID!): CPSsystemModel
 }
 type CPSsystemModel {
-"""
+  """
   The project identity.
-"""
+  """
   project: Project
 
   """
@@ -137,414 +137,58 @@ type CPSsystemModel {
   """
   unsafeAction: [UnsafeAction]
 
-"""
+  """
   recursive call structure (select, parallel, loop, etc.) for each function
-"""
+  """
   callStructure: [CallStructure]
 }
 
 type Mutation {
-  #########################################
-  # Project mutations
-  #########################################
-  createProject(name: String!, description: String, version: String): Project
-  updateProject(
-    id: ID!,
-    name: String,
-    description: String,
-    version: String
-  ): Project
-"""
-  Delete project and all associated Entities
-"""
-  deleteProject(id: ID!): Project
-
-  #########################################
-  # AttackVector mutations
-  #########################################
-  createAttackVector(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: AttackVectorATTR_Input,
-    parameters: [Parameter_Input],
-    relations: AttackVectorREL_Input
-  ): AttackVector
-  updateAttackVector(
-    projectId: ID!,
-    identity: AttackVectorID_Input!,
-    attributes: AttackVectorATTR_Input,
-    parameters: [Parameter_Input],
-    relations: AttackVectorREL_Input
-  ): AttackVector
-  deleteAttackVector(projectId: ID!, identity: AttackVectorID_Input!): AttackVectorID
-
-  #########################################
-  # Component mutations
-  #########################################
-  createComponent(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ComponentATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ComponentREL_Input
-  ): Component
-  updateComponent(
-    projectId: ID!,
-    identity: ComponentID_Input!,
-    attributes: ComponentATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ComponentREL_Input
-  ): Component
-  deleteComponent(projectId: ID!, identity: ComponentID_Input!): ComponentID
-
-  #########################################
-  # Context mutations
-  #########################################
-  createContext(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ContextATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ContextREL_Input
-  ): Context
-  updateContext(
-    projectId: ID!,
-    identity: ContextID_Input!,
-    attributes: ContextATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ContextREL_Input
-  ): Context
-  deleteContext(projectId: ID!, identity: ContextID_Input!): ContextID
-
-  #########################################
-  # ControlAction mutations
-  #########################################
-  createControlAction(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ControlActionATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ControlActionREL_Input
-  ): ControlAction
-  updateControlAction(
-    projectId: ID!,
-    identity: ControlActionID_Input!,
-    attributes: ControlActionATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ControlActionREL_Input
-  ): ControlAction
-  deleteControlAction(projectId: ID!, identity: ControlActionID_Input!): ControlActionID
-
-  #########################################
-  # Document mutations
-  #########################################
-  createDocument(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: DocumentATTR_Input,
-    parameters: [Parameter_Input],
-    relations: DocumentREL_Input
-  ): Document
-  updateDocument(
-    projectId: ID!,
-    identity: DocumentID_Input!,
-    attributes: DocumentATTR_Input,
-    parameters: [Parameter_Input],
-    relations: DocumentREL_Input
-  ): Document
-  deleteDocument(projectId: ID!, identity: DocumentID_Input!): DocumentID
-
-  #########################################
-  # DomainSet mutations
-  #########################################
-  createDomainSet(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: DomainSetATTR_Input,
-    parameters: [Parameter_Input],
-    relations: DomainSetREL_Input
-  ): DomainSet
-  updateDomainSet(
-    projectId: ID!,
-    identity: DomainSetID_Input!,
-    attributes: DomainSetATTR_Input,
-    parameters: [Parameter_Input],
-    relations: DomainSetREL_Input
-  ): DomainSet
-  deleteDomainSet(projectId: ID!, identity: DomainSetID_Input!): DomainSetID
-
-  #########################################
-  # Exit mutations
-  #########################################
-  createExit(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ExitATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ExitREL_Input
-  ): Exit
-  updateExit(
-    projectId: ID!,
-    identity: ExitID_Input!,
-    attributes: ExitATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ExitREL_Input
-  ): Exit
-  deleteExit(projectId: ID!, identity: ExitID_Input!): ExitID
-
-  #########################################
-  # Feedback mutations
-  #########################################
-  createFeedback(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: FeedbackATTR_Input,
-    parameters: [Parameter_Input],
-    relations: FeedbackREL_Input
-  ): Feedback
-  updateFeedback(
-    projectId: ID!,
-    identity: FeedbackID_Input!,
-    attributes: FeedbackATTR_Input,
-    parameters: [Parameter_Input],
-    relations: FeedbackREL_Input
-  ): Feedback
-  deleteFeedback(projectId: ID!, identity: FeedbackID_Input!): FeedbackID
-
-  #########################################
-  # Function mutations
-  #########################################
-  createFunction(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: FunctionATTR_Input,
-    parameters: [Parameter_Input],
-    relations: FunctionREL_Input
-  ): Function
-  updateFunction(
-    projectId: ID!,
-    identity: FunctionID_Input!,
-    attributes: FunctionATTR_Input,
-    parameters: [Parameter_Input],
-    relations: FunctionREL_Input
-  ): Function
-  deleteFunction(projectId: ID!, identity: FunctionID_Input!): FunctionID
-
-  #########################################
-  # Hazard mutations
-  #########################################
-  createHazard(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: HazardATTR_Input,
-    parameters: [Parameter_Input],
-    relations: HazardREL_Input
-  ): Hazard
-  updateHazard(
-    projectId: ID!,
-    identity: HazardID_Input!,
-    attributes: HazardATTR_Input,
-    parameters: [Parameter_Input],
-    relations: HazardREL_Input
-  ): Hazard
-  deleteHazard(projectId: ID!, identity: HazardID_Input!): HazardID
-
-  #########################################
-  # Interface mutations
-  #########################################
-  createInterface(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: InterfaceATTR_Input,
-    parameters: [Parameter_Input],
-    relations: InterfaceREL_Input
-  ): Interface
-  updateInterface(
-    projectId: ID!,
-    identity: InterfaceID_Input!,
-    attributes: InterfaceATTR_Input,
-    parameters: [Parameter_Input],
-    relations: InterfaceREL_Input
-  ): Interface
-  deleteInterface(projectId: ID!, identity: InterfaceID_Input!): InterfaceID
-
-  #########################################
-  # Item mutations
-  #########################################
-  createItem(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ItemATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ItemREL_Input
-  ): Item
-  updateItem(
-    projectId: ID!,
-    identity: ItemID_Input!,
-    attributes: ItemATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ItemREL_Input
-  ): Item
-  deleteItem(projectId: ID!, identity: ItemID_Input!): ItemID
-
-  #########################################
-  # Link mutations
-  #########################################
-  createLink(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: LinkATTR_Input,
-    parameters: [Parameter_Input],
-    relations: LinkREL_Input
-  ): Link
-  updateLink(
-    projectId: ID!,
-    identity: LinkID_Input!,
-    attributes: LinkATTR_Input,
-    parameters: [Parameter_Input],
-    relations: LinkREL_Input
-  ): Link
-  deleteLink(projectId: ID!, identity: LinkID_Input!): LinkID
-
-  #########################################
-  # Loss mutations
-  #########################################
-  createLoss(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: LossATTR_Input,
-    parameters: [Parameter_Input],
-    relations: LossREL_Input
-  ): Loss
-  updateLoss(
-    projectId: ID!,
-    identity: LossID_Input!,
-    attributes: LossATTR_Input,
-    parameters: [Parameter_Input],
-    relations: LossREL_Input
-  ): Loss
-  deleteLoss(projectId: ID!, identity: LossID_Input!): LossID
-
-  #########################################
-  # LossScenario mutations
-  #########################################
-  createLossScenario(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: LossScenarioATTR_Input,
-    parameters: [Parameter_Input],
-    relations: LossScenarioREL_Input
-  ): LossScenario
-  updateLossScenario(
-    projectId: ID!,
-    identity: LossScenarioID_Input!,
-    attributes: LossScenarioATTR_Input,
-    parameters: [Parameter_Input],
-    relations: LossScenarioREL_Input
-  ): LossScenario
-  deleteLossScenario(projectId: ID!, identity: LossScenarioID_Input!): LossScenarioID
-
-  #########################################
-  # Requirement mutations
-  #########################################
-  createRequirement(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: RequirementATTR_Input,
-    parameters: [Parameter_Input],
-    relations: RequirementREL_Input
-  ): Requirement
-  updateRequirement(
-    projectId: ID!,
-    identity: RequirementID_Input!,
-    attributes: RequirementATTR_Input,
-    parameters: [Parameter_Input],
-    relations: RequirementREL_Input
-  ): Requirement
-  deleteRequirement(projectId: ID!, identity: RequirementID_Input!): RequirementID
-
-  #########################################
-  # ResilientMode mutations
-  #########################################
-  createResilientMode(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ResilientModeATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ResilientModeREL_Input
-  ): ResilientMode
-  updateResilientMode(
-    projectId: ID!,
-    identity: ResilientModeID_Input!,
-    attributes: ResilientModeATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ResilientModeREL_Input
-  ): ResilientMode
-  deleteResilientMode(projectId: ID!, identity: ResilientModeID_Input!): ResilientModeID
-
-  #########################################
-  # Resource mutations
-  #########################################
-  createResource(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: ResourceATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ResourceREL_Input
-  ): Resource
-  updateResource(
-    projectId: ID!,
-    identity: ResourceID_Input!,
-    attributes: ResourceATTR_Input,
-    parameters: [Parameter_Input],
-    relations: ResourceREL_Input
-  ): Resource
-  deleteResource(projectId: ID!, identity: ResourceID_Input!): ResourceID
-
-  #########################################
-  # UnsafeAction mutations
-  #########################################
-  createUnsafeAction(
-    projectId: ID!,
-    name: String!,
-    number: String!,
-    attributes: UnsafeActionATTR_Input,
-    parameters: [Parameter_Input],
-    relations: UnsafeActionREL_Input
-  ): UnsafeAction
-  updateUnsafeAction(
-    projectId: ID!,
-    identity: UnsafeActionID_Input!,
-    attributes: UnsafeActionATTR_Input,
-    parameters: [Parameter_Input],
-    relations: UnsafeActionREL_Input
-  ): UnsafeAction
-  deleteUnsafeAction(projectId: ID!, identity: UnsafeActionID_Input!): UnsafeActionID
-
+  """
+  Mutate Project
+  """
+  cpsProject(project: Project_Input): Project
+  """
+  Mutate CPS System Model
+  """
+  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSSystemModel
 }
+
+input CPSsystemModel_Input {
+  attackVector: [AttackVector_Input]
+  component: [Component_Input]
+  context: [Context_Input]
+  controlAction: [ControlAction_Input]
+  document: [Document_Input]
+  domainSet: [DomainSet_Input]
+  exit: [Exit_Input]
+  feedback: [Feedback_Input]
+  function: [Function_Input]
+  hazard: [Hazard_Input]
+  interface: [Interface_Input]
+  item: [Item_Input]
+  link: [Link_Input]
+  loss: [Loss_Input]
+  lossScenario: [LossScenario_Input]
+  requirement: [Requirement_Input]
+  resilientMode: [ResilientMode_Input]
+  resource: [Resource_Input]
+  unsafeAction: [UnsafeAction_Input]
+}
+
 #########################################
 # Common Definitions
 #########################################
 type Project {
   id: ID!
+  name: String!
+  description: String
+  version: String
+}
+# for mutations
+input Project_Input {
+  operation: MutationOperation!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   description: String
   version: String
@@ -568,10 +212,12 @@ input Parameter_Input {
   observed: String
   units: String
 }
-# Mutations for List items of an Entity (Parameters, Relations) include an 'instance' operation.
-## NOTE: when 'creating' an Entity, all associated List item instances must be set to 'Create'
-##       when 'updating' an Entity, only include associated List items to be 'Created', 'Updated', or 'Deleted'
-##       when 'deleting' an Entity, all associated List items are automatically deleted
+"""
+Mutations for List items of an Entity (Parameters, Relations) include an 'instance' operation.
+NOTE: when 'creating' an Entity, all associated List item instances must be set to 'Create'
+      when 'updating' an Entity, only include associated List items to be 'Created', 'Updated', or 'Deleted'
+      when 'deleting' an Entity, all associated List items are automatically deleted
+"""
 enum MutationOperation
 {
   Create
@@ -587,6 +233,14 @@ type AttackVector {
   parameters: [Parameter]
   relations: AttackVectorREL
 }
+# for mutations
+input AttackVector {
+  operation: MutationOperation!
+  identity: AttackVectorID_Input!
+  attributes: AttackVectorATTR_Input
+  parameters: [Parameter_Input]
+  relations: AttackVectorREL_Input
+}
 type AttackVectorID {
   id: ID!
   name: String!
@@ -594,7 +248,7 @@ type AttackVectorID {
 }
 # for mutations
 input AttackVectorID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -747,6 +401,14 @@ type Component {
   parameters: [Parameter]
   relations: ComponentREL
 }
+# for mutations
+input Component {
+  operation: MutationOperation!
+  identity: ComponentID_Input!
+  attributes: ComponentATTR_Input
+  parameters: [Parameter_Input]
+  relations: ComponentREL_Input
+}
 type ComponentID {
   id: ID!
   name: String!
@@ -754,7 +416,7 @@ type ComponentID {
 }
 # for mutations
 input ComponentID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -1224,6 +886,14 @@ type Context {
   parameters: [Parameter]
   relations: ContextREL
 }
+# for mutations
+input Context {
+  operation: MutationOperation!
+  identity: ContextID_Input!
+  attributes: ContextATTR_Input
+  parameters: [Parameter_Input]
+  relations: ContextREL_Input
+}
 type ContextID {
   id: ID!
   name: String!
@@ -1231,7 +901,7 @@ type ContextID {
 }
 # for mutations
 input ContextID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -1510,6 +1180,14 @@ type ControlAction {
   parameters: [Parameter]
   relations: ControlActionREL
 }
+# for mutations
+input ControlAction {
+  operation: MutationOperation!
+  identity: ControlActionID_Input!
+  attributes: ControlActionATTR_Input
+  parameters: [Parameter_Input]
+  relations: ControlActionREL_Input
+}
 type ControlActionID {
   id: ID!
   name: String!
@@ -1517,7 +1195,7 @@ type ControlActionID {
 }
 # for mutations
 input ControlActionID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -1814,6 +1492,14 @@ type Document {
   parameters: [Parameter]
   relations: DocumentREL
 }
+# for mutations
+input Document {
+  operation: MutationOperation!
+  identity: DocumentID_Input!
+  attributes: DocumentATTR_Input
+  parameters: [Parameter_Input]
+  relations: DocumentREL_Input
+}
 type DocumentID {
   id: ID!
   name: String!
@@ -1821,7 +1507,7 @@ type DocumentID {
 }
 # for mutations
 input DocumentID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -2104,6 +1790,14 @@ type DomainSet {
   parameters: [Parameter]
   relations: DomainSetREL
 }
+# for mutations
+input DomainSet {
+  operation: MutationOperation!
+  identity: DomainSetID_Input!
+  attributes: DomainSetATTR_Input
+  parameters: [Parameter_Input]
+  relations: DomainSetREL_Input
+}
 type DomainSetID {
   id: ID!
   name: String!
@@ -2111,7 +1805,7 @@ type DomainSetID {
 }
 # for mutations
 input DomainSetID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -2162,6 +1856,14 @@ type Exit {
   parameters: [Parameter]
   relations: ExitREL
 }
+# for mutations
+input Exit {
+  operation: MutationOperation!
+  identity: ExitID_Input!
+  attributes: ExitATTR_Input
+  parameters: [Parameter_Input]
+  relations: ExitREL_Input
+}
 type ExitID {
   id: ID!
   name: String!
@@ -2169,7 +1871,7 @@ type ExitID {
 }
 # for mutations
 input ExitID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -2213,6 +1915,14 @@ type Feedback {
   parameters: [Parameter]
   relations: FeedbackREL
 }
+# for mutations
+input Feedback {
+  operation: MutationOperation!
+  identity: FeedbackID_Input!
+  attributes: FeedbackATTR_Input
+  parameters: [Parameter_Input]
+  relations: FeedbackREL_Input
+}
 type FeedbackID {
   id: ID!
   name: String!
@@ -2220,7 +1930,7 @@ type FeedbackID {
 }
 # for mutations
 input FeedbackID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -2479,6 +2189,14 @@ type Function {
   parameters: [Parameter]
   relations: FunctionREL
 }
+# for mutations
+input Function {
+  operation: MutationOperation!
+  identity: FunctionID_Input!
+  attributes: FunctionATTR_Input
+  parameters: [Parameter_Input]
+  relations: FunctionREL_Input
+}
 type FunctionID {
   id: ID!
   name: String!
@@ -2486,7 +2204,7 @@ type FunctionID {
 }
 # for mutations
 input FunctionID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -2950,6 +2668,14 @@ type Hazard {
   parameters: [Parameter]
   relations: HazardREL
 }
+# for mutations
+input Hazard {
+  operation: MutationOperation!
+  identity: HazardID_Input!
+  attributes: HazardATTR_Input
+  parameters: [Parameter_Input]
+  relations: HazardREL_Input
+}
 type HazardID {
   id: ID!
   name: String!
@@ -2957,7 +2683,7 @@ type HazardID {
 }
 # for mutations
 input HazardID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -3041,6 +2767,14 @@ type Interface {
   parameters: [Parameter]
   relations: InterfaceREL
 }
+# for mutations
+input Interface {
+  operation: MutationOperation!
+  identity: InterfaceID_Input!
+  attributes: InterfaceATTR_Input
+  parameters: [Parameter_Input]
+  relations: InterfaceREL_Input
+}
 type InterfaceID {
   id: ID!
   name: String!
@@ -3048,7 +2782,7 @@ type InterfaceID {
 }
 # for mutations
 input InterfaceID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -3197,6 +2931,14 @@ type Item {
   parameters: [Parameter]
   relations: ItemREL
 }
+# for mutations
+input Item {
+  operation: MutationOperation!
+  identity: ItemID_Input!
+  attributes: ItemATTR_Input
+  parameters: [Parameter_Input]
+  relations: ItemREL_Input
+}
 type ItemID {
   id: ID!
   name: String!
@@ -3204,7 +2946,7 @@ type ItemID {
 }
 # for mutations
 input ItemID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -3463,6 +3205,14 @@ type Link {
   parameters: [Parameter]
   relations: LinkREL
 }
+# for mutations
+input Link {
+  operation: MutationOperation!
+  identity: LinkID_Input!
+  attributes: LinkATTR_Input
+  parameters: [Parameter_Input]
+  relations: LinkREL_Input
+}
 type LinkID {
   id: ID!
   name: String!
@@ -3470,7 +3220,7 @@ type LinkID {
 }
 # for mutations
 input LinkID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -3743,6 +3493,14 @@ type Loss {
   parameters: [Parameter]
   relations: LossREL
 }
+# for mutations
+input Loss {
+  operation: MutationOperation!
+  identity: LossID_Input!
+  attributes: LossATTR_Input
+  parameters: [Parameter_Input]
+  relations: LossREL_Input
+}
 type LossID {
   id: ID!
   name: String!
@@ -3750,7 +3508,7 @@ type LossID {
 }
 # for mutations
 input LossID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -3822,6 +3580,14 @@ type LossScenario {
   parameters: [Parameter]
   relations: LossScenarioREL
 }
+# for mutations
+input LossScenario {
+  operation: MutationOperation!
+  identity: LossScenarioID_Input!
+  attributes: LossScenarioATTR_Input
+  parameters: [Parameter_Input]
+  relations: LossScenarioREL_Input
+}
 type LossScenarioID {
   id: ID!
   name: String!
@@ -3829,7 +3595,7 @@ type LossScenarioID {
 }
 # for mutations
 input LossScenarioID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -4019,6 +3785,14 @@ type Requirement {
   parameters: [Parameter]
   relations: RequirementREL
 }
+# for mutations
+input Requirement {
+  operation: MutationOperation!
+  identity: RequirementID_Input!
+  attributes: RequirementATTR_Input
+  parameters: [Parameter_Input]
+  relations: RequirementREL_Input
+}
 type RequirementID {
   id: ID!
   name: String!
@@ -4026,7 +3800,7 @@ type RequirementID {
 }
 # for mutations
 input RequirementID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -4279,6 +4053,14 @@ type ResilientMode {
   parameters: [Parameter]
   relations: ResilientModeREL
 }
+# for mutations
+input ResilientMode {
+  operation: MutationOperation!
+  identity: ResilientModeID_Input!
+  attributes: ResilientModeATTR_Input
+  parameters: [Parameter_Input]
+  relations: ResilientModeREL_Input
+}
 type ResilientModeID {
   id: ID!
   name: String!
@@ -4286,7 +4068,7 @@ type ResilientModeID {
 }
 # for mutations
 input ResilientModeID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -4483,6 +4265,14 @@ type Resource {
   parameters: [Parameter]
   relations: ResourceREL
 }
+# for mutations
+input Resource {
+  operation: MutationOperation!
+  identity: ResourceID_Input!
+  attributes: ResourceATTR_Input
+  parameters: [Parameter_Input]
+  relations: ResourceREL_Input
+}
 type ResourceID {
   id: ID!
   name: String!
@@ -4490,7 +4280,7 @@ type ResourceID {
 }
 # for mutations
 input ResourceID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
@@ -4585,6 +4375,14 @@ type UnsafeAction {
   parameters: [Parameter]
   relations: UnsafeActionREL
 }
+# for mutations
+input UnsafeAction {
+  operation: MutationOperation!
+  identity: UnsafeActionID_Input!
+  attributes: UnsafeActionATTR_Input
+  parameters: [Parameter_Input]
+  relations: UnsafeActionREL_Input
+}
 type UnsafeActionID {
   id: ID!
   name: String!
@@ -4592,7 +4390,7 @@ type UnsafeActionID {
 }
 # for mutations
 input UnsafeActionID_Input {
-  id: ID!
+  id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
