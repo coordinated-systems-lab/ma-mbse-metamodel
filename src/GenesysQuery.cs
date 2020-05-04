@@ -351,7 +351,7 @@ namespace genesys_graphql
             schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  Mutate CPS System Model");
             schemaFile.WriteLine(@"  """"""");
-            schemaFile.WriteLine("  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSSystemModel");
+            schemaFile.WriteLine("  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSsystemModel");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("");
 

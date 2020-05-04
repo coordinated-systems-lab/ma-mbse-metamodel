@@ -151,7 +151,7 @@ type Mutation {
   """
   Mutate CPS System Model
   """
-  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSSystemModel
+  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSsystemModel
 }
 
 input CPSsystemModel_Input {
