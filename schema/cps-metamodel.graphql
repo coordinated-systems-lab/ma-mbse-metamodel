@@ -234,7 +234,7 @@ type AttackVector {
   relations: AttackVectorREL
 }
 # for mutations
-input AttackVector {
+input AttackVector_Input {
   operation: MutationOperation!
   identity: AttackVectorID_Input!
   attributes: AttackVectorATTR_Input
@@ -402,7 +402,7 @@ type Component {
   relations: ComponentREL
 }
 # for mutations
-input Component {
+input Component_Input {
   operation: MutationOperation!
   identity: ComponentID_Input!
   attributes: ComponentATTR_Input
@@ -887,7 +887,7 @@ type Context {
   relations: ContextREL
 }
 # for mutations
-input Context {
+input Context_Input {
   operation: MutationOperation!
   identity: ContextID_Input!
   attributes: ContextATTR_Input
@@ -1181,7 +1181,7 @@ type ControlAction {
   relations: ControlActionREL
 }
 # for mutations
-input ControlAction {
+input ControlAction_Input {
   operation: MutationOperation!
   identity: ControlActionID_Input!
   attributes: ControlActionATTR_Input
@@ -1493,7 +1493,7 @@ type Document {
   relations: DocumentREL
 }
 # for mutations
-input Document {
+input Document_Input {
   operation: MutationOperation!
   identity: DocumentID_Input!
   attributes: DocumentATTR_Input
@@ -1791,7 +1791,7 @@ type DomainSet {
   relations: DomainSetREL
 }
 # for mutations
-input DomainSet {
+input DomainSet_Input {
   operation: MutationOperation!
   identity: DomainSetID_Input!
   attributes: DomainSetATTR_Input
@@ -1857,7 +1857,7 @@ type Exit {
   relations: ExitREL
 }
 # for mutations
-input Exit {
+input Exit_Input {
   operation: MutationOperation!
   identity: ExitID_Input!
   attributes: ExitATTR_Input
@@ -1916,7 +1916,7 @@ type Feedback {
   relations: FeedbackREL
 }
 # for mutations
-input Feedback {
+input Feedback_Input {
   operation: MutationOperation!
   identity: FeedbackID_Input!
   attributes: FeedbackATTR_Input
@@ -2190,7 +2190,7 @@ type Function {
   relations: FunctionREL
 }
 # for mutations
-input Function {
+input Function_Input {
   operation: MutationOperation!
   identity: FunctionID_Input!
   attributes: FunctionATTR_Input
@@ -2669,7 +2669,7 @@ type Hazard {
   relations: HazardREL
 }
 # for mutations
-input Hazard {
+input Hazard_Input {
   operation: MutationOperation!
   identity: HazardID_Input!
   attributes: HazardATTR_Input
@@ -2768,7 +2768,7 @@ type Interface {
   relations: InterfaceREL
 }
 # for mutations
-input Interface {
+input Interface_Input {
   operation: MutationOperation!
   identity: InterfaceID_Input!
   attributes: InterfaceATTR_Input
@@ -2932,7 +2932,7 @@ type Item {
   relations: ItemREL
 }
 # for mutations
-input Item {
+input Item_Input {
   operation: MutationOperation!
   identity: ItemID_Input!
   attributes: ItemATTR_Input
@@ -3206,7 +3206,7 @@ type Link {
   relations: LinkREL
 }
 # for mutations
-input Link {
+input Link_Input {
   operation: MutationOperation!
   identity: LinkID_Input!
   attributes: LinkATTR_Input
@@ -3494,7 +3494,7 @@ type Loss {
   relations: LossREL
 }
 # for mutations
-input Loss {
+input Loss_Input {
   operation: MutationOperation!
   identity: LossID_Input!
   attributes: LossATTR_Input
@@ -3581,7 +3581,7 @@ type LossScenario {
   relations: LossScenarioREL
 }
 # for mutations
-input LossScenario {
+input LossScenario_Input {
   operation: MutationOperation!
   identity: LossScenarioID_Input!
   attributes: LossScenarioATTR_Input
@@ -3786,7 +3786,7 @@ type Requirement {
   relations: RequirementREL
 }
 # for mutations
-input Requirement {
+input Requirement_Input {
   operation: MutationOperation!
   identity: RequirementID_Input!
   attributes: RequirementATTR_Input
@@ -4054,7 +4054,7 @@ type ResilientMode {
   relations: ResilientModeREL
 }
 # for mutations
-input ResilientMode {
+input ResilientMode_Input {
   operation: MutationOperation!
   identity: ResilientModeID_Input!
   attributes: ResilientModeATTR_Input
@@ -4266,7 +4266,7 @@ type Resource {
   relations: ResourceREL
 }
 # for mutations
-input Resource {
+input Resource_Input {
   operation: MutationOperation!
   identity: ResourceID_Input!
   attributes: ResourceATTR_Input
@@ -4376,7 +4376,7 @@ type UnsafeAction {
   relations: UnsafeActionREL
 }
 # for mutations
-input UnsafeAction {
+input UnsafeAction_Input {
   operation: MutationOperation!
   identity: UnsafeActionID_Input!
   attributes: UnsafeActionATTR_Input

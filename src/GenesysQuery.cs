@@ -439,7 +439,7 @@ namespace genesys_graphql
                 schemaFile.WriteLine("}");
 
                 schemaFile.WriteLine("# for mutations");
-                schemaFile.WriteLine("input " + entityDefinition.Name + " {");
+                schemaFile.WriteLine("input " + entityDefinition.Name + "_Input {");
                 schemaFile.WriteLine("  operation: MutationOperation!");
                 schemaFile.WriteLine("  identity: " + entityDefinition.Name + "ID_Input!");
                 schemaFile.WriteLine("  attributes: " + entityDefinition.Name + "ATTR_Input");
