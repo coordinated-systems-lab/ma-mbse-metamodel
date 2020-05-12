@@ -1003,7 +1003,7 @@ namespace genesys_graphql
                     }
                     else
                     {
-                        String attributeString = attributeValue?.PlainText.Replace(Environment.NewLine, "::") ?? null;
+                        String attributeString = attributeValue?.PlainText.Replace(Environment.NewLine, "::").Replace(@"""", "'") ?? null;
                         dataFileLine += "".PadLeft(indent) + @"""" + attributeName +
                             @""": """ + attributeString + @"""";
                     }
