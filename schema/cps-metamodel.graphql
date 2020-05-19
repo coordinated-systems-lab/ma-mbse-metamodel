@@ -1754,6 +1754,7 @@ type Document_RefinesTarget {
 }
 type Document_ReportsOnTarget {
   interfaceTarget: InterfaceID
+  linkTarget: LinkID
 }
 type Document_TracedFromTarget {
   documentTarget: DocumentID
@@ -1781,6 +1782,7 @@ input Document_RefinesTarget_Input {
 input Document_ReportsOnTarget_Input {
   operation: MutationOperation!
   interfaceTarget: InterfaceID_Input
+  linkTarget: LinkID_Input
 }
 input Document_TracedFromTarget_Input {
   operation: MutationOperation!
@@ -2278,8 +2280,7 @@ type FunctionREL {
   allocatedTo: [Function_AllocatedToTarget]
 
   """
-  Based on identifies the originating requirement, capability, or activity that
-  this entity fulfills in whole or in part.
+  Based on identifies the needs that this entity fulfills in whole or in part.
   """
   basedOn: [Function_BasedOnTarget]
 
@@ -2511,8 +2512,8 @@ type Function_IsRecoveredByTarget {
 
 }
 type Function_ManagesTarget {
-  lossScenarioTarget: LossScenarioID
   resilientModeTarget: ResilientModeID
+  lossScenarioTarget: LossScenarioID
   """
   The management action type for the resilient mode.
   """
@@ -2629,8 +2630,8 @@ input Function_IsRecoveredByTarget_Input {
 }
 input Function_ManagesTarget_Input {
   operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
   resilientModeTarget: ResilientModeID_Input
+  lossScenarioTarget: LossScenarioID_Input
   actionType: Function_ManagesActionType
 }
 input Function_OutputsTarget_Input {
@@ -3346,6 +3347,12 @@ type LinkREL {
   isViolatedBy: [Link_IsViolatedByTarget]
 
   """
+  Reported by identifies the documentation entity of which the entity is the
+  primary subject.
+  """
+  reportedBy: [Link_ReportedByTarget]
+
+  """
   Serviced by identifies the processing unit that performs the interface function.
   """
   servicedBy: [Link_ServicedByTarget]
@@ -3372,6 +3379,7 @@ input LinkREL_Input {
   includedIn: [Link_IncludedInTarget_Input]
   includes: [Link_IncludesTarget_Input]
   isViolatedBy: [Link_IsViolatedByTarget_Input]
+  reportedBy: [Link_ReportedByTarget_Input]
   servicedBy: [Link_ServicedByTarget_Input]
   specifiedBy: [Link_SpecifiedByTarget_Input]
   transfers: [Link_TransfersTarget_Input]
@@ -3430,6 +3438,9 @@ enum Link_IsViolatedByMitigationType {
   Harden
   N_A
 }
+type Link_ReportedByTarget {
+  documentTarget: DocumentID
+}
 type Link_ServicedByTarget {
   functionTarget: FunctionID
 }
@@ -3479,6 +3490,10 @@ input Link_IsViolatedByTarget_Input {
   justification: String
   description: String
   mitigationType: Link_IsViolatedByMitigationType
+}
+input Link_ReportedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
 }
 input Link_ServicedByTarget_Input {
   operation: MutationOperation!
@@ -3741,8 +3756,8 @@ input LossScenarioREL_Input {
   managedBy: [LossScenario_ManagedByTarget_Input]
 }
 type LossScenario_DetectedByMonitoringTarget {
-  itemTarget: ItemID
   resourceTarget: ResourceID
+  itemTarget: ItemID
   componentTarget: ComponentID
   functionTarget: FunctionID
   linkTarget: LinkID
@@ -3787,8 +3802,8 @@ enum LossScenario_ManagedByActionType {
 # for mutations
 input LossScenario_DetectedByMonitoringTarget_Input {
   operation: MutationOperation!
-  itemTarget: ItemID_Input
   resourceTarget: ResourceID_Input
+  itemTarget: ItemID_Input
   componentTarget: ComponentID_Input
   functionTarget: FunctionID_Input
   linkTarget: LinkID_Input
@@ -3992,8 +4007,7 @@ input RequirementATTR_Input {
 }
 type RequirementREL {
   """
-  Basis of identifies the entities needed to fulfill one or more originating
-  requirements or operational activities.
+  Basis of identifies the entities that fulfill one or more needs.
   """
   basisOf: [Requirement_BasisOfTarget]
 
