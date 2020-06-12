@@ -6,11 +6,20 @@ type Query {
   """
   List of Projects
   """
-  cpsProjects: [Project]
+  cpsProjectsQuery: ProjectsResponse
   """
   System Model for: 'Mission Aware' Facility
   """
-  cpsSystemModel(projectId: ID!): CPSsystemModel
+  cpsSystemModelQuery(projectId: ID!): CPSsystemModelResponse
+}
+type ProjectsResponse {
+  status: ResponseStatus
+  projects: [Project]
+}
+type CPSsystemModelResponse
+{
+  status: ResponseStatus
+  cpsSystemModel: CPSsystemModel
 }
 type CPSsystemModel {
   """
@@ -25,6 +34,12 @@ type CPSsystemModel {
   human element.
   """
   attackVector: [AttackVector]
+
+  """
+  A category groups related entities. Specifically used for formal documentation
+  to group non-functional requirements by subject matter.
+  """
+  category: [Category]
 
   """
   A component is an abstract term that represents the physical or logical entity
@@ -42,6 +57,13 @@ type CPSsystemModel {
   constraints on the behavior of the controlled process.
   """
   controlAction: [ControlAction]
+
+  """
+  A defined term identifies a word, phrase, or acronym used in a document. The
+  formal documentation scripts treat the entity name as the acronym meaning or the
+  term, Acronym as the acronym, and Description as the term definition.
+  """
+  definedTerm: [DefinedTerm]
 
   """
   A document identifies either the source/authorization for information entered
@@ -79,11 +101,6 @@ type CPSsystemModel {
   set of worst-case environmental conditions, will lead to a loss
   """
   hazard: [Hazard]
-
-  """
-  An interface describes the logical connections between parts of an architecture.
-  """
-  interface: [Interface]
 
   """
   Items represent flows within and between functions. An item is an input to or an
@@ -132,10 +149,24 @@ type CPSsystemModel {
   resource: [Resource]
 
   """
+  A TestConfiguration identifies the system components, test support hardware and
+  software, and test facilities required to perform the associated test
+  activities.
+  """
+  testConfiguration: [TestConfiguration]
+
+  """
   An Unsafe Control Action (UCA) is a control action that, in a particular context
   and worst-case environment, will lead to a hazard.
   """
   unsafeAction: [UnsafeAction]
+
+  """
+  A VerificationRequirement describes what is to be proved (i.e., requirements),
+  at what level the verification will occur, which method of verification should
+  be used, and the current verification status.
+  """
+  verificationRequirement: [VerificationRequirement]
 
   """
   recursive call structure (select, parallel, loop, etc.) for each function
@@ -147,25 +178,30 @@ type Mutation {
   """
   Mutate Project
   """
-  cpsProject(project: Project_Input): Project
+  cpsProjectMutation(project: Project_Input): ProjectResponse
   """
   Mutate CPS System Model
   """
-  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSsystemModel
+  cpsSystemModelMutation(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSsystemModelResponse
 }
 
+type ProjectResponse {
+  status: ResponseStatus
+  project: Project
+}
 input CPSsystemModel_Input {
   attackVector: [AttackVector_Input]
+  category: [Category_Input]
   component: [Component_Input]
   context: [Context_Input]
   controlAction: [ControlAction_Input]
+  definedTerm: [DefinedTerm_Input]
   document: [Document_Input]
   domainSet: [DomainSet_Input]
   exit: [Exit_Input]
   feedback: [Feedback_Input]
   function: [Function_Input]
   hazard: [Hazard_Input]
-  interface: [Interface_Input]
   item: [Item_Input]
   link: [Link_Input]
   loss: [Loss_Input]
@@ -173,12 +209,25 @@ input CPSsystemModel_Input {
   requirement: [Requirement_Input]
   resilientMode: [ResilientMode_Input]
   resource: [Resource_Input]
+  testConfiguration: [TestConfiguration_Input]
   unsafeAction: [UnsafeAction_Input]
+  verificationRequirement: [VerificationRequirement_Input]
 }
 
 #########################################
 # Common Definitions
 #########################################
+type ResponseStatus {
+  code: ResponseCode
+  message: String
+}
+enum ResponseCode
+{
+  Success
+  FailureNotFound
+  FailureNotUnique
+ FailureGeneral
+}
 type Project {
   id: ID!
   name: String!
@@ -321,6 +370,11 @@ input AttackVectorATTR_Input {
 }
 type AttackVectorREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [AttackVector_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -332,6 +386,11 @@ type AttackVectorREL {
   precipitates: [AttackVector_PrecipitatesTarget]
 
   """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [AttackVector_UsesTarget]
+
+  """
   Identifies Entities that can be violated by an Attack.
   """
   violates: [AttackVector_ViolatesTarget]
@@ -339,9 +398,14 @@ type AttackVectorREL {
 }
 # for mutations
 input AttackVectorREL_Input {
+  categorizedBy: [AttackVector_CategorizedByTarget_Input]
   documentedBy: [AttackVector_DocumentedByTarget_Input]
   precipitates: [AttackVector_PrecipitatesTarget_Input]
+  uses: [AttackVector_UsesTarget_Input]
   violates: [AttackVector_ViolatesTarget_Input]
+}
+type AttackVector_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type AttackVector_DocumentedByTarget {
   documentTarget: DocumentID
@@ -349,11 +413,15 @@ type AttackVector_DocumentedByTarget {
 type AttackVector_PrecipitatesTarget {
   lossScenarioTarget: LossScenarioID
 }
+type AttackVector_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 type AttackVector_ViolatesTarget {
-  componentTarget: ComponentID
   linkTarget: LinkID
+  componentTarget: ComponentID
   """
-  A description of selected mitigation.
+  A description of selected mitigation - include reference to associated
+  requirement number.
   """
   justification: String
 
@@ -363,19 +431,30 @@ type AttackVector_ViolatesTarget {
   description: String
 
   """
-  The attack vector system mitigation for the associated Component / Link.
+  The attack vector system mitigation for the associated Component / Link. The
+  mitigations include Cyber Hygiene (CH) and Resilience (RES) mechanisms.
   """
   mitigationType: AttackVector_ViolatesMitigationType
 
 }
 enum AttackVector_ViolatesMitigationType {
   nil
-  Defensive
-  DiverseRedundancy
-  Harden
-  N_A
+  CH_Inventory
+  CH_Protection
+  CH_Configuration_Management
+  CH_Recovery
+  CH_Monitoring
+  CH_Malware_Defense
+  CH_Education
+  RES_Harden
+  RES_Defensive
+  RES_DiverseRedundancy
 }
 # for mutations
+input AttackVector_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input AttackVector_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -384,13 +463,117 @@ input AttackVector_PrecipitatesTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
 }
+input AttackVector_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
 input AttackVector_ViolatesTarget_Input {
   operation: MutationOperation!
-  componentTarget: ComponentID_Input
   linkTarget: LinkID_Input
+  componentTarget: ComponentID_Input
   justification: String
   description: String
   mitigationType: AttackVector_ViolatesMitigationType
+}
+#########################################
+# Category definition
+#########################################
+type Category {
+  identity: CategoryID!
+  attributes: CategoryATTR
+  parameters: [Parameter]
+  relations: CategoryREL
+}
+# for mutations
+input Category_Input {
+  operation: MutationOperation!
+  identity: CategoryID_Input!
+  attributes: CategoryATTR_Input
+  parameters: [Parameter_Input]
+  relations: CategoryREL_Input
+}
+type CategoryID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input CategoryID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type CategoryATTR {
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input CategoryATTR_Input {
+  description: String
+}
+type CategoryREL {
+  """
+  Categorizes identifies the entities that comprise the group defined by this
+  entity.
+  """
+  categorizes: [Category_CategorizesTarget]
+
+  """
+  Included in identifies the parent of this entity.
+  """
+  includedIn: [Category_IncludedInTarget]
+
+  """
+  Includes identifies the children of this entity.
+  """
+  includes: [Category_IncludesTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Category_UsesTarget]
+
+}
+# for mutations
+input CategoryREL_Input {
+  categorizes: [Category_CategorizesTarget_Input]
+  includedIn: [Category_IncludedInTarget_Input]
+  includes: [Category_IncludesTarget_Input]
+  uses: [Category_UsesTarget_Input]
+}
+type Category_CategorizesTarget {
+  documentTarget: DocumentID
+  definedTermTarget: DefinedTermID
+}
+type Category_IncludedInTarget {
+  categoryTarget: CategoryID
+}
+type Category_IncludesTarget {
+  categoryTarget: CategoryID
+}
+type Category_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input Category_CategorizesTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+  definedTermTarget: DefinedTermID_Input
+}
+input Category_IncludedInTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input Category_IncludesTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input Category_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Component definition
@@ -566,6 +749,11 @@ type ComponentREL {
   builtIn: [Component_BuiltInTarget]
 
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Component_CategorizedByTarget]
+
+  """
   Connected to identifies the connection that serves to link this unit to another
   entity.
   """
@@ -583,6 +771,11 @@ type ComponentREL {
   enablesDetectionOf: [Component_EnablesDetectionOfTarget]
 
   """
+  Forms identifies the test configurations in which this entity is used.
+  """
+  forms: [Component_FormsTarget]
+
+  """
   Generalization of associates a specific object classification with a more
   general object classification. For example, "Vehicle" is a generalization of
   "Car," "Train," and "Plane."
@@ -595,16 +788,15 @@ type ComponentREL {
   isViolatedBy: [Component_IsViolatedByTarget]
 
   """
-  Joined to identifies the logical units through which this physical unit
-  interfaces with another.
-  """
-  joinedTo: [Component_JoinedToTarget]
-
-  """
   Kind of indicates classification. This relationship is often referred to as the
   "is a" relationship (i.e., a car "is a" vehicle).
   """
   kindOf: [Component_KindOfTarget]
+
+  """
+  The component operation is altered in some way by the resilient mode.
+  """
+  operationAlteredBy: [Component_OperationAlteredByTarget]
 
   """
   Performs identifies the actions that this entity accomplishes.
@@ -633,23 +825,38 @@ type ComponentREL {
   """
   specifiedBy: [Component_SpecifiedByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Component_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Component_VerifiedByTarget]
+
 }
 # for mutations
 input ComponentREL_Input {
   builtFrom: [Component_BuiltFromTarget_Input]
   builtIn: [Component_BuiltInTarget_Input]
+  categorizedBy: [Component_CategorizedByTarget_Input]
   connectedTo: [Component_ConnectedToTarget_Input]
   documentedBy: [Component_DocumentedByTarget_Input]
   enablesDetectionOf: [Component_EnablesDetectionOfTarget_Input]
+  forms: [Component_FormsTarget_Input]
   generalizationOf: [Component_GeneralizationOfTarget_Input]
   isViolatedBy: [Component_IsViolatedByTarget_Input]
-  joinedTo: [Component_JoinedToTarget_Input]
   kindOf: [Component_KindOfTarget_Input]
+  operationAlteredBy: [Component_OperationAlteredByTarget_Input]
   performs: [Component_PerformsTarget_Input]
   protectsAgainst: [Component_ProtectsAgainstTarget_Input]
   reportedBy: [Component_ReportedByTarget_Input]
   simulates: [Component_SimulatesTarget_Input]
   specifiedBy: [Component_SpecifiedByTarget_Input]
+  uses: [Component_UsesTarget_Input]
+  verifiedBy: [Component_VerifiedByTarget_Input]
 }
 type Component_BuiltFromTarget {
   componentTarget: ComponentID
@@ -703,6 +910,9 @@ enum Component_BuiltInWholeMultiplicity {
   E_0
   E_1
 }
+type Component_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
 type Component_ConnectedToTarget {
   linkTarget: LinkID
   """
@@ -723,6 +933,9 @@ type Component_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
+type Component_FormsTarget {
+  testConfigurationTarget: TestConfigurationID
+}
 type Component_GeneralizationOfTarget {
   componentTarget: ComponentID
   """
@@ -741,7 +954,8 @@ enum Component_GeneralizationOfType {
 type Component_IsViolatedByTarget {
   attackVectorTarget: AttackVectorID
   """
-  A description of selected mitigation.
+  A description of selected mitigation - include reference to associated
+  requirement number.
   """
   justification: String
 
@@ -751,20 +965,24 @@ type Component_IsViolatedByTarget {
   description: String
 
   """
-  The attack vector system mitigation for the associated Component / Link.
+  The attack vector system mitigation for the associated Component / Link. The
+  mitigations include Cyber Hygiene (CH) and Resilience (RES) mechanisms.
   """
   mitigationType: Component_IsViolatedByMitigationType
 
 }
 enum Component_IsViolatedByMitigationType {
   nil
-  Defensive
-  DiverseRedundancy
-  Harden
-  N_A
-}
-type Component_JoinedToTarget {
-  interfaceTarget: InterfaceID
+  CH_Inventory
+  CH_Protection
+  CH_Configuration_Management
+  CH_Recovery
+  CH_Monitoring
+  CH_Malware_Defense
+  CH_Education
+  RES_Harden
+  RES_Defensive
+  RES_DiverseRedundancy
 }
 type Component_KindOfTarget {
   componentTarget: ComponentID
@@ -780,6 +998,9 @@ type Component_KindOfTarget {
 enum Component_KindOfType {
   Inheritance
   Instance
+}
+type Component_OperationAlteredByTarget {
+  resilientModeTarget: ResilientModeID
 }
 type Component_PerformsTarget {
   functionTarget: FunctionID
@@ -814,6 +1035,12 @@ type Component_SpecifiedByTarget {
   governs: String
 
 }
+type Component_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Component_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
 input Component_BuiltFromTarget_Input {
   operation: MutationOperation!
@@ -829,6 +1056,10 @@ input Component_BuiltInTarget_Input {
   partRole: String
   partMultiplicity: String
 }
+input Component_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Component_ConnectedToTarget_Input {
   operation: MutationOperation!
   linkTarget: LinkID_Input
@@ -843,6 +1074,10 @@ input Component_EnablesDetectionOfTarget_Input {
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
 }
+input Component_FormsTarget_Input {
+  operation: MutationOperation!
+  testConfigurationTarget: TestConfigurationID_Input
+}
 input Component_GeneralizationOfTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
@@ -855,14 +1090,14 @@ input Component_IsViolatedByTarget_Input {
   description: String
   mitigationType: Component_IsViolatedByMitigationType
 }
-input Component_JoinedToTarget_Input {
-  operation: MutationOperation!
-  interfaceTarget: InterfaceID_Input
-}
 input Component_KindOfTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
   type: Component_KindOfType
+}
+input Component_OperationAlteredByTarget_Input {
+  operation: MutationOperation!
+  resilientModeTarget: ResilientModeID_Input
 }
 input Component_PerformsTarget_Input {
   operation: MutationOperation!
@@ -885,6 +1120,14 @@ input Component_SpecifiedByTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
   governs: String
+}
+input Component_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Component_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # Context definition
@@ -1007,6 +1250,11 @@ input ContextATTR_Input {
 }
 type ContextREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Context_CategorizedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [Context_DecomposedByTarget]
@@ -1061,9 +1309,21 @@ type ContextREL {
   """
   triggers: [Context_TriggersTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Context_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Context_VerifiedByTarget]
+
 }
 # for mutations
 input ContextREL_Input {
+  categorizedBy: [Context_CategorizedByTarget_Input]
   decomposedBy: [Context_DecomposedByTarget_Input]
   decomposes: [Context_DecomposesTarget_Input]
   documentedBy: [Context_DocumentedByTarget_Input]
@@ -1074,6 +1334,11 @@ input ContextREL_Input {
   specifiedBy: [Context_SpecifiedByTarget_Input]
   transferredBy: [Context_TransferredByTarget_Input]
   triggers: [Context_TriggersTarget_Input]
+  uses: [Context_UsesTarget_Input]
+  verifiedBy: [Context_VerifiedByTarget_Input]
+}
+type Context_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Context_DecomposedByTarget {
   itemTarget: ItemID
@@ -1135,7 +1400,17 @@ enum Context_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+type Context_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Context_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
+input Context_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Context_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -1179,6 +1454,14 @@ input Context_TriggersTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   queueType: Context_TriggersQueueType
+}
+input Context_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Context_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # ControlAction definition
@@ -1301,6 +1584,11 @@ input ControlActionATTR_Input {
 }
 type ControlActionREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [ControlAction_CategorizedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [ControlAction_DecomposedByTarget]
@@ -1360,9 +1648,21 @@ type ControlActionREL {
   """
   triggers: [ControlAction_TriggersTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [ControlAction_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [ControlAction_VerifiedByTarget]
+
 }
 # for mutations
 input ControlActionREL_Input {
+  categorizedBy: [ControlAction_CategorizedByTarget_Input]
   decomposedBy: [ControlAction_DecomposedByTarget_Input]
   decomposes: [ControlAction_DecomposesTarget_Input]
   documentedBy: [ControlAction_DocumentedByTarget_Input]
@@ -1374,6 +1674,11 @@ input ControlActionREL_Input {
   specifiedBy: [ControlAction_SpecifiedByTarget_Input]
   transferredBy: [ControlAction_TransferredByTarget_Input]
   triggers: [ControlAction_TriggersTarget_Input]
+  uses: [ControlAction_UsesTarget_Input]
+  verifiedBy: [ControlAction_VerifiedByTarget_Input]
+}
+type ControlAction_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type ControlAction_DecomposedByTarget {
   itemTarget: ItemID
@@ -1443,7 +1748,17 @@ enum ControlAction_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+type ControlAction_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type ControlAction_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
+input ControlAction_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input ControlAction_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -1491,6 +1806,105 @@ input ControlAction_TriggersTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   queueType: ControlAction_TriggersQueueType
+}
+input ControlAction_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input ControlAction_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
+}
+#########################################
+# DefinedTerm definition
+#########################################
+type DefinedTerm {
+  identity: DefinedTermID!
+  attributes: DefinedTermATTR
+  parameters: [Parameter]
+  relations: DefinedTermREL
+}
+# for mutations
+input DefinedTerm_Input {
+  operation: MutationOperation!
+  identity: DefinedTermID_Input!
+  attributes: DefinedTermATTR_Input
+  parameters: [Parameter_Input]
+  relations: DefinedTermREL_Input
+}
+type DefinedTermID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input DefinedTermID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type DefinedTermATTR {
+  """
+  Acronym identifies the word being defined by the entity.
+  """
+  acronym: String
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input DefinedTermATTR_Input {
+  acronym: String
+  description: String
+}
+type DefinedTermREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [DefinedTerm_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [DefinedTerm_DocumentedByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [DefinedTerm_UsesTarget]
+
+}
+# for mutations
+input DefinedTermREL_Input {
+  categorizedBy: [DefinedTerm_CategorizedByTarget_Input]
+  documentedBy: [DefinedTerm_DocumentedByTarget_Input]
+  uses: [DefinedTerm_UsesTarget_Input]
+}
+type DefinedTerm_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type DefinedTerm_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type DefinedTerm_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input DefinedTerm_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input DefinedTerm_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input DefinedTerm_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Document definition
@@ -1690,6 +2104,17 @@ input DocumentATTR_Input {
 }
 type DocumentREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Document_CategorizedByTarget]
+
+  """
+  Documents identifies the entities which are specified in or enhanced by this
+  external source document.
+  """
+  documents: [Document_DocumentsTarget]
+
+  """
   Referenced by identifies documents for which the subject document is an
   applicable or reference document.
   """
@@ -1729,9 +2154,16 @@ type DocumentREL {
   """
   tracesTo: [Document_TracesToTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Document_UsesTarget]
+
 }
 # for mutations
 input DocumentREL_Input {
+  categorizedBy: [Document_CategorizedByTarget_Input]
+  documents: [Document_DocumentsTarget_Input]
   referencedBy: [Document_ReferencedByTarget_Input]
   references: [Document_ReferencesTarget_Input]
   refinedBy: [Document_RefinedByTarget_Input]
@@ -1739,6 +2171,13 @@ input DocumentREL_Input {
   reportsOn: [Document_ReportsOnTarget_Input]
   tracedFrom: [Document_TracedFromTarget_Input]
   tracesTo: [Document_TracesToTarget_Input]
+  uses: [Document_UsesTarget_Input]
+}
+type Document_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type Document_DocumentsTarget {
+  definedTermTarget: DefinedTermID
 }
 type Document_ReferencedByTarget {
   documentTarget: DocumentID
@@ -1753,8 +2192,8 @@ type Document_RefinesTarget {
   documentTarget: DocumentID
 }
 type Document_ReportsOnTarget {
-  interfaceTarget: InterfaceID
   linkTarget: LinkID
+  verificationRequirementTarget: VerificationRequirementID
 }
 type Document_TracedFromTarget {
   documentTarget: DocumentID
@@ -1762,7 +2201,18 @@ type Document_TracedFromTarget {
 type Document_TracesToTarget {
   documentTarget: DocumentID
 }
+type Document_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input Document_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input Document_DocumentsTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
 input Document_ReferencedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -1781,8 +2231,8 @@ input Document_RefinesTarget_Input {
 }
 input Document_ReportsOnTarget_Input {
   operation: MutationOperation!
-  interfaceTarget: InterfaceID_Input
   linkTarget: LinkID_Input
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 input Document_TracedFromTarget_Input {
   operation: MutationOperation!
@@ -1791,6 +2241,10 @@ input Document_TracedFromTarget_Input {
 input Document_TracesToTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
+}
+input Document_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # DomainSet definition
@@ -1840,23 +2294,49 @@ input DomainSetATTR_Input {
 }
 type DomainSetREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [DomainSet_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
   documentedBy: [DomainSet_DocumentedByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [DomainSet_UsesTarget]
+
 }
 # for mutations
 input DomainSetREL_Input {
+  categorizedBy: [DomainSet_CategorizedByTarget_Input]
   documentedBy: [DomainSet_DocumentedByTarget_Input]
+  uses: [DomainSet_UsesTarget_Input]
+}
+type DomainSet_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type DomainSet_DocumentedByTarget {
   documentTarget: DocumentID
 }
+type DomainSet_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input DomainSet_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input DomainSet_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
+}
+input DomainSet_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Exit definition
@@ -1899,23 +2379,49 @@ input ExitATTR_Input {
 }
 type ExitREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Exit_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
   documentedBy: [Exit_DocumentedByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Exit_UsesTarget]
+
 }
 # for mutations
 input ExitREL_Input {
+  categorizedBy: [Exit_CategorizedByTarget_Input]
   documentedBy: [Exit_DocumentedByTarget_Input]
+  uses: [Exit_UsesTarget_Input]
+}
+type Exit_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Exit_DocumentedByTarget {
   documentTarget: DocumentID
 }
+type Exit_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input Exit_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Exit_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
+}
+input Exit_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Feedback definition
@@ -2038,6 +2544,11 @@ input FeedbackATTR_Input {
 }
 type FeedbackREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Feedback_CategorizedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [Feedback_DecomposedByTarget]
@@ -2087,9 +2598,21 @@ type FeedbackREL {
   """
   triggers: [Feedback_TriggersTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Feedback_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Feedback_VerifiedByTarget]
+
 }
 # for mutations
 input FeedbackREL_Input {
+  categorizedBy: [Feedback_CategorizedByTarget_Input]
   decomposedBy: [Feedback_DecomposedByTarget_Input]
   decomposes: [Feedback_DecomposesTarget_Input]
   documentedBy: [Feedback_DocumentedByTarget_Input]
@@ -2099,6 +2622,11 @@ input FeedbackREL_Input {
   specifiedBy: [Feedback_SpecifiedByTarget_Input]
   transferredBy: [Feedback_TransferredByTarget_Input]
   triggers: [Feedback_TriggersTarget_Input]
+  uses: [Feedback_UsesTarget_Input]
+  verifiedBy: [Feedback_VerifiedByTarget_Input]
+}
+type Feedback_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Feedback_DecomposedByTarget {
   itemTarget: ItemID
@@ -2151,7 +2679,17 @@ enum Feedback_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+type Feedback_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Feedback_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
+input Feedback_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Feedback_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -2190,6 +2728,14 @@ input Feedback_TriggersTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   queueType: Feedback_TriggersQueueType
+}
+input Feedback_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Feedback_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # Function definition
@@ -2292,6 +2838,11 @@ type FunctionREL {
   captures: [Function_CapturesTarget]
 
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Function_CategorizedByTarget]
+
+  """
   Consumes identifies resources which this object requires (and destroys) during
   execution. Resources are consumed when the execution of the processing unit
   begins.
@@ -2386,12 +2937,24 @@ type FunctionREL {
   """
   triggeredBy: [Function_TriggeredByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Function_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Function_VerifiedByTarget]
+
 }
 # for mutations
 input FunctionREL_Input {
   allocatedTo: [Function_AllocatedToTarget_Input]
   basedOn: [Function_BasedOnTarget_Input]
   captures: [Function_CapturesTarget_Input]
+  categorizedBy: [Function_CategorizedByTarget_Input]
   consumes: [Function_ConsumesTarget_Input]
   decomposedBy: [Function_DecomposedByTarget_Input]
   decomposes: [Function_DecomposesTarget_Input]
@@ -2409,6 +2972,8 @@ input FunctionREL_Input {
   services: [Function_ServicesTarget_Input]
   specifiedBy: [Function_SpecifiedByTarget_Input]
   triggeredBy: [Function_TriggeredByTarget_Input]
+  uses: [Function_UsesTarget_Input]
+  verifiedBy: [Function_VerifiedByTarget_Input]
 }
 type Function_AllocatedToTarget {
   componentTarget: ComponentID
@@ -2441,6 +3006,9 @@ type Function_CapturesTarget {
   """
   amount: String
 
+}
+type Function_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Function_ConsumesTarget {
   resourceTarget: ResourceID
@@ -2512,8 +3080,8 @@ type Function_IsRecoveredByTarget {
 
 }
 type Function_ManagesTarget {
-  resilientModeTarget: ResilientModeID
   lossScenarioTarget: LossScenarioID
+  resilientModeTarget: ResilientModeID
   """
   The management action type for the resilient mode.
   """
@@ -2574,6 +3142,12 @@ enum Function_TriggeredByQueueType {
   Priority
   Reverse_Priority
 }
+type Function_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Function_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
 input Function_AllocatedToTarget_Input {
   operation: MutationOperation!
@@ -2589,6 +3163,10 @@ input Function_CapturesTarget_Input {
   resourceTarget: ResourceID_Input
   acquireAvailable: Boolean
   amount: String
+}
+input Function_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
 }
 input Function_ConsumesTarget_Input {
   operation: MutationOperation!
@@ -2630,8 +3208,8 @@ input Function_IsRecoveredByTarget_Input {
 }
 input Function_ManagesTarget_Input {
   operation: MutationOperation!
-  resilientModeTarget: ResilientModeID_Input
   lossScenarioTarget: LossScenarioID_Input
+  resilientModeTarget: ResilientModeID_Input
   actionType: Function_ManagesActionType
 }
 input Function_OutputsTarget_Input {
@@ -2668,6 +3246,14 @@ input Function_TriggeredByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
   queueType: Function_TriggeredByQueueType
+}
+input Function_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Function_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # Hazard definition
@@ -2710,6 +3296,11 @@ input HazardATTR_Input {
 }
 type HazardREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Hazard_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -2731,13 +3322,23 @@ type HazardREL {
   """
   leadsTo: [Hazard_LeadsToTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Hazard_UsesTarget]
+
 }
 # for mutations
 input HazardREL_Input {
+  categorizedBy: [Hazard_CategorizedByTarget_Input]
   documentedBy: [Hazard_DocumentedByTarget_Input]
   elicits: [Hazard_ElicitsTarget_Input]
   isCausedBy: [Hazard_IsCausedByTarget_Input]
   leadsTo: [Hazard_LeadsToTarget_Input]
+  uses: [Hazard_UsesTarget_Input]
+}
+type Hazard_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Hazard_DocumentedByTarget {
   documentTarget: DocumentID
@@ -2751,7 +3352,14 @@ type Hazard_IsCausedByTarget {
 type Hazard_LeadsToTarget {
   lossTarget: LossID
 }
+type Hazard_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input Hazard_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Hazard_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -2768,169 +3376,9 @@ input Hazard_LeadsToTarget_Input {
   operation: MutationOperation!
   lossTarget: LossID_Input
 }
-#########################################
-# Interface definition
-#########################################
-type Interface {
-  identity: InterfaceID!
-  attributes: InterfaceATTR
-  parameters: [Parameter]
-  relations: InterfaceREL
-}
-# for mutations
-input Interface_Input {
+input Hazard_UsesTarget_Input {
   operation: MutationOperation!
-  identity: InterfaceID_Input!
-  attributes: InterfaceATTR_Input
-  parameters: [Parameter_Input]
-  relations: InterfaceREL_Input
-}
-type InterfaceID {
-  id: ID!
-  name: String!
-  number: String!
-}
-# for mutations
-input InterfaceID_Input {
-  id: ID # autogenerated on Create, required for Update / Delete
-  name: String!
-  number: String!
-}
-type InterfaceATTR {
-  """
-  Title is the label to be used in formal documentation instead of the entity
-  name.
-  """
-  title: String
-
-  """
-  Doc. PUID is the project unique identifier that is often used in system
-  development specifications and documents to identify the same entity in multiple
-  documents. This is not to be confused with the database entity unique
-  identifier.
-  """
-  puid: String
-
-  """
-  Description is the written statement of this entity.
-  """
-  description: String
-
-}
-# for mutations
-input InterfaceATTR_Input {
-  title: String
-  puid: String
-  description: String
-}
-type InterfaceREL {
-  """
-  Comprised of identifies the physical units which make up this entity.
-  """
-  comprisedOf: [Interface_ComprisedOfTarget]
-
-  """
-  Documented by identifies the source document which specifies and/or enhances the
-  definition of this entity.
-  """
-  documentedBy: [Interface_DocumentedByTarget]
-
-  """
-  Included in identifies the parent of this entity.
-  """
-  includedIn: [Interface_IncludedInTarget]
-
-  """
-  Includes identifies the children of this entity.
-  """
-  includes: [Interface_IncludesTarget]
-
-  """
-  Joins identifies the physical units for which this logical unit acts as an
-  interface.
-  """
-  joins: [Interface_JoinsTarget]
-
-  """
-  Reported by identifies the documentation entity of which the entity is the
-  primary subject.
-  """
-  reportedBy: [Interface_ReportedByTarget]
-
-  """
-  Specified by identifies constraint and/or performance requirements that this
-  entity must satisfy.
-  """
-  specifiedBy: [Interface_SpecifiedByTarget]
-
-}
-# for mutations
-input InterfaceREL_Input {
-  comprisedOf: [Interface_ComprisedOfTarget_Input]
-  documentedBy: [Interface_DocumentedByTarget_Input]
-  includedIn: [Interface_IncludedInTarget_Input]
-  includes: [Interface_IncludesTarget_Input]
-  joins: [Interface_JoinsTarget_Input]
-  reportedBy: [Interface_ReportedByTarget_Input]
-  specifiedBy: [Interface_SpecifiedByTarget_Input]
-}
-type Interface_ComprisedOfTarget {
-  linkTarget: LinkID
-}
-type Interface_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type Interface_IncludedInTarget {
-  interfaceTarget: InterfaceID
-}
-type Interface_IncludesTarget {
-  interfaceTarget: InterfaceID
-}
-type Interface_JoinsTarget {
-  componentTarget: ComponentID
-}
-type Interface_ReportedByTarget {
-  documentTarget: DocumentID
-}
-type Interface_SpecifiedByTarget {
-  requirementTarget: RequirementID
-  """
-  The Governs relationship attribute identifies the Parameter attribute that is
-  associated in both the Requirement entity and Component entity joined by the
-  specified by / specifies relationship.
-  """
-  governs: String
-
-}
-# for mutations
-input Interface_ComprisedOfTarget_Input {
-  operation: MutationOperation!
-  linkTarget: LinkID_Input
-}
-input Interface_DocumentedByTarget_Input {
-  operation: MutationOperation!
-  documentTarget: DocumentID_Input
-}
-input Interface_IncludedInTarget_Input {
-  operation: MutationOperation!
-  interfaceTarget: InterfaceID_Input
-}
-input Interface_IncludesTarget_Input {
-  operation: MutationOperation!
-  interfaceTarget: InterfaceID_Input
-}
-input Interface_JoinsTarget_Input {
-  operation: MutationOperation!
-  componentTarget: ComponentID_Input
-}
-input Interface_ReportedByTarget_Input {
-  operation: MutationOperation!
-  documentTarget: DocumentID_Input
-}
-input Interface_SpecifiedByTarget_Input {
-  operation: MutationOperation!
-  requirementTarget: RequirementID_Input
-  governs: String
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Item definition
@@ -3053,6 +3501,11 @@ input ItemATTR_Input {
 }
 type ItemREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Item_CategorizedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [Item_DecomposedByTarget]
@@ -3102,9 +3555,21 @@ type ItemREL {
   """
   triggers: [Item_TriggersTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Item_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Item_VerifiedByTarget]
+
 }
 # for mutations
 input ItemREL_Input {
+  categorizedBy: [Item_CategorizedByTarget_Input]
   decomposedBy: [Item_DecomposedByTarget_Input]
   decomposes: [Item_DecomposesTarget_Input]
   documentedBy: [Item_DocumentedByTarget_Input]
@@ -3114,6 +3579,11 @@ input ItemREL_Input {
   specifiedBy: [Item_SpecifiedByTarget_Input]
   transferredBy: [Item_TransferredByTarget_Input]
   triggers: [Item_TriggersTarget_Input]
+  uses: [Item_UsesTarget_Input]
+  verifiedBy: [Item_VerifiedByTarget_Input]
+}
+type Item_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Item_DecomposedByTarget {
   itemTarget: ItemID
@@ -3166,7 +3636,17 @@ enum Item_TriggersQueueType {
   Priority
   Reverse_Priority
 }
+type Item_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Item_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
+input Item_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Item_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -3205,6 +3685,14 @@ input Item_TriggersTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   queueType: Item_TriggersQueueType
+}
+input Item_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Item_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # Link definition
@@ -3309,10 +3797,9 @@ input LinkATTR_Input {
 }
 type LinkREL {
   """
-  Comprises identifies the logical interface which is in part implemented
-  (physically) by this entity.
+  Categorized by identifies a grouping that includes this entity.
   """
-  comprises: [Link_ComprisesTarget]
+  categorizedBy: [Link_CategorizedByTarget]
 
   """
   Connects to identifies the connection that serves to link this entity to another
@@ -3330,6 +3817,11 @@ type LinkREL {
   The Function / Link / Item enables detection of Loss Scenario.
   """
   enablesDetectionOf: [Link_EnablesDetectionOfTarget]
+
+  """
+  Forms identifies the test configurations in which this entity is used.
+  """
+  forms: [Link_FormsTarget]
 
   """
   Included in identifies the parent of this entity.
@@ -3369,13 +3861,25 @@ type LinkREL {
   """
   transfers: [Link_TransfersTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Link_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Link_VerifiedByTarget]
+
 }
 # for mutations
 input LinkREL_Input {
-  comprises: [Link_ComprisesTarget_Input]
+  categorizedBy: [Link_CategorizedByTarget_Input]
   connectsTo: [Link_ConnectsToTarget_Input]
   documentedBy: [Link_DocumentedByTarget_Input]
   enablesDetectionOf: [Link_EnablesDetectionOfTarget_Input]
+  forms: [Link_FormsTarget_Input]
   includedIn: [Link_IncludedInTarget_Input]
   includes: [Link_IncludesTarget_Input]
   isViolatedBy: [Link_IsViolatedByTarget_Input]
@@ -3383,9 +3887,11 @@ input LinkREL_Input {
   servicedBy: [Link_ServicedByTarget_Input]
   specifiedBy: [Link_SpecifiedByTarget_Input]
   transfers: [Link_TransfersTarget_Input]
+  uses: [Link_UsesTarget_Input]
+  verifiedBy: [Link_VerifiedByTarget_Input]
 }
-type Link_ComprisesTarget {
-  interfaceTarget: InterfaceID
+type Link_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Link_ConnectsToTarget {
   componentTarget: ComponentID
@@ -3407,6 +3913,9 @@ type Link_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
+type Link_FormsTarget {
+  testConfigurationTarget: TestConfigurationID
+}
 type Link_IncludedInTarget {
   linkTarget: LinkID
 }
@@ -3416,7 +3925,8 @@ type Link_IncludesTarget {
 type Link_IsViolatedByTarget {
   attackVectorTarget: AttackVectorID
   """
-  A description of selected mitigation.
+  A description of selected mitigation - include reference to associated
+  requirement number.
   """
   justification: String
 
@@ -3426,17 +3936,24 @@ type Link_IsViolatedByTarget {
   description: String
 
   """
-  The attack vector system mitigation for the associated Component / Link.
+  The attack vector system mitigation for the associated Component / Link. The
+  mitigations include Cyber Hygiene (CH) and Resilience (RES) mechanisms.
   """
   mitigationType: Link_IsViolatedByMitigationType
 
 }
 enum Link_IsViolatedByMitigationType {
   nil
-  Defensive
-  DiverseRedundancy
-  Harden
-  N_A
+  CH_Inventory
+  CH_Protection
+  CH_Configuration_Management
+  CH_Recovery
+  CH_Monitoring
+  CH_Malware_Defense
+  CH_Education
+  RES_Harden
+  RES_Defensive
+  RES_DiverseRedundancy
 }
 type Link_ReportedByTarget {
   documentTarget: DocumentID
@@ -3457,10 +3974,16 @@ type Link_SpecifiedByTarget {
 type Link_TransfersTarget {
   itemTarget: ItemID
 }
+type Link_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Link_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
-input Link_ComprisesTarget_Input {
+input Link_CategorizedByTarget_Input {
   operation: MutationOperation!
-  interfaceTarget: InterfaceID_Input
+  categoryTarget: CategoryID_Input
 }
 input Link_ConnectsToTarget_Input {
   operation: MutationOperation!
@@ -3475,6 +3998,10 @@ input Link_EnablesDetectionOfTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
+}
+input Link_FormsTarget_Input {
+  operation: MutationOperation!
+  testConfigurationTarget: TestConfigurationID_Input
 }
 input Link_IncludedInTarget_Input {
   operation: MutationOperation!
@@ -3507,6 +4034,14 @@ input Link_SpecifiedByTarget_Input {
 input Link_TransfersTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
+}
+input Link_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Link_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # Loss definition
@@ -3564,6 +4099,11 @@ input LossATTR_Input {
 }
 type LossREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Loss_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -3574,11 +4114,21 @@ type LossREL {
   """
   isCausedBy: [Loss_IsCausedByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Loss_UsesTarget]
+
 }
 # for mutations
 input LossREL_Input {
+  categorizedBy: [Loss_CategorizedByTarget_Input]
   documentedBy: [Loss_DocumentedByTarget_Input]
   isCausedBy: [Loss_IsCausedByTarget_Input]
+  uses: [Loss_UsesTarget_Input]
+}
+type Loss_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Loss_DocumentedByTarget {
   documentTarget: DocumentID
@@ -3586,7 +4136,14 @@ type Loss_DocumentedByTarget {
 type Loss_IsCausedByTarget {
   hazardTarget: HazardID
 }
+type Loss_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input Loss_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Loss_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -3594,6 +4151,10 @@ input Loss_DocumentedByTarget_Input {
 input Loss_IsCausedByTarget_Input {
   operation: MutationOperation!
   hazardTarget: HazardID_Input
+}
+input Loss_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # LossScenario definition
@@ -3698,6 +4259,11 @@ input LossScenarioATTR_Input {
 }
 type LossScenarioREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [LossScenario_CategorizedByTarget]
+
+  """
   The Loss Scenario is detected by monitoring:  Item – Control Action / Feedback /
   Context​  "Field" value tampered​  size tampered​  order modified  Function 
   Input / Trigger – injected / spoofed​  Output – incorrect value  Exit (Error
@@ -3743,9 +4309,21 @@ type LossScenarioREL {
   """
   managedBy: [LossScenario_ManagedByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [LossScenario_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [LossScenario_VerifiedByTarget]
+
 }
 # for mutations
 input LossScenarioREL_Input {
+  categorizedBy: [LossScenario_CategorizedByTarget_Input]
   detectedByMonitoring: [LossScenario_DetectedByMonitoringTarget_Input]
   documentedBy: [LossScenario_DocumentedByTarget_Input]
   isPrecipitatedBy: [LossScenario_IsPrecipitatedByTarget_Input]
@@ -3754,12 +4332,17 @@ input LossScenarioREL_Input {
   isSimulatedBy: [LossScenario_IsSimulatedByTarget_Input]
   leadsTo: [LossScenario_LeadsToTarget_Input]
   managedBy: [LossScenario_ManagedByTarget_Input]
+  uses: [LossScenario_UsesTarget_Input]
+  verifiedBy: [LossScenario_VerifiedByTarget_Input]
+}
+type LossScenario_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type LossScenario_DetectedByMonitoringTarget {
-  resourceTarget: ResourceID
-  itemTarget: ItemID
   componentTarget: ComponentID
   functionTarget: FunctionID
+  resourceTarget: ResourceID
+  itemTarget: ItemID
   linkTarget: LinkID
   """
   constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
@@ -3799,13 +4382,23 @@ enum LossScenario_ManagedByActionType {
   deactivate
   selfTest
 }
+type LossScenario_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type LossScenario_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
+input LossScenario_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input LossScenario_DetectedByMonitoringTarget_Input {
   operation: MutationOperation!
-  resourceTarget: ResourceID_Input
-  itemTarget: ItemID_Input
   componentTarget: ComponentID_Input
   functionTarget: FunctionID_Input
+  resourceTarget: ResourceID_Input
+  itemTarget: ItemID_Input
   linkTarget: LinkID_Input
   constraint: [String]
 }
@@ -3837,6 +4430,14 @@ input LossScenario_ManagedByTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   actionType: LossScenario_ManagedByActionType
+}
+input LossScenario_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input LossScenario_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # Requirement definition
@@ -4012,6 +4613,11 @@ type RequirementREL {
   basisOf: [Requirement_BasisOfTarget]
 
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Requirement_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -4038,25 +4644,43 @@ type RequirementREL {
   """
   specifies: [Requirement_SpecifiesTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Requirement_UsesTarget]
+
+  """
+  Verified by points to the method of requirement proof which specifies the
+  verification technique, level, and status.
+  """
+  verifiedBy: [Requirement_VerifiedByTarget]
+
 }
 # for mutations
 input RequirementREL_Input {
   basisOf: [Requirement_BasisOfTarget_Input]
+  categorizedBy: [Requirement_CategorizedByTarget_Input]
   documentedBy: [Requirement_DocumentedByTarget_Input]
   elicitedBy: [Requirement_ElicitedByTarget_Input]
   refinedBy: [Requirement_RefinedByTarget_Input]
   refines: [Requirement_RefinesTarget_Input]
   specifies: [Requirement_SpecifiesTarget_Input]
+  uses: [Requirement_UsesTarget_Input]
+  verifiedBy: [Requirement_VerifiedByTarget_Input]
 }
 type Requirement_BasisOfTarget {
   functionTarget: FunctionID
+  verificationRequirementTarget: VerificationRequirementID
+}
+type Requirement_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Requirement_DocumentedByTarget {
   documentTarget: DocumentID
 }
 type Requirement_ElicitedByTarget {
-  hazardTarget: HazardID
   unsafeActionTarget: UnsafeActionID
+  hazardTarget: HazardID
 }
 type Requirement_RefinedByTarget {
   requirementTarget: RequirementID
@@ -4067,7 +4691,6 @@ type Requirement_RefinesTarget {
 type Requirement_SpecifiesTarget {
   itemTarget: ItemID
   functionTarget: FunctionID
-  interfaceTarget: InterfaceID
   """
   The Governs relationship attribute identifies the Parameter attribute that is
   associated in both the Requirement entity and Component entity joined by the
@@ -4076,10 +4699,21 @@ type Requirement_SpecifiesTarget {
   governs: String
 
 }
+type Requirement_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type Requirement_VerifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+}
 # for mutations
 input Requirement_BasisOfTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
+  verificationRequirementTarget: VerificationRequirementID_Input
+}
+input Requirement_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
 }
 input Requirement_DocumentedByTarget_Input {
   operation: MutationOperation!
@@ -4087,8 +4721,8 @@ input Requirement_DocumentedByTarget_Input {
 }
 input Requirement_ElicitedByTarget_Input {
   operation: MutationOperation!
-  hazardTarget: HazardID_Input
   unsafeActionTarget: UnsafeActionID_Input
+  hazardTarget: HazardID_Input
 }
 input Requirement_RefinedByTarget_Input {
   operation: MutationOperation!
@@ -4102,8 +4736,15 @@ input Requirement_SpecifiesTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
   functionTarget: FunctionID_Input
-  interfaceTarget: InterfaceID_Input
   governs: String
+}
+input Requirement_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input Requirement_VerifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
 }
 #########################################
 # ResilientMode definition
@@ -4213,15 +4854,31 @@ input ResilientModeATTR_Input {
 }
 type ResilientModeREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [ResilientMode_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
   documentedBy: [ResilientMode_DocumentedByTarget]
 
   """
+  Forms identifies the test configurations in which this entity is used.
+  """
+  forms: [ResilientMode_FormsTarget]
+
+  """
   The resilient mode is managed (enabled / disabled / tested) by control action.
   """
   managedBy: [ResilientMode_ManagedByTarget]
+
+  """
+  The resilient mode, in some way, provides an alternate operation for the
+  component.
+  """
+  providesAlternateOperationFor: [ResilientMode_ProvidesAlternateOperationForTarget]
 
   """
   A ResilentMode recovers a failed / cyber attacked "system" Function.
@@ -4239,17 +4896,32 @@ type ResilientModeREL {
   """
   specifiedBy: [ResilientMode_SpecifiedByTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [ResilientMode_UsesTarget]
+
 }
 # for mutations
 input ResilientModeREL_Input {
+  categorizedBy: [ResilientMode_CategorizedByTarget_Input]
   documentedBy: [ResilientMode_DocumentedByTarget_Input]
+  forms: [ResilientMode_FormsTarget_Input]
   managedBy: [ResilientMode_ManagedByTarget_Input]
+  providesAlternateOperationFor: [ResilientMode_ProvidesAlternateOperationForTarget_Input]
   recovers: [ResilientMode_RecoversTarget_Input]
   remediates: [ResilientMode_RemediatesTarget_Input]
   specifiedBy: [ResilientMode_SpecifiedByTarget_Input]
+  uses: [ResilientMode_UsesTarget_Input]
+}
+type ResilientMode_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type ResilientMode_DocumentedByTarget {
   documentTarget: DocumentID
+}
+type ResilientMode_FormsTarget {
+  testConfigurationTarget: TestConfigurationID
 }
 type ResilientMode_ManagedByTarget {
   controlActionTarget: ControlActionID
@@ -4265,6 +4937,9 @@ enum ResilientMode_ManagedByActionType {
   activate
   deactivate
   selfTest
+}
+type ResilientMode_ProvidesAlternateOperationForTarget {
+  componentTarget: ComponentID
 }
 type ResilientMode_RecoversTarget {
   functionTarget: FunctionID
@@ -4292,16 +4967,31 @@ type ResilientMode_SpecifiedByTarget {
   governs: String
 
 }
+type ResilientMode_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input ResilientMode_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input ResilientMode_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
+}
+input ResilientMode_FormsTarget_Input {
+  operation: MutationOperation!
+  testConfigurationTarget: TestConfigurationID_Input
 }
 input ResilientMode_ManagedByTarget_Input {
   operation: MutationOperation!
   controlActionTarget: ControlActionID_Input
   functionTarget: FunctionID_Input
   actionType: ResilientMode_ManagedByActionType
+}
+input ResilientMode_ProvidesAlternateOperationForTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
 }
 input ResilientMode_RecoversTarget_Input {
   operation: MutationOperation!
@@ -4316,6 +5006,10 @@ input ResilientMode_SpecifiedByTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
   governs: String
+}
+input ResilientMode_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Resource definition
@@ -4390,6 +5084,11 @@ input ResourceATTR_Input {
 }
 type ResourceREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Resource_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -4400,11 +5099,21 @@ type ResourceREL {
   """
   enablesDetectionOf: [Resource_EnablesDetectionOfTarget]
 
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Resource_UsesTarget]
+
 }
 # for mutations
 input ResourceREL_Input {
+  categorizedBy: [Resource_CategorizedByTarget_Input]
   documentedBy: [Resource_DocumentedByTarget_Input]
   enablesDetectionOf: [Resource_EnablesDetectionOfTarget_Input]
+  uses: [Resource_UsesTarget_Input]
+}
+type Resource_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type Resource_DocumentedByTarget {
   documentTarget: DocumentID
@@ -4417,7 +5126,14 @@ type Resource_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
+type Resource_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 # for mutations
+input Resource_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input Resource_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -4426,6 +5142,135 @@ input Resource_EnablesDetectionOfTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
+}
+input Resource_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+#########################################
+# TestConfiguration definition
+#########################################
+type TestConfiguration {
+  identity: TestConfigurationID!
+  attributes: TestConfigurationATTR
+  parameters: [Parameter]
+  relations: TestConfigurationREL
+}
+# for mutations
+input TestConfiguration_Input {
+  operation: MutationOperation!
+  identity: TestConfigurationID_Input!
+  attributes: TestConfigurationATTR_Input
+  parameters: [Parameter_Input]
+  relations: TestConfigurationREL_Input
+}
+type TestConfigurationID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input TestConfigurationID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type TestConfigurationATTR {
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input TestConfigurationATTR_Input {
+  description: String
+}
+type TestConfigurationREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [TestConfiguration_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [TestConfiguration_DocumentedByTarget]
+
+  """
+  Formed by identifies the system components, additional hardware and software,
+  and facilities needed to conduct the associated verification events.
+  """
+  formedBy: [TestConfiguration_FormedByTarget]
+
+  """
+  Specified by identifies constraint and/or performance requirements that this
+  entity must satisfy.
+  """
+  specifiedBy: [TestConfiguration_SpecifiedByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [TestConfiguration_UsesTarget]
+
+}
+# for mutations
+input TestConfigurationREL_Input {
+  categorizedBy: [TestConfiguration_CategorizedByTarget_Input]
+  documentedBy: [TestConfiguration_DocumentedByTarget_Input]
+  formedBy: [TestConfiguration_FormedByTarget_Input]
+  specifiedBy: [TestConfiguration_SpecifiedByTarget_Input]
+  uses: [TestConfiguration_UsesTarget_Input]
+}
+type TestConfiguration_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type TestConfiguration_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type TestConfiguration_FormedByTarget {
+  componentTarget: ComponentID
+  linkTarget: LinkID
+  resilientModeTarget: ResilientModeID
+}
+type TestConfiguration_SpecifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+  """
+  The Governs relationship attribute identifies the Parameter attribute that is
+  associated in both the Requirement entity and Component entity joined by the
+  specified by / specifies relationship.
+  """
+  governs: String
+
+}
+type TestConfiguration_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input TestConfiguration_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input TestConfiguration_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input TestConfiguration_FormedByTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  linkTarget: LinkID_Input
+  resilientModeTarget: ResilientModeID_Input
+}
+input TestConfiguration_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
+  governs: String
+}
+input TestConfiguration_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # UnsafeAction definition
@@ -4484,6 +5329,11 @@ input UnsafeActionATTR_Input {
 }
 type UnsafeActionREL {
   """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [UnsafeAction_CategorizedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -4511,6 +5361,11 @@ type UnsafeActionREL {
   leadsTo: [UnsafeAction_LeadsToTarget]
 
   """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [UnsafeAction_UsesTarget]
+
+  """
   Entity is an analysis variation.
   """
   variationOf: [UnsafeAction_VariationOfTarget]
@@ -4518,12 +5373,17 @@ type UnsafeActionREL {
 }
 # for mutations
 input UnsafeActionREL_Input {
+  categorizedBy: [UnsafeAction_CategorizedByTarget_Input]
   documentedBy: [UnsafeAction_DocumentedByTarget_Input]
   elicits: [UnsafeAction_ElicitsTarget_Input]
   hasProcessModel: [UnsafeAction_HasProcessModelTarget_Input]
   isCausedBy: [UnsafeAction_IsCausedByTarget_Input]
   leadsTo: [UnsafeAction_LeadsToTarget_Input]
+  uses: [UnsafeAction_UsesTarget_Input]
   variationOf: [UnsafeAction_VariationOfTarget_Input]
+}
+type UnsafeAction_CategorizedByTarget {
+  categoryTarget: CategoryID
 }
 type UnsafeAction_DocumentedByTarget {
   documentTarget: DocumentID
@@ -4546,10 +5406,17 @@ type UnsafeAction_IsCausedByTarget {
 type UnsafeAction_LeadsToTarget {
   hazardTarget: HazardID
 }
+type UnsafeAction_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
 type UnsafeAction_VariationOfTarget {
   controlActionTarget: ControlActionID
 }
 # for mutations
+input UnsafeAction_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
 input UnsafeAction_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -4571,9 +5438,247 @@ input UnsafeAction_LeadsToTarget_Input {
   operation: MutationOperation!
   hazardTarget: HazardID_Input
 }
+input UnsafeAction_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
 input UnsafeAction_VariationOfTarget_Input {
   operation: MutationOperation!
   controlActionTarget: ControlActionID_Input
+}
+#########################################
+# VerificationRequirement definition
+#########################################
+type VerificationRequirement {
+  identity: VerificationRequirementID!
+  attributes: VerificationRequirementATTR
+  parameters: [Parameter]
+  relations: VerificationRequirementREL
+}
+# for mutations
+input VerificationRequirement_Input {
+  operation: MutationOperation!
+  identity: VerificationRequirementID_Input!
+  attributes: VerificationRequirementATTR_Input
+  parameters: [Parameter_Input]
+  relations: VerificationRequirementREL_Input
+}
+type VerificationRequirementID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input VerificationRequirementID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type VerificationRequirementATTR {
+  """
+  Type is the nature of the verification requirement, specifically whether it is a
+  verification or validation requirement.
+  """
+  type: VerificationRequirementType
+
+  """
+  Title is the label to be used in formal documentation instead of the element
+  name.
+  """
+  title: String
+
+  """
+  Doc. PUID is the project unique identifier that is often used in system
+  development specifications and documents to identify the same entity in multiple
+  documents. This is not to be confused with the database entity unique
+  identifier.
+  """
+  puid: String
+
+  """
+  Status identifies the current status of the verification activity.
+  """
+  status: VerificationRequirementStatus
+
+  """
+  Level identifies the development level at which the related requirement
+  statements are to be verified.
+  """
+  level: VerificationRequirementLevel
+
+  """
+  Method characterizes the qualification techniques to be used to ensure that the
+  related requirement statements are satisfied.
+  """
+  method: VerificationRequirementMethod
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+enum VerificationRequirementType {
+  nil
+  Validation
+  Verification
+}
+enum VerificationRequirementStatus {
+  nil
+  Not_Yet_Planned
+  Planned
+  In_Progress
+  Completed__Satisfactory
+  Completed__Unsatisfactory
+}
+enum VerificationRequirementLevel {
+  nil
+  System
+  Segment
+  Subsystem
+  HWCI
+  HW_Element
+  Part
+  CSCI
+  CSC
+  CSU
+  Facility
+  Task
+}
+enum VerificationRequirementMethod {
+  nil
+  Analysis
+  Demonstration
+  Inspection
+  Test
+}
+# for mutations
+input VerificationRequirementATTR_Input {
+  type: VerificationRequirementType
+  title: String
+  puid: String
+  status: VerificationRequirementStatus
+  level: VerificationRequirementLevel
+  method: VerificationRequirementMethod
+  description: String
+}
+type VerificationRequirementREL {
+  """
+  Based on identifies the needs that this entity fulfills in whole or in part.
+  """
+  basedOn: [VerificationRequirement_BasedOnTarget]
+
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [VerificationRequirement_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [VerificationRequirement_DocumentedByTarget]
+
+  """
+  Reported by identifies the documentation entity of which the entity is the
+  primary subject.
+  """
+  reportedBy: [VerificationRequirement_ReportedByTarget]
+
+  """
+  Specifies identifies those entities whose performance or whose characteristics
+  are bounded by the requirement.
+  """
+  specifies: [VerificationRequirement_SpecifiesTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [VerificationRequirement_UsesTarget]
+
+  """
+  Verifies identifies the entities to be validated.
+  """
+  verifies: [VerificationRequirement_VerifiesTarget]
+
+}
+# for mutations
+input VerificationRequirementREL_Input {
+  basedOn: [VerificationRequirement_BasedOnTarget_Input]
+  categorizedBy: [VerificationRequirement_CategorizedByTarget_Input]
+  documentedBy: [VerificationRequirement_DocumentedByTarget_Input]
+  reportedBy: [VerificationRequirement_ReportedByTarget_Input]
+  specifies: [VerificationRequirement_SpecifiesTarget_Input]
+  uses: [VerificationRequirement_UsesTarget_Input]
+  verifies: [VerificationRequirement_VerifiesTarget_Input]
+}
+type VerificationRequirement_BasedOnTarget {
+  requirementTarget: RequirementID
+}
+type VerificationRequirement_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type VerificationRequirement_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type VerificationRequirement_ReportedByTarget {
+  documentTarget: DocumentID
+}
+type VerificationRequirement_SpecifiesTarget {
+  testConfigurationTarget: TestConfigurationID
+  """
+  The Governs relationship attribute identifies the Parameter attribute that is
+  associated in both the Requirement entity and Component entity joined by the
+  specified by / specifies relationship.
+  """
+  governs: String
+
+}
+type VerificationRequirement_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type VerificationRequirement_VerifiesTarget {
+  functionTarget: FunctionID
+  requirementTarget: RequirementID
+  lossScenarioTarget: LossScenarioID
+  componentTarget: ComponentID
+  itemTarget: ItemID
+  linkTarget: LinkID
+}
+# for mutations
+input VerificationRequirement_BasedOnTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input VerificationRequirement_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input VerificationRequirement_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input VerificationRequirement_ReportedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input VerificationRequirement_SpecifiesTarget_Input {
+  operation: MutationOperation!
+  testConfigurationTarget: TestConfigurationID_Input
+  governs: String
+}
+input VerificationRequirement_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input VerificationRequirement_VerifiesTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  requirementTarget: RequirementID_Input
+  lossScenarioTarget: LossScenarioID_Input
+  componentTarget: ComponentID_Input
+  itemTarget: ItemID_Input
+  linkTarget: LinkID_Input
 }
 type CallStructure {
   function: FunctionID

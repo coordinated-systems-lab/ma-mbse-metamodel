@@ -304,13 +304,24 @@ namespace genesys_graphql
             schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  List of Projects");
             schemaFile.WriteLine(@"  """"""");
-            schemaFile.WriteLine("  cpsProjects: [Project]");
+            schemaFile.WriteLine("  cpsProjectsQuery: ProjectsResponse");
 
             schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  System Model for: '" + facilityName + "' Facility");
             schemaFile.WriteLine(@"  """"""");
-            schemaFile.WriteLine("  cpsSystemModel(projectId: ID!): CPSsystemModel");
+            schemaFile.WriteLine("  cpsSystemModelQuery(projectId: ID!): CPSsystemModelResponse");
             schemaFile.WriteLine("}");
+
+            schemaFile.WriteLine("type ProjectsResponse {");
+            schemaFile.WriteLine("  status: ResponseStatus");
+            schemaFile.WriteLine("  projects: [Project]");
+            schemaFile.WriteLine("}");
+            schemaFile.WriteLine("type CPSsystemModelResponse");
+            schemaFile.WriteLine("{");
+            schemaFile.WriteLine("  status: ResponseStatus");
+            schemaFile.WriteLine("  cpsSystemModel: CPSsystemModel");
+            schemaFile.WriteLine("}");
+
             schemaFile.WriteLine("type CPSsystemModel {");
             schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  The project identity.");
@@ -347,13 +358,17 @@ namespace genesys_graphql
             schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  Mutate Project");
             schemaFile.WriteLine(@"  """"""");
-            schemaFile.WriteLine("  cpsProject(project: Project_Input): Project");
+            schemaFile.WriteLine("  cpsProjectMutation(project: Project_Input): ProjectResponse");
             schemaFile.WriteLine(@"  """"""");
             schemaFile.WriteLine("  Mutate CPS System Model");
             schemaFile.WriteLine(@"  """"""");
-            schemaFile.WriteLine("  cpsSystemModel(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSsystemModel");
+            schemaFile.WriteLine("  cpsSystemModelMutation(projectId: ID!, cpsSystemModel: CPSsystemModel_Input): CPSsystemModelResponse");
             schemaFile.WriteLine("}");
             schemaFile.WriteLine("");
+            schemaFile.WriteLine("type ProjectResponse {");
+            schemaFile.WriteLine("  status: ResponseStatus");
+            schemaFile.WriteLine("  project: Project");
+            schemaFile.WriteLine("}");
 
             //Sytem Model input for mutation
             schemaFile.WriteLine("input CPSsystemModel_Input {");
@@ -370,6 +385,18 @@ namespace genesys_graphql
             schemaFile.WriteLine("#########################################");
             schemaFile.WriteLine("# Common Definitions");
             schemaFile.WriteLine("#########################################");
+            // Output Response Status
+            schemaFile.WriteLine("type ResponseStatus {");
+            schemaFile.WriteLine("  code: ResponseCode");
+            schemaFile.WriteLine("  message: String");
+            schemaFile.WriteLine("}");
+            schemaFile.WriteLine("enum ResponseCode");
+            schemaFile.WriteLine("{");
+            schemaFile.WriteLine("  Success");
+            schemaFile.WriteLine("  FailureNotFound");
+            schemaFile.WriteLine("  FailureNotUnique");
+            schemaFile.WriteLine(" FailureGeneral");
+            schemaFile.WriteLine("}");
             // Output Project Definition
             schemaFile.WriteLine("type Project {");
             schemaFile.WriteLine("  id: ID!");
