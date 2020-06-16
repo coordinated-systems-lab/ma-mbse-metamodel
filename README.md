@@ -2,6 +2,11 @@
 
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-context.png)
+## MBSE Meta-Model
+A representation of critical systems engineering concepts and their interrelationships spanning _**requirements**_, _**behavior**_, _**architecture**_, and _**test**_.  This integrated model presents a high-level view of not only the ultimate specification of a system, but also the journey to that specification – _**concerns**_ opened and closed, _**risks**_ identified and managed.
+
+![MBSE](images/mbse.png)
+
 ### References
 * [MBSE](http://www.vitechcorp.com/resources/white_papers/onemodel.pdf)
 * [Hazard Analysis - STPA](http://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf)
