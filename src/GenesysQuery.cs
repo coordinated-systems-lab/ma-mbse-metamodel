@@ -735,7 +735,7 @@ namespace genesys_graphql
                 sortedEntityRelationList.Sort();
 
                 // Output Entity Type
-                if (folder.EntityCount == 0)
+                if (folder.ChildEntityCount == 0)
                 {
                     dataFile.WriteLine("".PadLeft(indent) + @"""" + LowerFirst(entityType) + @""": [],");
                 }
@@ -745,7 +745,7 @@ namespace genesys_graphql
                     indent += 2;
                     IEnumerable<IEntity> entityList = folder.GetAllEntities();
                     int currentEntity = 0;
-                    int totalEntity = folder.EntityCount;
+                    int totalEntity = folder.ChildEntityCount;
                     ISortBlock numericSortBlock = project.GetSortBlock(SortBlockConstants.Numeric);
                     // Output Entity Instance
                     foreach (IEntity entity in numericSortBlock.SortEntities(entityList))
