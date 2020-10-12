@@ -48,6 +48,13 @@ type CPSsystemModel {
   component: [Component]
 
   """
+  The ConstraintDefinition entity captures the definition of the parametric
+  constraint as an Expression, identifying the independent variable(s) and the
+  dependent variable in the definition.
+  """
+  constraintDefinition: [ConstraintDefinition]
+
+  """
   The set of process model variables and values.
   """
   context: [Context]
@@ -103,6 +110,12 @@ type CPSsystemModel {
   hazard: [Hazard]
 
   """
+  A Hazardous Control Action (HCA) is a control action that, in a particular
+  context and worst-case environment, will lead to a hazard.
+  """
+  hazardousAction: [HazardousAction]
+
+  """
   Items represent flows within and between functions. An item is an input to or an
   output from a function.
   """
@@ -156,10 +169,12 @@ type CPSsystemModel {
   testConfiguration: [TestConfiguration]
 
   """
-  An Unsafe Control Action (UCA) is a control action that, in a particular context
-  and worst-case environment, will lead to a hazard.
+  A use case entity identifies a piece of the functionality of a system in terms
+  of how the users use the system to achieve their goals. Use cases are high-level
+  descriptions of behavior under a specific set of conditions. These high-level
+  descriptions can then be elaborated to define the system behavior.
   """
-  unsafeAction: [UnsafeAction]
+  useCase: [UseCase]
 
   """
   A VerificationRequirement describes what is to be proved (i.e., requirements),
@@ -193,6 +208,7 @@ input CPSsystemModel_Input {
   attackVector: [AttackVector_Input]
   category: [Category_Input]
   component: [Component_Input]
+  constraintDefinition: [ConstraintDefinition_Input]
   context: [Context_Input]
   controlAction: [ControlAction_Input]
   definedTerm: [DefinedTerm_Input]
@@ -202,6 +218,7 @@ input CPSsystemModel_Input {
   feedback: [Feedback_Input]
   function: [Function_Input]
   hazard: [Hazard_Input]
+  hazardousAction: [HazardousAction_Input]
   item: [Item_Input]
   link: [Link_Input]
   loss: [Loss_Input]
@@ -210,7 +227,7 @@ input CPSsystemModel_Input {
   resilientMode: [ResilientMode_Input]
   resource: [Resource_Input]
   testConfiguration: [TestConfiguration_Input]
-  unsafeAction: [UnsafeAction_Input]
+  useCase: [UseCase_Input]
   verificationRequirement: [VerificationRequirement_Input]
 }
 
@@ -420,10 +437,22 @@ type AttackVector_ViolatesTarget {
   linkTarget: LinkID
   componentTarget: ComponentID
   """
+  The likelihood of this attack on the associated component / link given the
+  mitigation.
+  """
+  mitigatedLikelihood: AttackVector_ViolatesMitigatedLikelihood
+
+  """
   A description of selected mitigation - include reference to associated
   requirement number.
   """
   justification: String
+
+  """
+  The severity of this attack on the associated Component / link given the
+  mitigation.
+  """
+  mitigatedSeverity: AttackVector_ViolatesMitigatedSeverity
 
   """
   Component / Link specific attack vector description.
@@ -436,6 +465,20 @@ type AttackVector_ViolatesTarget {
   """
   mitigationType: AttackVector_ViolatesMitigationType
 
+}
+enum AttackVector_ViolatesMitigatedLikelihood {
+  nil
+  Low
+  Medium
+  High
+}
+enum AttackVector_ViolatesMitigatedSeverity {
+  nil
+  Very_Low
+  Low
+  Medium
+  High
+  Very_High
 }
 enum AttackVector_ViolatesMitigationType {
   nil
@@ -471,7 +514,9 @@ input AttackVector_ViolatesTarget_Input {
   operation: MutationOperation!
   linkTarget: LinkID_Input
   componentTarget: ComponentID_Input
+  mitigatedLikelihood: AttackVector_ViolatesMitigatedLikelihood
   justification: String
+  mitigatedSeverity: AttackVector_ViolatesMitigatedSeverity
   description: String
   mitigationType: AttackVector_ViolatesMitigationType
 }
@@ -760,6 +805,19 @@ type ComponentREL {
   connectedTo: [Component_ConnectedToTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [Component_ConstrainedByTarget]
+
+  """
+  Described by identifies the use cases that reflect how the users will use this
+  entity to achieve their physical objectives.
+  """
+  describedBy: [Component_DescribedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -797,6 +855,16 @@ type ComponentREL {
   The component operation is altered in some way by the resilient mode.
   """
   operationAlteredBy: [Component_OperationAlteredByTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [Component_ParameterUsedInTarget]
+
+  """
+  Participates in identifies the use cases that this actor supports.
+  """
+  participatesIn: [Component_ParticipatesInTarget]
 
   """
   Performs identifies the actions that this entity accomplishes.
@@ -843,6 +911,8 @@ input ComponentREL_Input {
   builtIn: [Component_BuiltInTarget_Input]
   categorizedBy: [Component_CategorizedByTarget_Input]
   connectedTo: [Component_ConnectedToTarget_Input]
+  constrainedBy: [Component_ConstrainedByTarget_Input]
+  describedBy: [Component_DescribedByTarget_Input]
   documentedBy: [Component_DocumentedByTarget_Input]
   enablesDetectionOf: [Component_EnablesDetectionOfTarget_Input]
   forms: [Component_FormsTarget_Input]
@@ -850,6 +920,8 @@ input ComponentREL_Input {
   isViolatedBy: [Component_IsViolatedByTarget_Input]
   kindOf: [Component_KindOfTarget_Input]
   operationAlteredBy: [Component_OperationAlteredByTarget_Input]
+  parameterUsedIn: [Component_ParameterUsedInTarget_Input]
+  participatesIn: [Component_ParticipatesInTarget_Input]
   performs: [Component_PerformsTarget_Input]
   protectsAgainst: [Component_ProtectsAgainstTarget_Input]
   reportedBy: [Component_ReportedByTarget_Input]
@@ -922,6 +994,17 @@ type Component_ConnectedToTarget {
   portID: String
 
 }
+type Component_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
+}
+type Component_DescribedByTarget {
+  useCaseTarget: UseCaseID
+}
 type Component_DocumentedByTarget {
   documentTarget: DocumentID
 }
@@ -954,10 +1037,22 @@ enum Component_GeneralizationOfType {
 type Component_IsViolatedByTarget {
   attackVectorTarget: AttackVectorID
   """
+  The likelihood of this attack on the associated component / link given the
+  mitigation.
+  """
+  mitigatedLikelihood: Component_IsViolatedByMitigatedLikelihood
+
+  """
   A description of selected mitigation - include reference to associated
   requirement number.
   """
   justification: String
+
+  """
+  The severity of this attack on the associated Component / link given the
+  mitigation.
+  """
+  mitigatedSeverity: Component_IsViolatedByMitigatedSeverity
 
   """
   Component / Link specific attack vector description.
@@ -970,6 +1065,20 @@ type Component_IsViolatedByTarget {
   """
   mitigationType: Component_IsViolatedByMitigationType
 
+}
+enum Component_IsViolatedByMitigatedLikelihood {
+  nil
+  Low
+  Medium
+  High
+}
+enum Component_IsViolatedByMitigatedSeverity {
+  nil
+  Very_Low
+  Low
+  Medium
+  High
+  Very_High
 }
 enum Component_IsViolatedByMitigationType {
   nil
@@ -1001,6 +1110,19 @@ enum Component_KindOfType {
 }
 type Component_OperationAlteredByTarget {
   resilientModeTarget: ResilientModeID
+}
+type Component_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
+}
+type Component_ParticipatesInTarget {
+  useCaseTarget: UseCaseID
 }
 type Component_PerformsTarget {
   functionTarget: FunctionID
@@ -1065,6 +1187,15 @@ input Component_ConnectedToTarget_Input {
   linkTarget: LinkID_Input
   portID: String
 }
+input Component_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input Component_DescribedByTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+}
 input Component_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -1086,7 +1217,9 @@ input Component_GeneralizationOfTarget_Input {
 input Component_IsViolatedByTarget_Input {
   operation: MutationOperation!
   attackVectorTarget: AttackVectorID_Input
+  mitigatedLikelihood: Component_IsViolatedByMitigatedLikelihood
   justification: String
+  mitigatedSeverity: Component_IsViolatedByMitigatedSeverity
   description: String
   mitigationType: Component_IsViolatedByMitigationType
 }
@@ -1098,6 +1231,15 @@ input Component_KindOfTarget_Input {
 input Component_OperationAlteredByTarget_Input {
   operation: MutationOperation!
   resilientModeTarget: ResilientModeID_Input
+}
+input Component_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input Component_ParticipatesInTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
 }
 input Component_PerformsTarget_Input {
   operation: MutationOperation!
@@ -1128,6 +1270,166 @@ input Component_UsesTarget_Input {
 input Component_VerifiedByTarget_Input {
   operation: MutationOperation!
   verificationRequirementTarget: VerificationRequirementID_Input
+}
+#########################################
+# ConstraintDefinition definition
+#########################################
+type ConstraintDefinition {
+  identity: ConstraintDefinitionID!
+  attributes: ConstraintDefinitionATTR
+  parameters: [Parameter]
+  relations: ConstraintDefinitionREL
+}
+# for mutations
+input ConstraintDefinition_Input {
+  operation: MutationOperation!
+  identity: ConstraintDefinitionID_Input!
+  attributes: ConstraintDefinitionATTR_Input
+  parameters: [Parameter_Input]
+  relations: ConstraintDefinitionREL_Input
+}
+type ConstraintDefinitionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input ConstraintDefinitionID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type ConstraintDefinitionATTR {
+  """
+  The Expression is defined in terms of independent variables which are evaluated
+  to determine the dependent variable that represents the parametric constraint.
+  """
+  expression: [String]
+
+  """
+  The Dependent Variable is the parameter that results from evaluating the
+  parametric constraint definition Expression. The Dependent Variable depends on
+  one or more independent variables in an algebraic expression.
+  """
+  dependentVariables: [String]
+
+  """
+  The abbreviation is a shortened phrase or reduced form of the overall name which
+  can be used to identify the entity. Abbreviation is used in the icon for a
+  Constraint Block.
+  """
+  abbreviation: String
+
+  """
+  The Independent Variable(s) is (are) the variables that may be freely chosen
+  without consideration of the Dependent Variable. Independent Variables are
+  evaluated in the parametric constraint definition Expression.
+  """
+  independentVariables: [String]
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input ConstraintDefinitionATTR_Input {
+  expression: [String]
+  dependentVariables: [String]
+  abbreviation: String
+  independentVariables: [String]
+  description: String
+}
+type ConstraintDefinitionREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [ConstraintDefinition_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [ConstraintDefinition_DocumentedByTarget]
+
+  """
+  Included in constraint definition defines the child in the parent-child
+  relationship between ConstraintDefinitions.
+  """
+  includedInConstraintDefinition: [ConstraintDefinition_IncludedInConstraintDefinitionTarget]
+
+  """
+  Includes constraint definition defines the parent in the parent-child
+  relationship between ConstraintDefinitions.
+  """
+  includesConstraintDefinition: [ConstraintDefinition_IncludesConstraintDefinitionTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [ConstraintDefinition_UsesTarget]
+
+}
+# for mutations
+input ConstraintDefinitionREL_Input {
+  categorizedBy: [ConstraintDefinition_CategorizedByTarget_Input]
+  documentedBy: [ConstraintDefinition_DocumentedByTarget_Input]
+  includedInConstraintDefinition: [ConstraintDefinition_IncludedInConstraintDefinitionTarget_Input]
+  includesConstraintDefinition: [ConstraintDefinition_IncludesConstraintDefinitionTarget_Input]
+  uses: [ConstraintDefinition_UsesTarget_Input]
+}
+type ConstraintDefinition_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type ConstraintDefinition_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type ConstraintDefinition_IncludedInConstraintDefinitionTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  : Mappings identifies the parameters associated with the included constraint
+  definition relationship. The mappings relationship attribute shows how the
+  parameter maps to the variable used.
+  """
+  mappings: [String]
+
+}
+type ConstraintDefinition_IncludesConstraintDefinitionTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  : Mappings identifies the parameters associated with the included constraint
+  definition relationship. The mappings relationship attribute shows how the
+  parameter maps to the variable used.
+  """
+  mappings: [String]
+
+}
+type ConstraintDefinition_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input ConstraintDefinition_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input ConstraintDefinition_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input ConstraintDefinition_IncludedInConstraintDefinitionTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input ConstraintDefinition_IncludesConstraintDefinitionTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input ConstraintDefinition_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Context definition
@@ -1255,6 +1557,13 @@ type ContextREL {
   categorizedBy: [Context_CategorizedByTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [Context_ConstrainedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [Context_DecomposedByTarget]
@@ -1284,6 +1593,11 @@ type ContextREL {
   Output from identifies the processing unit that produces this entity.
   """
   outputFrom: [Context_OutputFromTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [Context_ParameterUsedInTarget]
 
   """
   Context (process model) for unsafe action.
@@ -1324,12 +1638,14 @@ type ContextREL {
 # for mutations
 input ContextREL_Input {
   categorizedBy: [Context_CategorizedByTarget_Input]
+  constrainedBy: [Context_ConstrainedByTarget_Input]
   decomposedBy: [Context_DecomposedByTarget_Input]
   decomposes: [Context_DecomposesTarget_Input]
   documentedBy: [Context_DocumentedByTarget_Input]
   enablesDetectionOf: [Context_EnablesDetectionOfTarget_Input]
   inputTo: [Context_InputToTarget_Input]
   outputFrom: [Context_OutputFromTarget_Input]
+  parameterUsedIn: [Context_ParameterUsedInTarget_Input]
   providesProcessModelFor: [Context_ProvidesProcessModelForTarget_Input]
   specifiedBy: [Context_SpecifiedByTarget_Input]
   transferredBy: [Context_TransferredByTarget_Input]
@@ -1339,6 +1655,14 @@ input ContextREL_Input {
 }
 type Context_CategorizedByTarget {
   categoryTarget: CategoryID
+}
+type Context_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
 }
 type Context_DecomposedByTarget {
   itemTarget: ItemID
@@ -1363,8 +1687,18 @@ type Context_InputToTarget {
 type Context_OutputFromTarget {
   functionTarget: FunctionID
 }
+type Context_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
+}
 type Context_ProvidesProcessModelForTarget {
-  unsafeActionTarget: UnsafeActionID
+  hazardousActionTarget: HazardousActionID
   """
   The process model attributes and values that define the "context" for the unsafe
   control action.
@@ -1411,6 +1745,11 @@ input Context_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
 }
+input Context_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input Context_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -1436,9 +1775,14 @@ input Context_OutputFromTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
 }
+input Context_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input Context_ProvidesProcessModelForTarget_Input {
   operation: MutationOperation!
-  unsafeActionTarget: UnsafeActionID_Input
+  hazardousActionTarget: HazardousActionID_Input
   processModelAttributes: [String]
 }
 input Context_SpecifiedByTarget_Input {
@@ -1589,6 +1933,13 @@ type ControlActionREL {
   categorizedBy: [ControlAction_CategorizedByTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [ControlAction_ConstrainedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [ControlAction_DecomposedByTarget]
@@ -1630,6 +1981,11 @@ type ControlActionREL {
   outputFrom: [ControlAction_OutputFromTarget]
 
   """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [ControlAction_ParameterUsedInTarget]
+
+  """
   Specified by identifies constraint and/or performance requirements that this
   entity must satisfy.
   """
@@ -1663,6 +2019,7 @@ type ControlActionREL {
 # for mutations
 input ControlActionREL_Input {
   categorizedBy: [ControlAction_CategorizedByTarget_Input]
+  constrainedBy: [ControlAction_ConstrainedByTarget_Input]
   decomposedBy: [ControlAction_DecomposedByTarget_Input]
   decomposes: [ControlAction_DecomposesTarget_Input]
   documentedBy: [ControlAction_DocumentedByTarget_Input]
@@ -1671,6 +2028,7 @@ input ControlActionREL_Input {
   inputTo: [ControlAction_InputToTarget_Input]
   manages: [ControlAction_ManagesTarget_Input]
   outputFrom: [ControlAction_OutputFromTarget_Input]
+  parameterUsedIn: [ControlAction_ParameterUsedInTarget_Input]
   specifiedBy: [ControlAction_SpecifiedByTarget_Input]
   transferredBy: [ControlAction_TransferredByTarget_Input]
   triggers: [ControlAction_TriggersTarget_Input]
@@ -1679,6 +2037,14 @@ input ControlActionREL_Input {
 }
 type ControlAction_CategorizedByTarget {
   categoryTarget: CategoryID
+}
+type ControlAction_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
 }
 type ControlAction_DecomposedByTarget {
   itemTarget: ItemID
@@ -1698,7 +2064,7 @@ type ControlAction_EnablesDetectionOfTarget {
 
 }
 type ControlAction_HasVariationTarget {
-  unsafeActionTarget: UnsafeActionID
+  hazardousActionTarget: HazardousActionID
 }
 type ControlAction_InputToTarget {
   functionTarget: FunctionID
@@ -1719,6 +2085,16 @@ enum ControlAction_ManagesActionType {
 }
 type ControlAction_OutputFromTarget {
   functionTarget: FunctionID
+}
+type ControlAction_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
 }
 type ControlAction_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -1759,6 +2135,11 @@ input ControlAction_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
 }
+input ControlAction_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input ControlAction_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -1778,7 +2159,7 @@ input ControlAction_EnablesDetectionOfTarget_Input {
 }
 input ControlAction_HasVariationTarget_Input {
   operation: MutationOperation!
-  unsafeActionTarget: UnsafeActionID_Input
+  hazardousActionTarget: HazardousActionID_Input
 }
 input ControlAction_InputToTarget_Input {
   operation: MutationOperation!
@@ -1792,6 +2173,11 @@ input ControlAction_ManagesTarget_Input {
 input ControlAction_OutputFromTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
+}
+input ControlAction_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
 }
 input ControlAction_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -2549,6 +2935,13 @@ type FeedbackREL {
   categorizedBy: [Feedback_CategorizedByTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [Feedback_ConstrainedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [Feedback_DecomposedByTarget]
@@ -2578,6 +2971,11 @@ type FeedbackREL {
   Output from identifies the processing unit that produces this entity.
   """
   outputFrom: [Feedback_OutputFromTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [Feedback_ParameterUsedInTarget]
 
   """
   Specified by identifies constraint and/or performance requirements that this
@@ -2613,12 +3011,14 @@ type FeedbackREL {
 # for mutations
 input FeedbackREL_Input {
   categorizedBy: [Feedback_CategorizedByTarget_Input]
+  constrainedBy: [Feedback_ConstrainedByTarget_Input]
   decomposedBy: [Feedback_DecomposedByTarget_Input]
   decomposes: [Feedback_DecomposesTarget_Input]
   documentedBy: [Feedback_DocumentedByTarget_Input]
   enablesDetectionOf: [Feedback_EnablesDetectionOfTarget_Input]
   inputTo: [Feedback_InputToTarget_Input]
   outputFrom: [Feedback_OutputFromTarget_Input]
+  parameterUsedIn: [Feedback_ParameterUsedInTarget_Input]
   specifiedBy: [Feedback_SpecifiedByTarget_Input]
   transferredBy: [Feedback_TransferredByTarget_Input]
   triggers: [Feedback_TriggersTarget_Input]
@@ -2627,6 +3027,14 @@ input FeedbackREL_Input {
 }
 type Feedback_CategorizedByTarget {
   categoryTarget: CategoryID
+}
+type Feedback_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
 }
 type Feedback_DecomposedByTarget {
   itemTarget: ItemID
@@ -2650,6 +3058,16 @@ type Feedback_InputToTarget {
 }
 type Feedback_OutputFromTarget {
   functionTarget: FunctionID
+}
+type Feedback_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
 }
 type Feedback_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -2690,6 +3108,11 @@ input Feedback_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
 }
+input Feedback_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input Feedback_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -2714,6 +3137,11 @@ input Feedback_InputToTarget_Input {
 input Feedback_OutputFromTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
+}
+input Feedback_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
 }
 input Feedback_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -2843,6 +3271,13 @@ type FunctionREL {
   categorizedBy: [Function_CategorizedByTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [Function_ConstrainedByTarget]
+
+  """
   Consumes identifies resources which this object requires (and destroys) during
   execution. Resources are consumed when the execution of the processing unit
   begins.
@@ -2864,6 +3299,12 @@ type FunctionREL {
   definition of this entity.
   """
   documentedBy: [Function_DocumentedByTarget]
+
+  """
+  Elaborates identifies the use case for which this entity provides the detailed
+  behavioral model.
+  """
+  elaborates: [Function_ElaboratesTarget]
 
   """
   The Function / Link / Item enables detection of Loss Scenario.
@@ -2895,6 +3336,11 @@ type FunctionREL {
   processing unit.
   """
   outputs: [Function_OutputsTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [Function_ParameterUsedInTarget]
 
   """
   Produces identifies resources generated by the processing unit. Resources are
@@ -2955,16 +3401,19 @@ input FunctionREL_Input {
   basedOn: [Function_BasedOnTarget_Input]
   captures: [Function_CapturesTarget_Input]
   categorizedBy: [Function_CategorizedByTarget_Input]
+  constrainedBy: [Function_ConstrainedByTarget_Input]
   consumes: [Function_ConsumesTarget_Input]
   decomposedBy: [Function_DecomposedByTarget_Input]
   decomposes: [Function_DecomposesTarget_Input]
   documentedBy: [Function_DocumentedByTarget_Input]
+  elaborates: [Function_ElaboratesTarget_Input]
   enablesDetectionOf: [Function_EnablesDetectionOfTarget_Input]
   exitsBy: [Function_ExitsByTarget_Input]
   inputs: [Function_InputsTarget_Input]
   isRecoveredBy: [Function_IsRecoveredByTarget_Input]
   manages: [Function_ManagesTarget_Input]
   outputs: [Function_OutputsTarget_Input]
+  parameterUsedIn: [Function_ParameterUsedInTarget_Input]
   produces: [Function_ProducesTarget_Input]
   reflectedIn: [Function_ReflectedInTarget_Input]
   reflects: [Function_ReflectsTarget_Input]
@@ -3010,6 +3459,14 @@ type Function_CapturesTarget {
 type Function_CategorizedByTarget {
   categoryTarget: CategoryID
 }
+type Function_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
+}
 type Function_ConsumesTarget {
   resourceTarget: ResourceID
   """
@@ -3033,6 +3490,20 @@ type Function_DecomposesTarget {
 }
 type Function_DocumentedByTarget {
   documentTarget: DocumentID
+}
+type Function_ElaboratesTarget {
+  lossScenarioTarget: LossScenarioID
+  useCaseTarget: UseCaseID
+  """
+  Flow type indicates if this elaboration represents the primary flow or alternate
+  flow.
+  """
+  flowType: Function_ElaboratesFlowType
+
+}
+enum Function_ElaboratesFlowType {
+  Alternate
+  Primary
 }
 type Function_EnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
@@ -3096,6 +3567,16 @@ enum Function_ManagesActionType {
 }
 type Function_OutputsTarget {
   itemTarget: ItemID
+}
+type Function_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
 }
 type Function_ProducesTarget {
   resourceTarget: ResourceID
@@ -3168,6 +3649,11 @@ input Function_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
 }
+input Function_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input Function_ConsumesTarget_Input {
   operation: MutationOperation!
   resourceTarget: ResourceID_Input
@@ -3185,6 +3671,12 @@ input Function_DecomposesTarget_Input {
 input Function_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
+}
+input Function_ElaboratesTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  useCaseTarget: UseCaseID_Input
+  flowType: Function_ElaboratesFlowType
 }
 input Function_EnablesDetectionOfTarget_Input {
   operation: MutationOperation!
@@ -3215,6 +3707,11 @@ input Function_ManagesTarget_Input {
 input Function_OutputsTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
+}
+input Function_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
 }
 input Function_ProducesTarget_Input {
   operation: MutationOperation!
@@ -3347,7 +3844,7 @@ type Hazard_ElicitsTarget {
   requirementTarget: RequirementID
 }
 type Hazard_IsCausedByTarget {
-  unsafeActionTarget: UnsafeActionID
+  hazardousActionTarget: HazardousActionID
 }
 type Hazard_LeadsToTarget {
   lossTarget: LossID
@@ -3370,7 +3867,7 @@ input Hazard_ElicitsTarget_Input {
 }
 input Hazard_IsCausedByTarget_Input {
   operation: MutationOperation!
-  unsafeActionTarget: UnsafeActionID_Input
+  hazardousActionTarget: HazardousActionID_Input
 }
 input Hazard_LeadsToTarget_Input {
   operation: MutationOperation!
@@ -3379,6 +3876,180 @@ input Hazard_LeadsToTarget_Input {
 input Hazard_UsesTarget_Input {
   operation: MutationOperation!
   definedTermTarget: DefinedTermID_Input
+}
+#########################################
+# HazardousAction definition
+#########################################
+type HazardousAction {
+  identity: HazardousActionID!
+  attributes: HazardousActionATTR
+  parameters: [Parameter]
+  relations: HazardousActionREL
+}
+# for mutations
+input HazardousAction_Input {
+  operation: MutationOperation!
+  identity: HazardousActionID_Input!
+  attributes: HazardousActionATTR_Input
+  parameters: [Parameter_Input]
+  relations: HazardousActionREL_Input
+}
+type HazardousActionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input HazardousActionID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type HazardousActionATTR {
+  """
+  There are four ways a control action can be hazardous:  1. Not providing the
+  control action leads to a hazard.  2. Providing the control action leads to a
+  hazard.  3. Providing a potentially safe control action but too early, too late,
+  or in the wrong order  4. The control action lasts too long or is stopped too
+  soon (for continuous control actions, not discrete ones).
+  """
+  variationType: HazardousActionVariationType
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+enum HazardousActionVariationType {
+  NotProviding
+  Providing
+  TooEarlyTooLate
+  TooLongTooSoon
+}
+# for mutations
+input HazardousActionATTR_Input {
+  variationType: HazardousActionVariationType
+  description: String
+}
+type HazardousActionREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [HazardousAction_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [HazardousAction_DocumentedByTarget]
+
+  """
+  A Use Case, Hazard, Unsafe Action enables the elicitation of requirements from
+  stakeholders.
+  """
+  elicits: [HazardousAction_ElicitsTarget]
+
+  """
+  Unsafe control action context (process model).
+  """
+  hasProcessModel: [HazardousAction_HasProcessModelTarget]
+
+  """
+  Indicates causality of entity.
+  """
+  isCausedBy: [HazardousAction_IsCausedByTarget]
+
+  """
+  Indicates factors leading to entity.
+  """
+  leadsTo: [HazardousAction_LeadsToTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [HazardousAction_UsesTarget]
+
+  """
+  Entity is an analysis variation.
+  """
+  variationOf: [HazardousAction_VariationOfTarget]
+
+}
+# for mutations
+input HazardousActionREL_Input {
+  categorizedBy: [HazardousAction_CategorizedByTarget_Input]
+  documentedBy: [HazardousAction_DocumentedByTarget_Input]
+  elicits: [HazardousAction_ElicitsTarget_Input]
+  hasProcessModel: [HazardousAction_HasProcessModelTarget_Input]
+  isCausedBy: [HazardousAction_IsCausedByTarget_Input]
+  leadsTo: [HazardousAction_LeadsToTarget_Input]
+  uses: [HazardousAction_UsesTarget_Input]
+  variationOf: [HazardousAction_VariationOfTarget_Input]
+}
+type HazardousAction_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type HazardousAction_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type HazardousAction_ElicitsTarget {
+  requirementTarget: RequirementID
+}
+type HazardousAction_HasProcessModelTarget {
+  contextTarget: ContextID
+  """
+  The process model attributes and values that define the "context" for the unsafe
+  control action.
+  """
+  processModelAttributes: [String]
+
+}
+type HazardousAction_IsCausedByTarget {
+  lossScenarioTarget: LossScenarioID
+}
+type HazardousAction_LeadsToTarget {
+  hazardTarget: HazardID
+}
+type HazardousAction_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+type HazardousAction_VariationOfTarget {
+  controlActionTarget: ControlActionID
+}
+# for mutations
+input HazardousAction_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input HazardousAction_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input HazardousAction_ElicitsTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input HazardousAction_HasProcessModelTarget_Input {
+  operation: MutationOperation!
+  contextTarget: ContextID_Input
+  processModelAttributes: [String]
+}
+input HazardousAction_IsCausedByTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
+input HazardousAction_LeadsToTarget_Input {
+  operation: MutationOperation!
+  hazardTarget: HazardID_Input
+}
+input HazardousAction_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+input HazardousAction_VariationOfTarget_Input {
+  operation: MutationOperation!
+  controlActionTarget: ControlActionID_Input
 }
 #########################################
 # Item definition
@@ -3506,6 +4177,13 @@ type ItemREL {
   categorizedBy: [Item_CategorizedByTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [Item_ConstrainedByTarget]
+
+  """
   Decomposed by identifies the children of this entity.
   """
   decomposedBy: [Item_DecomposedByTarget]
@@ -3535,6 +4213,11 @@ type ItemREL {
   Output from identifies the processing unit that produces this entity.
   """
   outputFrom: [Item_OutputFromTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [Item_ParameterUsedInTarget]
 
   """
   Specified by identifies constraint and/or performance requirements that this
@@ -3570,12 +4253,14 @@ type ItemREL {
 # for mutations
 input ItemREL_Input {
   categorizedBy: [Item_CategorizedByTarget_Input]
+  constrainedBy: [Item_ConstrainedByTarget_Input]
   decomposedBy: [Item_DecomposedByTarget_Input]
   decomposes: [Item_DecomposesTarget_Input]
   documentedBy: [Item_DocumentedByTarget_Input]
   enablesDetectionOf: [Item_EnablesDetectionOfTarget_Input]
   inputTo: [Item_InputToTarget_Input]
   outputFrom: [Item_OutputFromTarget_Input]
+  parameterUsedIn: [Item_ParameterUsedInTarget_Input]
   specifiedBy: [Item_SpecifiedByTarget_Input]
   transferredBy: [Item_TransferredByTarget_Input]
   triggers: [Item_TriggersTarget_Input]
@@ -3584,6 +4269,14 @@ input ItemREL_Input {
 }
 type Item_CategorizedByTarget {
   categoryTarget: CategoryID
+}
+type Item_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
 }
 type Item_DecomposedByTarget {
   itemTarget: ItemID
@@ -3607,6 +4300,16 @@ type Item_InputToTarget {
 }
 type Item_OutputFromTarget {
   functionTarget: FunctionID
+}
+type Item_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
 }
 type Item_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -3647,6 +4350,11 @@ input Item_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
 }
+input Item_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input Item_DecomposedByTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -3671,6 +4379,11 @@ input Item_InputToTarget_Input {
 input Item_OutputFromTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
+}
+input Item_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
 }
 input Item_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -3808,6 +4521,13 @@ type LinkREL {
   connectsTo: [Link_ConnectsToTarget]
 
   """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [Link_ConstrainedByTarget]
+
+  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -3837,6 +4557,11 @@ type LinkREL {
   Identifies Attack Patterns that may violate an Entity.
   """
   isViolatedBy: [Link_IsViolatedByTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [Link_ParameterUsedInTarget]
 
   """
   Reported by identifies the documentation entity of which the entity is the
@@ -3877,12 +4602,14 @@ type LinkREL {
 input LinkREL_Input {
   categorizedBy: [Link_CategorizedByTarget_Input]
   connectsTo: [Link_ConnectsToTarget_Input]
+  constrainedBy: [Link_ConstrainedByTarget_Input]
   documentedBy: [Link_DocumentedByTarget_Input]
   enablesDetectionOf: [Link_EnablesDetectionOfTarget_Input]
   forms: [Link_FormsTarget_Input]
   includedIn: [Link_IncludedInTarget_Input]
   includes: [Link_IncludesTarget_Input]
   isViolatedBy: [Link_IsViolatedByTarget_Input]
+  parameterUsedIn: [Link_ParameterUsedInTarget_Input]
   reportedBy: [Link_ReportedByTarget_Input]
   servicedBy: [Link_ServicedByTarget_Input]
   specifiedBy: [Link_SpecifiedByTarget_Input]
@@ -3900,6 +4627,14 @@ type Link_ConnectsToTarget {
   Link and the Component.
   """
   portID: String
+
+}
+type Link_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
 
 }
 type Link_DocumentedByTarget {
@@ -3925,10 +4660,22 @@ type Link_IncludesTarget {
 type Link_IsViolatedByTarget {
   attackVectorTarget: AttackVectorID
   """
+  The likelihood of this attack on the associated component / link given the
+  mitigation.
+  """
+  mitigatedLikelihood: Link_IsViolatedByMitigatedLikelihood
+
+  """
   A description of selected mitigation - include reference to associated
   requirement number.
   """
   justification: String
+
+  """
+  The severity of this attack on the associated Component / link given the
+  mitigation.
+  """
+  mitigatedSeverity: Link_IsViolatedByMitigatedSeverity
 
   """
   Component / Link specific attack vector description.
@@ -3942,6 +4689,20 @@ type Link_IsViolatedByTarget {
   mitigationType: Link_IsViolatedByMitigationType
 
 }
+enum Link_IsViolatedByMitigatedLikelihood {
+  nil
+  Low
+  Medium
+  High
+}
+enum Link_IsViolatedByMitigatedSeverity {
+  nil
+  Very_Low
+  Low
+  Medium
+  High
+  Very_High
+}
 enum Link_IsViolatedByMitigationType {
   nil
   CH_Inventory
@@ -3954,6 +4715,16 @@ enum Link_IsViolatedByMitigationType {
   RES_Harden
   RES_Defensive
   RES_DiverseRedundancy
+}
+type Link_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
 }
 type Link_ReportedByTarget {
   documentTarget: DocumentID
@@ -3990,6 +4761,11 @@ input Link_ConnectsToTarget_Input {
   componentTarget: ComponentID_Input
   portID: String
 }
+input Link_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
 input Link_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -4014,9 +4790,16 @@ input Link_IncludesTarget_Input {
 input Link_IsViolatedByTarget_Input {
   operation: MutationOperation!
   attackVectorTarget: AttackVectorID_Input
+  mitigatedLikelihood: Link_IsViolatedByMitigatedLikelihood
   justification: String
+  mitigatedSeverity: Link_IsViolatedByMitigatedSeverity
   description: String
   mitigationType: Link_IsViolatedByMitigationType
+}
+input Link_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
 }
 input Link_ReportedByTarget_Input {
   operation: MutationOperation!
@@ -4191,6 +4974,14 @@ type LossScenarioATTR {
   detectTime: Float
 
   """
+  Doc. PUID is the project unique identifier that is often used in system
+  development specifications and documents to identify the same entity in multiple
+  documents. This is not to be confused with the database entity unique
+  identifier.
+  """
+  puid: String
+
+  """
   Time budget to isolate the loss scenario.
   """
   isolateTime: Float
@@ -4252,6 +5043,7 @@ enum LossScenarioDetect_pattern {
 # for mutations
 input LossScenarioATTR_Input {
   detectTime: Float
+  puid: String
   isolateTime: Float
   threat_category: LossScenarioThreat_category
   detect_pattern: LossScenarioDetect_pattern
@@ -4278,6 +5070,12 @@ type LossScenarioREL {
   definition of this entity.
   """
   documentedBy: [LossScenario_DocumentedByTarget]
+
+  """
+  Elaborated by identifies the processing unit that provides the detailed
+  behavioral model of the use case.
+  """
+  elaboratedBy: [LossScenario_ElaboratedByTarget]
 
   """
   The loss scenario is caused by an attack vector.
@@ -4326,6 +5124,7 @@ input LossScenarioREL_Input {
   categorizedBy: [LossScenario_CategorizedByTarget_Input]
   detectedByMonitoring: [LossScenario_DetectedByMonitoringTarget_Input]
   documentedBy: [LossScenario_DocumentedByTarget_Input]
+  elaboratedBy: [LossScenario_ElaboratedByTarget_Input]
   isPrecipitatedBy: [LossScenario_IsPrecipitatedByTarget_Input]
   isProtectedBy: [LossScenario_IsProtectedByTarget_Input]
   isRemediatedBy: [LossScenario_IsRemediatedByTarget_Input]
@@ -4353,6 +5152,19 @@ type LossScenario_DetectedByMonitoringTarget {
 type LossScenario_DocumentedByTarget {
   documentTarget: DocumentID
 }
+type LossScenario_ElaboratedByTarget {
+  functionTarget: FunctionID
+  """
+  Flow type indicates if this elaboration represents the primary flow or alternate
+  flow.
+  """
+  flowType: LossScenario_ElaboratedByFlowType
+
+}
+enum LossScenario_ElaboratedByFlowType {
+  Alternate
+  Primary
+}
 type LossScenario_IsPrecipitatedByTarget {
   attackVectorTarget: AttackVectorID
 }
@@ -4366,7 +5178,7 @@ type LossScenario_IsSimulatedByTarget {
   componentTarget: ComponentID
 }
 type LossScenario_LeadsToTarget {
-  unsafeActionTarget: UnsafeActionID
+  hazardousActionTarget: HazardousActionID
 }
 type LossScenario_ManagedByTarget {
   functionTarget: FunctionID
@@ -4406,6 +5218,11 @@ input LossScenario_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
+input LossScenario_ElaboratedByTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  flowType: LossScenario_ElaboratedByFlowType
+}
 input LossScenario_IsPrecipitatedByTarget_Input {
   operation: MutationOperation!
   attackVectorTarget: AttackVectorID_Input
@@ -4424,7 +5241,7 @@ input LossScenario_IsSimulatedByTarget_Input {
 }
 input LossScenario_LeadsToTarget_Input {
   operation: MutationOperation!
-  unsafeActionTarget: UnsafeActionID_Input
+  hazardousActionTarget: HazardousActionID_Input
 }
 input LossScenario_ManagedByTarget_Input {
   operation: MutationOperation!
@@ -4671,6 +5488,7 @@ input RequirementREL_Input {
 type Requirement_BasisOfTarget {
   functionTarget: FunctionID
   verificationRequirementTarget: VerificationRequirementID
+  useCaseTarget: UseCaseID
 }
 type Requirement_CategorizedByTarget {
   categoryTarget: CategoryID
@@ -4679,7 +5497,8 @@ type Requirement_DocumentedByTarget {
   documentTarget: DocumentID
 }
 type Requirement_ElicitedByTarget {
-  unsafeActionTarget: UnsafeActionID
+  hazardousActionTarget: HazardousActionID
+  useCaseTarget: UseCaseID
   hazardTarget: HazardID
 }
 type Requirement_RefinedByTarget {
@@ -4710,6 +5529,7 @@ input Requirement_BasisOfTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   verificationRequirementTarget: VerificationRequirementID_Input
+  useCaseTarget: UseCaseID_Input
 }
 input Requirement_CategorizedByTarget_Input {
   operation: MutationOperation!
@@ -4721,7 +5541,8 @@ input Requirement_DocumentedByTarget_Input {
 }
 input Requirement_ElicitedByTarget_Input {
   operation: MutationOperation!
-  unsafeActionTarget: UnsafeActionID_Input
+  hazardousActionTarget: HazardousActionID_Input
+  useCaseTarget: UseCaseID_Input
   hazardTarget: HazardID_Input
 }
 input Requirement_RefinedByTarget_Input {
@@ -5273,42 +6094,66 @@ input TestConfiguration_UsesTarget_Input {
   definedTermTarget: DefinedTermID_Input
 }
 #########################################
-# UnsafeAction definition
+# UseCase definition
 #########################################
-type UnsafeAction {
-  identity: UnsafeActionID!
-  attributes: UnsafeActionATTR
+type UseCase {
+  identity: UseCaseID!
+  attributes: UseCaseATTR
   parameters: [Parameter]
-  relations: UnsafeActionREL
+  relations: UseCaseREL
 }
 # for mutations
-input UnsafeAction_Input {
+input UseCase_Input {
   operation: MutationOperation!
-  identity: UnsafeActionID_Input!
-  attributes: UnsafeActionATTR_Input
+  identity: UseCaseID_Input!
+  attributes: UseCaseATTR_Input
   parameters: [Parameter_Input]
-  relations: UnsafeActionREL_Input
+  relations: UseCaseREL_Input
 }
-type UnsafeActionID {
+type UseCaseID {
   id: ID!
   name: String!
   number: String!
 }
 # for mutations
-input UnsafeActionID_Input {
+input UseCaseID_Input {
   id: ID # autogenerated on Create, required for Update / Delete
   name: String!
   number: String!
 }
-type UnsafeActionATTR {
+type UseCaseATTR {
   """
-  There are four ways a control action can be unsafe:  1. Not providing the
-  control action leads to a hazard.  2. Providing the control action leads to a
-  hazard.  3. Providing a potentially safe control action but too early, too late,
-  or in the wrong order  4. The control action lasts too long or is stopped too
-  soon (for continuous control actions, not discrete ones).
+  Doc. PUID is the project unique identifier that is often used in system
+  development specifications and documents to identify the same entity in multiple
+  documents. This is not to be confused with the database entity unique
+  identifier.
   """
-  variationType: UnsafeActionVariationType
+  puid: String
+
+  """
+  Preconditions are the conditions that must hold true for this use case to begin.
+  """
+  preconditions: String
+
+  """
+  Primary flow is a textual description of the most frequent scenario or scenarios
+  for this use case. The primary flow serves as the foundation for the behavioral
+  representation of the use case.
+  """
+  primaryFlow: String
+
+  """
+  Alternate flow is a textual description of the scenarios that are less frequent
+  or exceptions. The alternate flow serves helps guide the development of the
+  integrated logic.
+  """
+  alternateFlow: String
+
+  """
+  Postconditions are the conditions that must hold true once this case has
+  completed.
+  """
+  postconditions: String
 
   """
   Description is the written statement of this entity.
@@ -5316,135 +6161,211 @@ type UnsafeActionATTR {
   description: String
 
 }
-enum UnsafeActionVariationType {
-  NotProviding
-  Providing
-  TooEarlyTooLate
-  TooLongTooSoon
-}
 # for mutations
-input UnsafeActionATTR_Input {
-  variationType: UnsafeActionVariationType
+input UseCaseATTR_Input {
+  puid: String
+  preconditions: String
+  primaryFlow: String
+  alternateFlow: String
+  postconditions: String
   description: String
 }
-type UnsafeActionREL {
+type UseCaseREL {
+  """
+  Based on identifies the needs that this entity fulfills in whole or in part.
+  """
+  basedOn: [UseCase_BasedOnTarget]
+
   """
   Categorized by identifies a grouping that includes this entity.
   """
-  categorizedBy: [UnsafeAction_CategorizedByTarget]
+  categorizedBy: [UseCase_CategorizedByTarget]
 
   """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
-  documentedBy: [UnsafeAction_DocumentedByTarget]
+  documentedBy: [UseCase_DocumentedByTarget]
 
   """
   A Use Case, Hazard, Unsafe Action enables the elicitation of requirements from
   stakeholders.
   """
-  elicits: [UnsafeAction_ElicitsTarget]
+  elicits: [UseCase_ElicitsTarget]
 
   """
-  Unsafe control action context (process model).
+  Extended by identifies the use cases which extend the entity by providing
+  additional fragments of functionality not considered part of the normal base use
+  case.
   """
-  hasProcessModel: [UnsafeAction_HasProcessModelTarget]
+  extendedBy: [UseCase_ExtendedByTarget]
 
   """
-  Indicates causality of entity.
+  Extends identifies the use case for which this entity provides an additional
+  fragment of functionality not considered part of the normal base use case.
   """
-  isCausedBy: [UnsafeAction_IsCausedByTarget]
+  extends: [UseCase_ExtendsTarget]
 
   """
-  Indicates factors leading to entity.
+  Generalization of associates a specific object classification with a more
+  general object classification. For example, "Vehicle" is a generalization of
+  "Car," "Train," and "Plane."
   """
-  leadsTo: [UnsafeAction_LeadsToTarget]
+  generalizationOf: [UseCase_GeneralizationOfTarget]
+
+  """
+  Included in identifies the parent of this entity.
+  """
+  includedIn: [UseCase_IncludedInTarget]
+
+  """
+  Includes identifies the children of this entity.
+  """
+  includes: [UseCase_IncludesTarget]
+
+  """
+  Kind of indicates classification. This relationship is often referred to as the
+  "is a" relationship (i.e., a car "is a" vehicle).
+  """
+  kindOf: [UseCase_KindOfTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
   """
-  uses: [UnsafeAction_UsesTarget]
-
-  """
-  Entity is an analysis variation.
-  """
-  variationOf: [UnsafeAction_VariationOfTarget]
+  uses: [UseCase_UsesTarget]
 
 }
 # for mutations
-input UnsafeActionREL_Input {
-  categorizedBy: [UnsafeAction_CategorizedByTarget_Input]
-  documentedBy: [UnsafeAction_DocumentedByTarget_Input]
-  elicits: [UnsafeAction_ElicitsTarget_Input]
-  hasProcessModel: [UnsafeAction_HasProcessModelTarget_Input]
-  isCausedBy: [UnsafeAction_IsCausedByTarget_Input]
-  leadsTo: [UnsafeAction_LeadsToTarget_Input]
-  uses: [UnsafeAction_UsesTarget_Input]
-  variationOf: [UnsafeAction_VariationOfTarget_Input]
+input UseCaseREL_Input {
+  basedOn: [UseCase_BasedOnTarget_Input]
+  categorizedBy: [UseCase_CategorizedByTarget_Input]
+  documentedBy: [UseCase_DocumentedByTarget_Input]
+  elicits: [UseCase_ElicitsTarget_Input]
+  extendedBy: [UseCase_ExtendedByTarget_Input]
+  extends: [UseCase_ExtendsTarget_Input]
+  generalizationOf: [UseCase_GeneralizationOfTarget_Input]
+  includedIn: [UseCase_IncludedInTarget_Input]
+  includes: [UseCase_IncludesTarget_Input]
+  kindOf: [UseCase_KindOfTarget_Input]
+  uses: [UseCase_UsesTarget_Input]
 }
-type UnsafeAction_CategorizedByTarget {
-  categoryTarget: CategoryID
-}
-type UnsafeAction_DocumentedByTarget {
-  documentTarget: DocumentID
-}
-type UnsafeAction_ElicitsTarget {
+type UseCase_BasedOnTarget {
   requirementTarget: RequirementID
 }
-type UnsafeAction_HasProcessModelTarget {
-  contextTarget: ContextID
+type UseCase_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type UseCase_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type UseCase_ElicitsTarget {
+  requirementTarget: RequirementID
+}
+type UseCase_ExtendedByTarget {
+  useCaseTarget: UseCaseID
   """
-  The process model attributes and values that define the "context" for the unsafe
-  control action.
+  Extension point is the point at which the extending use case extends the base
+  use case functionality.
   """
-  processModelAttributes: [String]
+  extensionPoint: String
 
 }
-type UnsafeAction_IsCausedByTarget {
-  lossScenarioTarget: LossScenarioID
+type UseCase_ExtendsTarget {
+  useCaseTarget: UseCaseID
+  """
+  Extension point is the point at which the extending use case extends the base
+  use case functionality.
+  """
+  extensionPoint: String
+
 }
-type UnsafeAction_LeadsToTarget {
-  hazardTarget: HazardID
+type UseCase_GeneralizationOfTarget {
+  useCaseTarget: UseCaseID
+  """
+  Type classifies the nature of the generalization / specialization relationship.
+  Inheritance indicates that the specialization shares the properties of the
+  generalization. Instance indicates that the specialization also shares the
+  relationships of the generalization.
+  """
+  type: UseCase_GeneralizationOfType
+
 }
-type UnsafeAction_UsesTarget {
+enum UseCase_GeneralizationOfType {
+  Inheritance
+  Instance
+}
+type UseCase_IncludedInTarget {
+  useCaseTarget: UseCaseID
+}
+type UseCase_IncludesTarget {
+  useCaseTarget: UseCaseID
+}
+type UseCase_KindOfTarget {
+  useCaseTarget: UseCaseID
+  """
+  Type classifies the nature of the generalization / specialization relationship.
+  Inheritance indicates that the specialization shares the properties of the
+  generalization. Instance indicates that the specialization also shares the
+  relationships of the generalization.
+  """
+  type: UseCase_KindOfType
+
+}
+enum UseCase_KindOfType {
+  Inheritance
+  Instance
+}
+type UseCase_UsesTarget {
   definedTermTarget: DefinedTermID
 }
-type UnsafeAction_VariationOfTarget {
-  controlActionTarget: ControlActionID
-}
 # for mutations
-input UnsafeAction_CategorizedByTarget_Input {
-  operation: MutationOperation!
-  categoryTarget: CategoryID_Input
-}
-input UnsafeAction_DocumentedByTarget_Input {
-  operation: MutationOperation!
-  documentTarget: DocumentID_Input
-}
-input UnsafeAction_ElicitsTarget_Input {
+input UseCase_BasedOnTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
 }
-input UnsafeAction_HasProcessModelTarget_Input {
+input UseCase_CategorizedByTarget_Input {
   operation: MutationOperation!
-  contextTarget: ContextID_Input
-  processModelAttributes: [String]
+  categoryTarget: CategoryID_Input
 }
-input UnsafeAction_IsCausedByTarget_Input {
+input UseCase_DocumentedByTarget_Input {
   operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
+  documentTarget: DocumentID_Input
 }
-input UnsafeAction_LeadsToTarget_Input {
+input UseCase_ElicitsTarget_Input {
   operation: MutationOperation!
-  hazardTarget: HazardID_Input
+  requirementTarget: RequirementID_Input
 }
-input UnsafeAction_UsesTarget_Input {
+input UseCase_ExtendedByTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+  extensionPoint: String
+}
+input UseCase_ExtendsTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+  extensionPoint: String
+}
+input UseCase_GeneralizationOfTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+  type: UseCase_GeneralizationOfType
+}
+input UseCase_IncludedInTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+}
+input UseCase_IncludesTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+}
+input UseCase_KindOfTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+  type: UseCase_KindOfType
+}
+input UseCase_UsesTarget_Input {
   operation: MutationOperation!
   definedTermTarget: DefinedTermID_Input
-}
-input UnsafeAction_VariationOfTarget_Input {
-  operation: MutationOperation!
-  controlActionTarget: ControlActionID_Input
 }
 #########################################
 # VerificationRequirement definition
