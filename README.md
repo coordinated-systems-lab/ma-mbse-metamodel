@@ -1,5 +1,11 @@
 # Mission Aware (CPS) MBSE Meta-Model
 
+## About the paper
+
+Georgios Bakirtzis, Tim Sherburne, Stephen Adams, Barry M. Horowitz, Peter A. Beling, and Cody H. Fleming 
+"An Ontological Metamodel for Cyber-Physical System Safety, Security, and Resilience Coengineering",
+[preprint](https://arxiv.org/pdf/2006.05304.pdf)
+
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-context.png)
 ## MBSE Meta-Model
