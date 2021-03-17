@@ -12,3 +12,4 @@ src/genesys-graphql_TemporaryKey.pfx
 src/obj/
 src/packages.config
 src/packages/
+sample/

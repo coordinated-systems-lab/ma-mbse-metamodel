@@ -121,6 +121,12 @@ type CPSsystemModel {
   hazardousAction: [HazardousAction]
 
   """
+  A routine practice for using basic security capabilities to reduce cyber risks
+  due to common or pervasive threats.
+  """
+  hygienePractice: [HygienePractice]
+
+  """
   Items represent flows within and between functions. An item is an input to or an
   output from a function.
   """
@@ -173,11 +179,34 @@ type CPSsystemModel {
   resource: [Resource]
 
   """
+  A State entity identifies a state of a component.
+  """
+  state: [State]
+
+  """
+  A TestActivity is an action performed in fulfilling the testing objectives of a
+  program entity. It also transforms one or more inputs (test items) into outputs
+  (test items).
+  """
+  testActivity: [TestActivity]
+
+  """
   A TestConfiguration identifies the system components, test support hardware and
   software, and test facilities required to perform the associated test
   activities.
   """
   testConfiguration: [TestConfiguration]
+
+  """
+  TestItem is an input to, an output from, or triggers a test activity.
+  """
+  testItem: [TestItem]
+
+  """
+  Transition is the process or period of changing from one state or condition to
+  another.
+  """
+  transition: [Transition]
 
   """
   A use case entity identifies a piece of the functionality of a system in terms
@@ -186,6 +215,13 @@ type CPSsystemModel {
   descriptions can then be elaborated to define the system behavior.
   """
   useCase: [UseCase]
+
+  """
+  A VerificationEvent specifies the implementation of the verification technique,
+  what is to be verified, the estimated duration of the event, and the time window
+  in which the event must occur.
+  """
+  verificationEvent: [VerificationEvent]
 
   """
   A VerificationRequirement describes what is to be proved (i.e., requirements),
@@ -231,6 +267,7 @@ input CPSsystemModel_Input {
   function: [Function_Input]
   hazard: [Hazard_Input]
   hazardousAction: [HazardousAction_Input]
+  hygienePractice: [HygienePractice_Input]
   item: [Item_Input]
   link: [Link_Input]
   loss: [Loss_Input]
@@ -239,8 +276,13 @@ input CPSsystemModel_Input {
   requirement: [Requirement_Input]
   resilientMode: [ResilientMode_Input]
   resource: [Resource_Input]
+  state: [State_Input]
+  testActivity: [TestActivity_Input]
   testConfiguration: [TestConfiguration_Input]
+  testItem: [TestItem_Input]
+  transition: [Transition_Input]
   useCase: [UseCase_Input]
+  verificationEvent: [VerificationEvent_Input]
   verificationRequirement: [VerificationRequirement_Input]
 }
 
@@ -416,6 +458,11 @@ type AttackPatternREL {
   initiates: [AttackPattern_InitiatesTarget]
 
   """
+  An attack pattern is motivation for hygiene practice.
+  """
+  motivationFor: [AttackPattern_MotivationForTarget]
+
+  """
   Uses identifies a term or acronym employed in the generated document.
   """
   uses: [AttackPattern_UsesTarget]
@@ -426,6 +473,7 @@ input AttackPatternREL_Input {
   categorizedBy: [AttackPattern_CategorizedByTarget_Input]
   documentedBy: [AttackPattern_DocumentedByTarget_Input]
   initiates: [AttackPattern_InitiatesTarget_Input]
+  motivationFor: [AttackPattern_MotivationForTarget_Input]
   uses: [AttackPattern_UsesTarget_Input]
 }
 type AttackPattern_CategorizedByTarget {
@@ -436,6 +484,9 @@ type AttackPattern_DocumentedByTarget {
 }
 type AttackPattern_InitiatesTarget {
   attackVectorTarget: AttackVectorID
+}
+type AttackPattern_MotivationForTarget {
+  hygienePracticeTarget: HygienePracticeID
 }
 type AttackPattern_UsesTarget {
   definedTermTarget: DefinedTermID
@@ -452,6 +503,10 @@ input AttackPattern_DocumentedByTarget_Input {
 input AttackPattern_InitiatesTarget_Input {
   operation: MutationOperation!
   attackVectorTarget: AttackVectorID_Input
+}
+input AttackPattern_MotivationForTarget_Input {
+  operation: MutationOperation!
+  hygienePracticeTarget: HygienePracticeID_Input
 }
 input AttackPattern_UsesTarget_Input {
   operation: MutationOperation!
@@ -921,6 +976,11 @@ type ComponentREL {
   enablesDetectionOf: [Component_EnablesDetectionOfTarget]
 
   """
+  Exhibits identifies characteristics of the entity.
+  """
+  exhibits: [Component_ExhibitsTarget]
+
+  """
   Forms identifies the test configurations in which this entity is used.
   """
   forms: [Component_FormsTarget]
@@ -1008,6 +1068,7 @@ input ComponentREL_Input {
   describedBy: [Component_DescribedByTarget_Input]
   documentedBy: [Component_DocumentedByTarget_Input]
   enablesDetectionOf: [Component_EnablesDetectionOfTarget_Input]
+  exhibits: [Component_ExhibitsTarget_Input]
   forms: [Component_FormsTarget_Input]
   generalizationOf: [Component_GeneralizationOfTarget_Input]
   isViolatedBy: [Component_IsViolatedByTarget_Input]
@@ -1108,6 +1169,19 @@ type Component_EnablesDetectionOfTarget {
   """
   constraint: [String]
 
+}
+type Component_ExhibitsTarget {
+  stateTarget: StateID
+  """
+  Behavior Type classifies the mapping between the source and destination
+  entities.
+  """
+  behaviorType: Component_ExhibitsBehaviorType
+
+}
+enum Component_ExhibitsBehaviorType {
+  Atomic
+  Integrated_Root
 }
 type Component_FormsTarget {
   testConfigurationTarget: TestConfigurationID
@@ -1241,6 +1315,11 @@ input Component_EnablesDetectionOfTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
+}
+input Component_ExhibitsTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+  behaviorType: Component_ExhibitsBehaviorType
 }
 input Component_FormsTarget_Input {
   operation: MutationOperation!
@@ -3349,6 +3428,12 @@ type FunctionREL {
   exitsBy: [Function_ExitsByTarget]
 
   """
+  Incorporated by identifies the source entity as contributing to the destination
+  entity.
+  """
+  incorporatedBy: [Function_IncorporatedByTarget]
+
+  """
   Inputs identifies the entities that are transformed by this processing unit.
   """
   inputs: [Function_InputsTarget]
@@ -3441,6 +3526,7 @@ input FunctionREL_Input {
   elaborates: [Function_ElaboratesTarget_Input]
   enablesDetectionOf: [Function_EnablesDetectionOfTarget_Input]
   exitsBy: [Function_ExitsByTarget_Input]
+  incorporatedBy: [Function_IncorporatedByTarget_Input]
   inputs: [Function_InputsTarget_Input]
   isRecoveredBy: [Function_IsRecoveredByTarget_Input]
   manages: [Function_ManagesTarget_Input]
@@ -3566,6 +3652,21 @@ enum Function_ExitsByType {
   Exception
   Timeout
 }
+type Function_IncorporatedByTarget {
+  stateTarget: StateID
+  """
+  Behavior Type classifies the mapping between the source and destination
+  entities.
+  """
+  behaviorType: Function_IncorporatedByBehaviorType
+
+}
+enum Function_IncorporatedByBehaviorType {
+  Atomic
+  Integrated_Root
+  Entry
+  Exit
+}
 type Function_InputsTarget {
   itemTarget: ItemID
 }
@@ -3628,6 +3729,7 @@ type Function_RelatesToTarget {
   domainSetTarget: DomainSetID
 }
 type Function_ServicesTarget {
+  transitionTarget: TransitionID
   linkTarget: LinkID
 }
 type Function_SpecifiedByTarget {
@@ -3721,6 +3823,11 @@ input Function_ExitsByTarget_Input {
   selectionProbability: Float
   type: Function_ExitsByType
 }
+input Function_IncorporatedByTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+  behaviorType: Function_IncorporatedByBehaviorType
+}
 input Function_InputsTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
@@ -3764,6 +3871,7 @@ input Function_RelatesToTarget_Input {
 }
 input Function_ServicesTarget_Input {
   operation: MutationOperation!
+  transitionTarget: TransitionID_Input
   linkTarget: LinkID_Input
 }
 input Function_SpecifiedByTarget_Input {
@@ -3953,6 +4061,15 @@ input HazardousActionID_Input {
 }
 type HazardousActionATTR {
   """
+  Likert Scale:  1. Unacceptable hazard and highest priority to provide
+  resiliency.  2. Avoid hazard as long as resiliency solution does not
+  over-complicate operation.  3. Would like to avoid hazard, but solution needs to
+  be incremental.  4. Lowest priority, low-cost, simplistic solutions should be
+  considered.
+  """
+  consequence: HazardousActionConsequence
+
+  """
   There are four ways a control action can be hazardous:  1. Not providing the
   control action leads to a hazard.  2. Providing the control action leads to a
   hazard.  3. Providing a potentially safe control action but too early, too late,
@@ -3967,6 +4084,12 @@ type HazardousActionATTR {
   description: String
 
 }
+enum HazardousActionConsequence {
+  E_1
+  E_2
+  E_3
+  E_4
+}
 enum HazardousActionVariationType {
   NotProviding
   Providing
@@ -3975,6 +4098,7 @@ enum HazardousActionVariationType {
 }
 # for mutations
 input HazardousActionATTR_Input {
+  consequence: HazardousActionConsequence
   variationType: HazardousActionVariationType
   description: String
 }
@@ -4096,6 +4220,130 @@ input HazardousAction_UsesTarget_Input {
 input HazardousAction_VariationOfTarget_Input {
   operation: MutationOperation!
   controlActionTarget: ControlActionID_Input
+}
+#########################################
+# HygienePractice definition
+#########################################
+type HygienePractice {
+  identity: HygienePracticeID!
+  attributes: HygienePracticeATTR
+  parameters: [Parameter]
+  relations: HygienePracticeREL
+}
+# for mutations
+input HygienePractice_Input {
+  operation: MutationOperation!
+  identity: HygienePracticeID_Input!
+  attributes: HygienePracticeATTR_Input
+  parameters: [Parameter_Input]
+  relations: HygienePracticeREL_Input
+}
+type HygienePracticeID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input HygienePracticeID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type HygienePracticeATTR {
+  """
+  A justification for not considering the hygiene practice within the system
+  scope.
+  """
+  outOfScopeJustification: String
+
+  """
+  Is the hygiene practice to be considered for the system?
+  """
+  outOfScope: Boolean
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input HygienePracticeATTR_Input {
+  outOfScopeJustification: String
+  outOfScope: Boolean
+  description: String
+}
+type HygienePracticeREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [HygienePractice_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [HygienePractice_DocumentedByTarget]
+
+  """
+  A hygiene practice may be implemented as a remediation.
+  """
+  implementedAs: [HygienePractice_ImplementedAsTarget]
+
+  """
+  A hygiene practice is motivated by attack pattern.
+  """
+  motivatedBy: [HygienePractice_MotivatedByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [HygienePractice_UsesTarget]
+
+}
+# for mutations
+input HygienePracticeREL_Input {
+  categorizedBy: [HygienePractice_CategorizedByTarget_Input]
+  documentedBy: [HygienePractice_DocumentedByTarget_Input]
+  implementedAs: [HygienePractice_ImplementedAsTarget_Input]
+  motivatedBy: [HygienePractice_MotivatedByTarget_Input]
+  uses: [HygienePractice_UsesTarget_Input]
+}
+type HygienePractice_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type HygienePractice_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type HygienePractice_ImplementedAsTarget {
+  remediationTarget: RemediationID
+}
+type HygienePractice_MotivatedByTarget {
+  attackPatternTarget: AttackPatternID
+}
+type HygienePractice_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input HygienePractice_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input HygienePractice_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input HygienePractice_ImplementedAsTarget_Input {
+  operation: MutationOperation!
+  remediationTarget: RemediationID_Input
+}
+input HygienePractice_MotivatedByTarget_Input {
+  operation: MutationOperation!
+  attackPatternTarget: AttackPatternID_Input
+}
+input HygienePractice_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
 }
 #########################################
 # Item definition
@@ -4968,22 +5216,12 @@ input LossScenarioID_Input {
 }
 type LossScenarioATTR {
   """
-  Time budget to detect loss scenario.
-  """
-  detectTime: Float
-
-  """
   Doc. PUID is the project unique identifier that is often used in system
   development specifications and documents to identify the same entity in multiple
   documents. This is not to be confused with the database entity unique
   identifier.
   """
   puid: String
-
-  """
-  Time budget to isolate the loss scenario.
-  """
-  isolateTime: Float
 
   """
   The category of threat - terminology reused from STRIDE.    Spoofing: Involves
@@ -5042,9 +5280,7 @@ enum LossScenarioDetect_pattern {
 }
 # for mutations
 input LossScenarioATTR_Input {
-  detectTime: Float
   puid: String
-  isolateTime: Float
   threat_category: LossScenarioThreat_category
   detect_pattern: LossScenarioDetect_pattern
   description: String
@@ -5084,11 +5320,6 @@ type LossScenarioREL {
   isProtectedBy: [LossScenario_IsProtectedByTarget]
 
   """
-  The resilient mode which remediates loss scenarios.
-  """
-  isRemediatedBy: [LossScenario_IsRemediatedByTarget]
-
-  """
   A Loss Scenario is simulated by a Threat Simulator.
   """
   isSimulatedBy: [LossScenario_IsSimulatedByTarget]
@@ -5102,6 +5333,11 @@ type LossScenarioREL {
   The resilient mode is managed (enabled / disabled / tested) by control action.
   """
   managedBy: [LossScenario_ManagedByTarget]
+
+  """
+  The loss scenarios reconfigures using resilient mode.
+  """
+  reconfiguresUsing: [LossScenario_ReconfiguresUsingTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -5122,10 +5358,10 @@ input LossScenarioREL_Input {
   documentedBy: [LossScenario_DocumentedByTarget_Input]
   elaboratedBy: [LossScenario_ElaboratedByTarget_Input]
   isProtectedBy: [LossScenario_IsProtectedByTarget_Input]
-  isRemediatedBy: [LossScenario_IsRemediatedByTarget_Input]
   isSimulatedBy: [LossScenario_IsSimulatedByTarget_Input]
   leadsTo: [LossScenario_LeadsToTarget_Input]
   managedBy: [LossScenario_ManagedByTarget_Input]
+  reconfiguresUsing: [LossScenario_ReconfiguresUsingTarget_Input]
   uses: [LossScenario_UsesTarget_Input]
   verifiedBy: [LossScenario_VerifiedByTarget_Input]
 }
@@ -5164,9 +5400,6 @@ type LossScenario_IsProtectedByTarget {
   remediationTarget: RemediationID
   componentTarget: ComponentID
 }
-type LossScenario_IsRemediatedByTarget {
-  resilientModeTarget: ResilientModeID
-}
 type LossScenario_IsSimulatedByTarget {
   componentTarget: ComponentID
 }
@@ -5186,6 +5419,9 @@ enum LossScenario_ManagedByActionType {
   activate
   deactivate
   selfTest
+}
+type LossScenario_ReconfiguresUsingTarget {
+  resilientModeTarget: ResilientModeID
 }
 type LossScenario_UsesTarget {
   definedTermTarget: DefinedTermID
@@ -5221,10 +5457,6 @@ input LossScenario_IsProtectedByTarget_Input {
   remediationTarget: RemediationID_Input
   componentTarget: ComponentID_Input
 }
-input LossScenario_IsRemediatedByTarget_Input {
-  operation: MutationOperation!
-  resilientModeTarget: ResilientModeID_Input
-}
 input LossScenario_IsSimulatedByTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
@@ -5237,6 +5469,10 @@ input LossScenario_ManagedByTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   actionType: LossScenario_ManagedByActionType
+}
+input LossScenario_ReconfiguresUsingTarget_Input {
+  operation: MutationOperation!
+  resilientModeTarget: ResilientModeID_Input
 }
 input LossScenario_UsesTarget_Input {
   operation: MutationOperation!
@@ -5330,6 +5566,11 @@ type RemediationREL {
   elicits: [Remediation_ElicitsTarget]
 
   """
+  A remediation may be an implementation of a hygiene practice.
+  """
+  isImplementationOf: [Remediation_IsImplementationOfTarget]
+
+  """
   A Sentinel protects against one or more Loss Scenarios.    A Remediation
   protects against a Loss, Hazard, Loss Scenario, or Attack Vector.
   """
@@ -5346,6 +5587,7 @@ input RemediationREL_Input {
   categorizedBy: [Remediation_CategorizedByTarget_Input]
   documentedBy: [Remediation_DocumentedByTarget_Input]
   elicits: [Remediation_ElicitsTarget_Input]
+  isImplementationOf: [Remediation_IsImplementationOfTarget_Input]
   protectsAgainst: [Remediation_ProtectsAgainstTarget_Input]
   uses: [Remediation_UsesTarget_Input]
 }
@@ -5357,6 +5599,9 @@ type Remediation_DocumentedByTarget {
 }
 type Remediation_ElicitsTarget {
   requirementTarget: RequirementID
+}
+type Remediation_IsImplementationOfTarget {
+  hygienePracticeTarget: HygienePracticeID
 }
 type Remediation_ProtectsAgainstTarget {
   attackVectorTarget: AttackVectorID
@@ -5379,6 +5624,10 @@ input Remediation_DocumentedByTarget_Input {
 input Remediation_ElicitsTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
+}
+input Remediation_IsImplementationOfTarget_Input {
+  operation: MutationOperation!
+  hygienePracticeTarget: HygienePracticeID_Input
 }
 input Remediation_ProtectsAgainstTarget_Input {
   operation: MutationOperation!
@@ -5581,6 +5830,12 @@ type RequirementREL {
   elicitedBy: [Requirement_ElicitedByTarget]
 
   """
+  Establishes identifies the entities needed to fulfill one or more test objective
+  requirements.
+  """
+  establishes: [Requirement_EstablishesTarget]
+
+  """
   Refined by identifies the children of this entity.
   """
   refinedBy: [Requirement_RefinedByTarget]
@@ -5614,6 +5869,7 @@ input RequirementREL_Input {
   categorizedBy: [Requirement_CategorizedByTarget_Input]
   documentedBy: [Requirement_DocumentedByTarget_Input]
   elicitedBy: [Requirement_ElicitedByTarget_Input]
+  establishes: [Requirement_EstablishesTarget_Input]
   refinedBy: [Requirement_RefinedByTarget_Input]
   refines: [Requirement_RefinesTarget_Input]
   specifies: [Requirement_SpecifiesTarget_Input]
@@ -5624,6 +5880,7 @@ type Requirement_BasisOfTarget {
   functionTarget: FunctionID
   verificationRequirementTarget: VerificationRequirementID
   useCaseTarget: UseCaseID
+  testActivityTarget: TestActivityID
 }
 type Requirement_CategorizedByTarget {
   categoryTarget: CategoryID
@@ -5637,6 +5894,9 @@ type Requirement_ElicitedByTarget {
   useCaseTarget: UseCaseID
   hazardTarget: HazardID
 }
+type Requirement_EstablishesTarget {
+  testActivityTarget: TestActivityID
+}
 type Requirement_RefinedByTarget {
   requirementTarget: RequirementID
 }
@@ -5645,6 +5905,8 @@ type Requirement_RefinesTarget {
 }
 type Requirement_SpecifiesTarget {
   itemTarget: ItemID
+  verificationEventTarget: VerificationEventID
+  stateTarget: StateID
   functionTarget: FunctionID
   """
   The Governs relationship attribute identifies the Parameter attribute that is
@@ -5666,6 +5928,7 @@ input Requirement_BasisOfTarget_Input {
   functionTarget: FunctionID_Input
   verificationRequirementTarget: VerificationRequirementID_Input
   useCaseTarget: UseCaseID_Input
+  testActivityTarget: TestActivityID_Input
 }
 input Requirement_CategorizedByTarget_Input {
   operation: MutationOperation!
@@ -5682,6 +5945,10 @@ input Requirement_ElicitedByTarget_Input {
   useCaseTarget: UseCaseID_Input
   hazardTarget: HazardID_Input
 }
+input Requirement_EstablishesTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
 input Requirement_RefinedByTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
@@ -5693,6 +5960,8 @@ input Requirement_RefinesTarget_Input {
 input Requirement_SpecifiesTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
+  verificationEventTarget: VerificationEventID_Input
+  stateTarget: StateID_Input
   functionTarget: FunctionID_Input
   governs: String
 }
@@ -5746,22 +6015,6 @@ type ResilientModeATTR {
   complexity: ResilientModeComplexity
 
   """
-  Degree of operator training need.  Degree of mission interruption.
-  """
-  operationalImpact: ResilientModeOperationalImpact
-
-  """
-  Time budget to restore system function via resilient mode.​
-  """
-  restoreTime: Float
-
-  """
-  Time budget for operator decision time to enable resilient mode. 0 implies
-  automated resilient mode.​
-  """
-  operatorDecisionTime: Float
-
-  """
   Title is the label to be used in formal documentation instead of the entity
   name.
   """
@@ -5793,19 +6046,10 @@ enum ResilientModeComplexity {
   Med
   Low
 }
-enum ResilientModeOperationalImpact {
-  nil
-  High
-  Med
-  Low
-}
 # for mutations
 input ResilientModeATTR_Input {
   effectiveness: ResilientModeEffectiveness
   complexity: ResilientModeComplexity
-  operationalImpact: ResilientModeOperationalImpact
-  restoreTime: Float
-  operatorDecisionTime: Float
   title: String
   puid: String
   description: String
@@ -5821,6 +6065,11 @@ type ResilientModeREL {
   definition of this entity.
   """
   documentedBy: [ResilientMode_DocumentedByTarget]
+
+  """
+  The source entity envelopes or includes the destination entity in some sense.
+  """
+  encompasses: [ResilientMode_EncompassesTarget]
 
   """
   Forms identifies the test configurations in which this entity is used.
@@ -5839,14 +6088,14 @@ type ResilientModeREL {
   providesAlternateOperationFor: [ResilientMode_ProvidesAlternateOperationForTarget]
 
   """
+  The resilient mode provides reconfiguration for loss scenarios.
+  """
+  providesReconfigurationFor: [ResilientMode_ProvidesReconfigurationForTarget]
+
+  """
   A ResilentMode recovers a failed / cyber attacked "system" Function.
   """
   recovers: [ResilientMode_RecoversTarget]
-
-  """
-  The loss scenarios remediated by the resilient mode.
-  """
-  remediates: [ResilientMode_RemediatesTarget]
 
   """
   Specified by identifies constraint and/or performance requirements that this
@@ -5864,11 +6113,12 @@ type ResilientModeREL {
 input ResilientModeREL_Input {
   categorizedBy: [ResilientMode_CategorizedByTarget_Input]
   documentedBy: [ResilientMode_DocumentedByTarget_Input]
+  encompasses: [ResilientMode_EncompassesTarget_Input]
   forms: [ResilientMode_FormsTarget_Input]
   managedBy: [ResilientMode_ManagedByTarget_Input]
   providesAlternateOperationFor: [ResilientMode_ProvidesAlternateOperationForTarget_Input]
+  providesReconfigurationFor: [ResilientMode_ProvidesReconfigurationForTarget_Input]
   recovers: [ResilientMode_RecoversTarget_Input]
-  remediates: [ResilientMode_RemediatesTarget_Input]
   specifiedBy: [ResilientMode_SpecifiedByTarget_Input]
   uses: [ResilientMode_UsesTarget_Input]
 }
@@ -5877,6 +6127,9 @@ type ResilientMode_CategorizedByTarget {
 }
 type ResilientMode_DocumentedByTarget {
   documentTarget: DocumentID
+}
+type ResilientMode_EncompassesTarget {
+  stateTarget: StateID
 }
 type ResilientMode_FormsTarget {
   testConfigurationTarget: TestConfigurationID
@@ -5899,6 +6152,9 @@ enum ResilientMode_ManagedByActionType {
 type ResilientMode_ProvidesAlternateOperationForTarget {
   componentTarget: ComponentID
 }
+type ResilientMode_ProvidesReconfigurationForTarget {
+  lossScenarioTarget: LossScenarioID
+}
 type ResilientMode_RecoversTarget {
   functionTarget: FunctionID
   """
@@ -5911,9 +6167,6 @@ type ResilientMode_RecoversTarget {
   """
   recoveryRatio: [String]
 
-}
-type ResilientMode_RemediatesTarget {
-  lossScenarioTarget: LossScenarioID
 }
 type ResilientMode_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -5937,6 +6190,10 @@ input ResilientMode_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
+input ResilientMode_EncompassesTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+}
 input ResilientMode_FormsTarget_Input {
   operation: MutationOperation!
   testConfigurationTarget: TestConfigurationID_Input
@@ -5951,14 +6208,14 @@ input ResilientMode_ProvidesAlternateOperationForTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
 }
+input ResilientMode_ProvidesReconfigurationForTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+}
 input ResilientMode_RecoversTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   recoveryRatio: [String]
-}
-input ResilientMode_RemediatesTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
 }
 input ResilientMode_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -6106,6 +6363,730 @@ input Resource_UsesTarget_Input {
   definedTermTarget: DefinedTermID_Input
 }
 #########################################
+# State definition
+#########################################
+type State {
+  identity: StateID!
+  attributes: StateATTR
+  parameters: [Parameter]
+  relations: StateREL
+}
+# for mutations
+input State_Input {
+  operation: MutationOperation!
+  identity: StateID_Input!
+  attributes: StateATTR_Input
+  parameters: [Parameter_Input]
+  relations: StateREL_Input
+}
+type StateID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input StateID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type StateATTR {
+  """
+  Doc. PUID is the project unique identifier that is often used in system
+  development specifications and documents to identify the same entity in multiple
+  documents. This is not to be confused with the database entity unique
+  identifier.
+  """
+  puid: String
+
+  """
+  Title to be used in formal documentation instead of the entity name.
+  """
+  title: String
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input StateATTR_Input {
+  puid: String
+  title: String
+  description: String
+}
+type StateREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [State_CategorizedByTarget]
+
+  """
+  Decomposed by identifies the children of this entity.
+  """
+  decomposedBy: [State_DecomposedByTarget]
+
+  """
+  Decomposes identifies the parent of this entity.
+  """
+  decomposes: [State_DecomposesTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [State_DocumentedByTarget]
+
+  """
+  Entered by represents the source entity enabling the destination entity. In
+  other words, it relates what caused the source entity to become active.
+  """
+  enteredBy: [State_EnteredByTarget]
+
+  """
+  Exited by represents the entity by which the entity is departed.
+  """
+  exitedBy: [State_ExitedByTarget]
+
+  """
+  Incorporates identifies the destination entity as contained within the source
+  entity.
+  """
+  incorporates: [State_IncorporatesTarget]
+
+  """
+  Specified by identifies constraint and/or performance requirements that this
+  entity must satisfy.
+  """
+  specifiedBy: [State_SpecifiedByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [State_UsesTarget]
+
+}
+# for mutations
+input StateREL_Input {
+  categorizedBy: [State_CategorizedByTarget_Input]
+  decomposedBy: [State_DecomposedByTarget_Input]
+  decomposes: [State_DecomposesTarget_Input]
+  documentedBy: [State_DocumentedByTarget_Input]
+  enteredBy: [State_EnteredByTarget_Input]
+  exitedBy: [State_ExitedByTarget_Input]
+  incorporates: [State_IncorporatesTarget_Input]
+  specifiedBy: [State_SpecifiedByTarget_Input]
+  uses: [State_UsesTarget_Input]
+}
+type State_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type State_DecomposedByTarget {
+  stateTarget: StateID
+}
+type State_DecomposesTarget {
+  stateTarget: StateID
+}
+type State_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type State_EnteredByTarget {
+  transitionTarget: TransitionID
+}
+type State_ExitedByTarget {
+  transitionTarget: TransitionID
+}
+type State_IncorporatesTarget {
+  functionTarget: FunctionID
+  """
+  Behavior Type classifies the mapping between the source and destination
+  entities.
+  """
+  behaviorType: State_IncorporatesBehaviorType
+
+}
+enum State_IncorporatesBehaviorType {
+  Atomic
+  Integrated_Root
+  Entry
+  Exit
+}
+type State_SpecifiedByTarget {
+  requirementTarget: RequirementID
+  """
+  The Governs relationship attribute identifies the Parameter attribute that is
+  associated in both the Requirement entity and Component entity joined by the
+  specified by / specifies relationship.
+  """
+  governs: String
+
+}
+type State_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input State_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input State_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+}
+input State_DecomposesTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+}
+input State_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input State_EnteredByTarget_Input {
+  operation: MutationOperation!
+  transitionTarget: TransitionID_Input
+}
+input State_ExitedByTarget_Input {
+  operation: MutationOperation!
+  transitionTarget: TransitionID_Input
+}
+input State_IncorporatesTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  behaviorType: State_IncorporatesBehaviorType
+}
+input State_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input State_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+#########################################
+# TestActivity definition
+#########################################
+type TestActivity {
+  identity: TestActivityID!
+  attributes: TestActivityATTR
+  parameters: [Parameter]
+  relations: TestActivityREL
+}
+# for mutations
+input TestActivity_Input {
+  operation: MutationOperation!
+  identity: TestActivityID_Input!
+  attributes: TestActivityATTR_Input
+  parameters: [Parameter_Input]
+  relations: TestActivityREL_Input
+}
+type TestActivityID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input TestActivityID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type TestActivityATTR {
+  """
+  End Date identifies the end date of the entity.
+  """
+  endDate: String
+
+  """
+  Start Date identifies the start date of the entity.
+  """
+  startDate: String
+
+  """
+  Type distinguishes between formal (sponsor) and informal (contractor) testing.
+  """
+  type: TestActivityType
+
+  """
+  Describes any unique constraints of the test activity.
+  """
+  specialComments: String
+
+  """
+  Test Completion Criteria defines completion criteria for a test activity; what
+  constitutes test success.
+  """
+  completionCriteria: String
+
+  """
+  Describes the entrance criteria for the test activity.
+  """
+  prerequisite: String
+
+  """
+  Duration is the time that this processing unit takes to complete.
+  """
+  duration: String
+
+  """
+  Execute Decomposition designates whether or not the decomposition of the entity
+  should be included when performing a dynamic analysis.
+  """
+  executeDecomposition: Boolean
+
+  """
+  Log Message defines text to be placed in the simulation transcript upon
+  execution of the unit.
+  """
+  logMessage: String
+
+  """
+  Timeout is a duration. If it is set, a processing unit that has been enabled but
+  not started for that duration should terminate.
+  """
+  timeout: String
+
+  """
+  Title is the label to be used in formal documentation instead of the entity
+  name.
+  """
+  title: String
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+enum TestActivityType {
+  Contractor
+  nil
+  Sponsor
+}
+# for mutations
+input TestActivityATTR_Input {
+  endDate: String
+  startDate: String
+  type: TestActivityType
+  specialComments: String
+  completionCriteria: String
+  prerequisite: String
+  duration: String
+  executeDecomposition: Boolean
+  logMessage: String
+  timeout: String
+  title: String
+  description: String
+}
+type TestActivityREL {
+  """
+  Accomplishes identifies the activities that are performed to achieve the
+  ProgramElement.
+  """
+  accomplishes: [TestActivity_AccomplishesTarget]
+
+  """
+  Based on identifies the needs that this entity fulfills in whole or in part.
+  """
+  basedOn: [TestActivity_BasedOnTarget]
+
+  """
+  Captures identifies resources that this object requires (but does not destroy)
+  during execution. Resources are captured when the execution of the processing
+  unit begins and released when it completes execution.
+  """
+  captures: [TestActivity_CapturesTarget]
+
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [TestActivity_CategorizedByTarget]
+
+  """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [TestActivity_ConstrainedByTarget]
+
+  """
+  Consumes identifies resources which this object requires (and destroys) during
+  execution. Resources are consumed when the execution of the processing unit
+  begins.
+  """
+  consumes: [TestActivity_ConsumesTarget]
+
+  """
+  Decomposed by identifies the children of this entity.
+  """
+  decomposedBy: [TestActivity_DecomposedByTarget]
+
+  """
+  Decomposes identifies the parent of this entity.
+  """
+  decomposes: [TestActivity_DecomposesTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [TestActivity_DocumentedByTarget]
+
+  """
+  Elaborates identifies the use case for which this entity provides the detailed
+  behavioral model.
+  """
+  elaborates: [TestActivity_ElaboratesTarget]
+
+  """
+  Employs identifies the entities needed to perform the test activity.
+  """
+  employs: [TestActivity_EmploysTarget]
+
+  """
+  Established by identifies the test objective requirements satisfied by a test.
+  """
+  establishedBy: [TestActivity_EstablishedByTarget]
+
+  """
+  Exits by identifies the set of mutually exclusive exits for this entity.
+  """
+  exitsBy: [TestActivity_ExitsByTarget]
+
+  """
+  Inputs identifies the entities that are transformed by this processing unit.
+  """
+  inputs: [TestActivity_InputsTarget]
+
+  """
+  Outputs identifies the products of the transformation carried out by this
+  processing unit.
+  """
+  outputs: [TestActivity_OutputsTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [TestActivity_ParameterUsedInTarget]
+
+  """
+  Produces identifies resources generated by the processing unit. Resources are
+  produced when the execution of the processing unit completes.
+  """
+  produces: [TestActivity_ProducesTarget]
+
+  """
+  Relates to is maintained automatically for the purpose of consistency.
+  """
+  relatesTo: [TestActivity_RelatesToTarget]
+
+  """
+  Specified by identifies constraint and/or performance requirements that this
+  entity must satisfy.
+  """
+  specifiedBy: [TestActivity_SpecifiedByTarget]
+
+  """
+  Triggered by identifies the processing units that are enabled by this entity.  A
+  processing unit begins execution when it has received control enablement, all of
+  its triggers have arrived, and its necessary resources are available.
+  """
+  triggeredBy: [TestActivity_TriggeredByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [TestActivity_UsesTarget]
+
+}
+# for mutations
+input TestActivityREL_Input {
+  accomplishes: [TestActivity_AccomplishesTarget_Input]
+  basedOn: [TestActivity_BasedOnTarget_Input]
+  captures: [TestActivity_CapturesTarget_Input]
+  categorizedBy: [TestActivity_CategorizedByTarget_Input]
+  constrainedBy: [TestActivity_ConstrainedByTarget_Input]
+  consumes: [TestActivity_ConsumesTarget_Input]
+  decomposedBy: [TestActivity_DecomposedByTarget_Input]
+  decomposes: [TestActivity_DecomposesTarget_Input]
+  documentedBy: [TestActivity_DocumentedByTarget_Input]
+  elaborates: [TestActivity_ElaboratesTarget_Input]
+  employs: [TestActivity_EmploysTarget_Input]
+  establishedBy: [TestActivity_EstablishedByTarget_Input]
+  exitsBy: [TestActivity_ExitsByTarget_Input]
+  inputs: [TestActivity_InputsTarget_Input]
+  outputs: [TestActivity_OutputsTarget_Input]
+  parameterUsedIn: [TestActivity_ParameterUsedInTarget_Input]
+  produces: [TestActivity_ProducesTarget_Input]
+  relatesTo: [TestActivity_RelatesToTarget_Input]
+  specifiedBy: [TestActivity_SpecifiedByTarget_Input]
+  triggeredBy: [TestActivity_TriggeredByTarget_Input]
+  uses: [TestActivity_UsesTarget_Input]
+}
+type TestActivity_AccomplishesTarget {
+  verificationEventTarget: VerificationEventID
+  """
+  Behavior Type classifies the mapping of the ProgramElement to the
+  ProgramActivity.
+  """
+  behaviorType: TestActivity_AccomplishesBehaviorType
+
+}
+enum TestActivity_AccomplishesBehaviorType {
+  Atomic
+  Integrated_Root
+  Thread
+}
+type TestActivity_BasedOnTarget {
+  requirementTarget: RequirementID
+  verificationRequirementTarget: VerificationRequirementID
+}
+type TestActivity_CapturesTarget {
+  resourceTarget: ResourceID
+  """
+  Acquire Available indicates whether or not the associated processing unit will
+  acquire any available resources while waiting for the full amount required for
+  execution.
+  """
+  acquireAvailable: Boolean
+
+  """
+  Amount indicates how much of the resource is captured by the processing unit
+  """
+  amount: String
+
+}
+type TestActivity_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type TestActivity_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
+}
+type TestActivity_ConsumesTarget {
+  resourceTarget: ResourceID
+  """
+  Amount indicates how much of the resource is consumed by the processing unit.
+  """
+  amount: String
+
+  """
+  Acquire Available indicates whether or not the associated processing unit will
+  acquire any available resources while waiting for the full amount required for
+  execution.
+  """
+  acquireAvailable: Boolean
+
+}
+type TestActivity_DecomposedByTarget {
+  testActivityTarget: TestActivityID
+}
+type TestActivity_DecomposesTarget {
+  testActivityTarget: TestActivityID
+}
+type TestActivity_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type TestActivity_ElaboratesTarget {
+  useCaseTarget: UseCaseID
+  """
+  Flow type indicates if this elaboration represents the primary flow or alternate
+  flow.
+  """
+  flowType: TestActivity_ElaboratesFlowType
+
+}
+enum TestActivity_ElaboratesFlowType {
+  Alternate
+  Primary
+}
+type TestActivity_EmploysTarget {
+  testConfigurationTarget: TestConfigurationID
+}
+type TestActivity_EstablishedByTarget {
+  requirementTarget: RequirementID
+}
+type TestActivity_ExitsByTarget {
+  exitTarget: ExitID
+  """
+  Selection Probability indicates the likelihood of exiting the processing unit
+  via this exit. Note that the selection probability need not be normalized (i.e.,
+  the sum of probabilities for all exits does not have to be 1.0). Normalization
+  will occur automatically upon simulation.
+  """
+  selectionProbability: Float
+
+  """
+  Type characterizes the exit.
+  """
+  type: TestActivity_ExitsByType
+
+}
+enum TestActivity_ExitsByType {
+  Normal
+  Exception
+  Timeout
+}
+type TestActivity_InputsTarget {
+  testItemTarget: TestItemID
+}
+type TestActivity_OutputsTarget {
+  testItemTarget: TestItemID
+}
+type TestActivity_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
+}
+type TestActivity_ProducesTarget {
+  resourceTarget: ResourceID
+  """
+  Amount indicates how much of the resource is produced by the processing unit.
+  """
+  amount: String
+
+}
+type TestActivity_RelatesToTarget {
+  domainSetTarget: DomainSetID
+}
+type TestActivity_SpecifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+  """
+  The Governs relationship attribute identifies the Parameter attribute that is
+  associated in both the Requirement entity and Component entity joined by the
+  specified by / specifies relationship.
+  """
+  governs: String
+
+}
+type TestActivity_TriggeredByTarget {
+  testItemTarget: TestItemID
+  """
+  Queue Type specifies how the triggering entities should queue up at the
+  receiving processing unit.
+  """
+  queueType: TestActivity_TriggeredByQueueType
+
+}
+enum TestActivity_TriggeredByQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type TestActivity_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input TestActivity_AccomplishesTarget_Input {
+  operation: MutationOperation!
+  verificationEventTarget: VerificationEventID_Input
+  behaviorType: TestActivity_AccomplishesBehaviorType
+}
+input TestActivity_BasedOnTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  verificationRequirementTarget: VerificationRequirementID_Input
+}
+input TestActivity_CapturesTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  acquireAvailable: Boolean
+  amount: String
+}
+input TestActivity_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input TestActivity_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input TestActivity_ConsumesTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  amount: String
+  acquireAvailable: Boolean
+}
+input TestActivity_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
+input TestActivity_DecomposesTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
+input TestActivity_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input TestActivity_ElaboratesTarget_Input {
+  operation: MutationOperation!
+  useCaseTarget: UseCaseID_Input
+  flowType: TestActivity_ElaboratesFlowType
+}
+input TestActivity_EmploysTarget_Input {
+  operation: MutationOperation!
+  testConfigurationTarget: TestConfigurationID_Input
+}
+input TestActivity_EstablishedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input TestActivity_ExitsByTarget_Input {
+  operation: MutationOperation!
+  exitTarget: ExitID_Input
+  selectionProbability: Float
+  type: TestActivity_ExitsByType
+}
+input TestActivity_InputsTarget_Input {
+  operation: MutationOperation!
+  testItemTarget: TestItemID_Input
+}
+input TestActivity_OutputsTarget_Input {
+  operation: MutationOperation!
+  testItemTarget: TestItemID_Input
+}
+input TestActivity_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input TestActivity_ProducesTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  amount: String
+}
+input TestActivity_RelatesToTarget_Input {
+  operation: MutationOperation!
+  domainSetTarget: DomainSetID_Input
+}
+input TestActivity_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
+  governs: String
+}
+input TestActivity_TriggeredByTarget_Input {
+  operation: MutationOperation!
+  testItemTarget: TestItemID_Input
+  queueType: TestActivity_TriggeredByQueueType
+}
+input TestActivity_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+#########################################
 # TestConfiguration definition
 #########################################
 type TestConfiguration {
@@ -6157,6 +7138,11 @@ type TestConfigurationREL {
   documentedBy: [TestConfiguration_DocumentedByTarget]
 
   """
+  Employed by identifies the test activities that use this entity.
+  """
+  employedBy: [TestConfiguration_EmployedByTarget]
+
+  """
   Formed by identifies the system components, additional hardware and software,
   and facilities needed to conduct the associated verification events.
   """
@@ -6178,6 +7164,7 @@ type TestConfigurationREL {
 input TestConfigurationREL_Input {
   categorizedBy: [TestConfiguration_CategorizedByTarget_Input]
   documentedBy: [TestConfiguration_DocumentedByTarget_Input]
+  employedBy: [TestConfiguration_EmployedByTarget_Input]
   formedBy: [TestConfiguration_FormedByTarget_Input]
   specifiedBy: [TestConfiguration_SpecifiedByTarget_Input]
   uses: [TestConfiguration_UsesTarget_Input]
@@ -6187,6 +7174,9 @@ type TestConfiguration_CategorizedByTarget {
 }
 type TestConfiguration_DocumentedByTarget {
   documentTarget: DocumentID
+}
+type TestConfiguration_EmployedByTarget {
+  testActivityTarget: TestActivityID
 }
 type TestConfiguration_FormedByTarget {
   componentTarget: ComponentID
@@ -6215,6 +7205,10 @@ input TestConfiguration_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
+input TestConfiguration_EmployedByTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
 input TestConfiguration_FormedByTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
@@ -6227,6 +7221,419 @@ input TestConfiguration_SpecifiedByTarget_Input {
   governs: String
 }
 input TestConfiguration_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+#########################################
+# TestItem definition
+#########################################
+type TestItem {
+  identity: TestItemID!
+  attributes: TestItemATTR
+  parameters: [Parameter]
+  relations: TestItemREL
+}
+# for mutations
+input TestItem_Input {
+  operation: MutationOperation!
+  identity: TestItemID_Input!
+  attributes: TestItemATTR_Input
+  parameters: [Parameter_Input]
+  relations: TestItemREL_Input
+}
+type TestItemID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input TestItemID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type TestItemATTR {
+  """
+  Size indicates the estimated size (in sizeUnits) of this entity.
+  """
+  size: String
+
+  """
+  Size Units indicates the measurement units associated with this entity.
+  """
+  sizeUnits: String
+
+  """
+  Priority is used to identify the order of processing of an entity. High priority
+  entities (larger numbers) are processed before low priority entities (smaller
+  numbers).
+  """
+  priority: String
+
+  """
+  Type is the physical type of this entity.
+  """
+  type: TestItemType
+
+  """
+  Title is the label to be used in formal documentation instead of the entity
+  name.
+  """
+  title: String
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+enum TestItemType {
+  nil
+  Analog
+  Digital
+  Physical
+  Mixed
+}
+# for mutations
+input TestItemATTR_Input {
+  size: String
+  sizeUnits: String
+  priority: String
+  type: TestItemType
+  title: String
+  description: String
+}
+type TestItemREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [TestItem_CategorizedByTarget]
+
+  """
+  Mappings identifies the parameters associated with the constrained by
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  constrainedBy: [TestItem_ConstrainedByTarget]
+
+  """
+  Decomposed by identifies the children of this entity.
+  """
+  decomposedBy: [TestItem_DecomposedByTarget]
+
+  """
+  Decomposes identifies the parent of this entity.
+  """
+  decomposes: [TestItem_DecomposesTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [TestItem_DocumentedByTarget]
+
+  """
+  Input to identifies the processing unit that transforms this entity.
+  """
+  inputTo: [TestItem_InputToTarget]
+
+  """
+  Output from identifies the processing unit that produces this entity.
+  """
+  outputFrom: [TestItem_OutputFromTarget]
+
+  """
+  An entity’s parameter is being referenced by a ConstraintDefinition.
+  """
+  parameterUsedIn: [TestItem_ParameterUsedInTarget]
+
+  """
+  Specified by identifies constraint and/or performance requirements that this
+  entity must satisfy.
+  """
+  specifiedBy: [TestItem_SpecifiedByTarget]
+
+  """
+  Triggers identifies the information units that enable a processing unit to begin
+  execution.  A processing unit begins execution when it has received control
+  enablement, all of its triggers have arrived, and its necessary resources are
+  available.
+  """
+  triggers: [TestItem_TriggersTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [TestItem_UsesTarget]
+
+}
+# for mutations
+input TestItemREL_Input {
+  categorizedBy: [TestItem_CategorizedByTarget_Input]
+  constrainedBy: [TestItem_ConstrainedByTarget_Input]
+  decomposedBy: [TestItem_DecomposedByTarget_Input]
+  decomposes: [TestItem_DecomposesTarget_Input]
+  documentedBy: [TestItem_DocumentedByTarget_Input]
+  inputTo: [TestItem_InputToTarget_Input]
+  outputFrom: [TestItem_OutputFromTarget_Input]
+  parameterUsedIn: [TestItem_ParameterUsedInTarget_Input]
+  specifiedBy: [TestItem_SpecifiedByTarget_Input]
+  triggers: [TestItem_TriggersTarget_Input]
+  uses: [TestItem_UsesTarget_Input]
+}
+type TestItem_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type TestItem_ConstrainedByTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings show how the parameter maps to the variable used.
+  """
+  mappings: [String]
+
+}
+type TestItem_DecomposedByTarget {
+  testItemTarget: TestItemID
+}
+type TestItem_DecomposesTarget {
+  testItemTarget: TestItemID
+}
+type TestItem_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type TestItem_InputToTarget {
+  testActivityTarget: TestActivityID
+}
+type TestItem_OutputFromTarget {
+  testActivityTarget: TestActivityID
+}
+type TestItem_ParameterUsedInTarget {
+  constraintDefinitionTarget: ConstraintDefinitionID
+  """
+  Mappings identifies the parameters associated with the uses parameter from
+  relationship. The mappings relationship attribute shows how the parameter maps
+  to the variable used.
+  """
+  mappings: [String]
+
+}
+type TestItem_SpecifiedByTarget {
+  verificationRequirementTarget: VerificationRequirementID
+  """
+  The Governs relationship attribute identifies the Parameter attribute that is
+  associated in both the Requirement entity and Component entity joined by the
+  specified by / specifies relationship.
+  """
+  governs: String
+
+}
+type TestItem_TriggersTarget {
+  testActivityTarget: TestActivityID
+  """
+  Queue Type specifies how the triggering entities should queue up at the
+  receiving processing unit.
+  """
+  queueType: TestItem_TriggersQueueType
+
+}
+enum TestItem_TriggersQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type TestItem_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input TestItem_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input TestItem_ConstrainedByTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input TestItem_DecomposedByTarget_Input {
+  operation: MutationOperation!
+  testItemTarget: TestItemID_Input
+}
+input TestItem_DecomposesTarget_Input {
+  operation: MutationOperation!
+  testItemTarget: TestItemID_Input
+}
+input TestItem_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input TestItem_InputToTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
+input TestItem_OutputFromTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
+input TestItem_ParameterUsedInTarget_Input {
+  operation: MutationOperation!
+  constraintDefinitionTarget: ConstraintDefinitionID_Input
+  mappings: [String]
+}
+input TestItem_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  verificationRequirementTarget: VerificationRequirementID_Input
+  governs: String
+}
+input TestItem_TriggersTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+  queueType: TestItem_TriggersQueueType
+}
+input TestItem_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+#########################################
+# Transition definition
+#########################################
+type Transition {
+  identity: TransitionID!
+  attributes: TransitionATTR
+  parameters: [Parameter]
+  relations: TransitionREL
+}
+# for mutations
+input Transition_Input {
+  operation: MutationOperation!
+  identity: TransitionID_Input!
+  attributes: TransitionATTR_Input
+  parameters: [Parameter_Input]
+  relations: TransitionREL_Input
+}
+type TransitionID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input TransitionID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type TransitionATTR {
+  """
+  Delay represents the period of time by which something is hindered in achieving
+  its objective.
+  """
+  delay: String
+
+  """
+  Delay Units identifies the measurement basis for the delay attribute.
+  """
+  delayUnits: String
+
+  """
+  A rule that must be met to enable the occurrence of the transition.
+  """
+  guard: String
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+# for mutations
+input TransitionATTR_Input {
+  delay: String
+  delayUnits: String
+  guard: String
+  description: String
+}
+type TransitionREL {
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [Transition_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [Transition_DocumentedByTarget]
+
+  """
+  Enters represents the source of the enablement for another entity.
+  """
+  enters: [Transition_EntersTarget]
+
+  """
+  Exits represents the source for the departure of an entity.
+  """
+  exits: [Transition_ExitsTarget]
+
+  """
+  Serviced by identifies the processing unit that performs the interface function.
+  """
+  servicedBy: [Transition_ServicedByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [Transition_UsesTarget]
+
+}
+# for mutations
+input TransitionREL_Input {
+  categorizedBy: [Transition_CategorizedByTarget_Input]
+  documentedBy: [Transition_DocumentedByTarget_Input]
+  enters: [Transition_EntersTarget_Input]
+  exits: [Transition_ExitsTarget_Input]
+  servicedBy: [Transition_ServicedByTarget_Input]
+  uses: [Transition_UsesTarget_Input]
+}
+type Transition_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type Transition_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type Transition_EntersTarget {
+  stateTarget: StateID
+}
+type Transition_ExitsTarget {
+  stateTarget: StateID
+}
+type Transition_ServicedByTarget {
+  functionTarget: FunctionID
+}
+type Transition_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input Transition_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input Transition_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input Transition_EntersTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+}
+input Transition_ExitsTarget_Input {
+  operation: MutationOperation!
+  stateTarget: StateID_Input
+}
+input Transition_ServicedByTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+}
+input Transition_UsesTarget_Input {
   operation: MutationOperation!
   definedTermTarget: DefinedTermID_Input
 }
@@ -6505,6 +7912,235 @@ input UseCase_UsesTarget_Input {
   definedTermTarget: DefinedTermID_Input
 }
 #########################################
+# VerificationEvent definition
+#########################################
+type VerificationEvent {
+  identity: VerificationEventID!
+  attributes: VerificationEventATTR
+  parameters: [Parameter]
+  relations: VerificationEventREL
+}
+# for mutations
+input VerificationEvent_Input {
+  operation: MutationOperation!
+  identity: VerificationEventID_Input!
+  attributes: VerificationEventATTR_Input
+  parameters: [Parameter_Input]
+  relations: VerificationEventREL_Input
+}
+type VerificationEventID {
+  id: ID!
+  name: String!
+  number: String!
+}
+# for mutations
+input VerificationEventID_Input {
+  id: ID # autogenerated on Create, required for Update / Delete
+  name: String!
+  number: String!
+}
+type VerificationEventATTR {
+  """
+  Labor Hours identifies hours planned or used for the accomplishment of a work
+  entity.
+  """
+  laborHours: Float
+
+  """
+  Cost is the expense associated with an entity.
+  """
+  cost: Float
+
+  """
+  Duration is the estimated duration of the event.
+  """
+  duration: Float
+
+  """
+  Duration Units is the units in which the event duration is expressed.
+  """
+  durationUnits: String
+
+  """
+  Non-recurring Cost identifies other program costs.
+  """
+  nonRecurringCost: Float
+
+  """
+  Type characterizes the ProgramElement.
+  """
+  type: VerificationEventType
+
+  """
+  Contract Number identifies the specific contract, purchase order, or internal
+  work order that the ProgramElement satisfies.
+  """
+  contractNumber: String
+
+  """
+  Start Date is the starting date for the verification event.
+  """
+  startDate: String
+
+  """
+  Title is the label to be used in formal documentation instead of the entity
+  name.
+  """
+  title: String
+
+  """
+  End Date is the ending date for the verification event.
+  """
+  endDate: String
+
+  """
+  Description is the written statement of this entity.
+  """
+  description: String
+
+}
+enum VerificationEventType {
+  nil
+  Program
+  Project
+  Work_Package
+  Task
+}
+# for mutations
+input VerificationEventATTR_Input {
+  laborHours: Float
+  cost: Float
+  duration: Float
+  durationUnits: String
+  nonRecurringCost: Float
+  type: VerificationEventType
+  contractNumber: String
+  startDate: String
+  title: String
+  endDate: String
+  description: String
+}
+type VerificationEventREL {
+  """
+  Accomplished by identifies the ProgramElement for which the ProgramActivity is
+  performed.
+  """
+  accomplishedBy: [VerificationEvent_AccomplishedByTarget]
+
+  """
+  Categorized by identifies a grouping that includes this entity.
+  """
+  categorizedBy: [VerificationEvent_CategorizedByTarget]
+
+  """
+  Documented by identifies the source document which specifies and/or enhances the
+  definition of this entity.
+  """
+  documentedBy: [VerificationEvent_DocumentedByTarget]
+
+  """
+  Included in identifies the parent of this entity.
+  """
+  includedIn: [VerificationEvent_IncludedInTarget]
+
+  """
+  Includes identifies the children of this entity.
+  """
+  includes: [VerificationEvent_IncludesTarget]
+
+  """
+  Specified by identifies constraint and/or performance requirements that this
+  entity must satisfy.
+  """
+  specifiedBy: [VerificationEvent_SpecifiedByTarget]
+
+  """
+  Uses identifies a term or acronym employed in the generated document.
+  """
+  uses: [VerificationEvent_UsesTarget]
+
+}
+# for mutations
+input VerificationEventREL_Input {
+  accomplishedBy: [VerificationEvent_AccomplishedByTarget_Input]
+  categorizedBy: [VerificationEvent_CategorizedByTarget_Input]
+  documentedBy: [VerificationEvent_DocumentedByTarget_Input]
+  includedIn: [VerificationEvent_IncludedInTarget_Input]
+  includes: [VerificationEvent_IncludesTarget_Input]
+  specifiedBy: [VerificationEvent_SpecifiedByTarget_Input]
+  uses: [VerificationEvent_UsesTarget_Input]
+}
+type VerificationEvent_AccomplishedByTarget {
+  testActivityTarget: TestActivityID
+  """
+  Behavior Type classifies the mapping of the ProgramElement to the
+  ProgramActivity.
+  """
+  behaviorType: VerificationEvent_AccomplishedByBehaviorType
+
+}
+enum VerificationEvent_AccomplishedByBehaviorType {
+  Atomic
+  Integrated_Root
+  Thread
+}
+type VerificationEvent_CategorizedByTarget {
+  categoryTarget: CategoryID
+}
+type VerificationEvent_DocumentedByTarget {
+  documentTarget: DocumentID
+}
+type VerificationEvent_IncludedInTarget {
+  verificationEventTarget: VerificationEventID
+}
+type VerificationEvent_IncludesTarget {
+  verificationEventTarget: VerificationEventID
+}
+type VerificationEvent_SpecifiedByTarget {
+  requirementTarget: RequirementID
+  """
+  The Governs relationship attribute identifies the Parameter attribute that is
+  associated in both the Requirement entity and Component entity joined by the
+  specified by / specifies relationship.
+  """
+  governs: String
+
+}
+type VerificationEvent_UsesTarget {
+  definedTermTarget: DefinedTermID
+}
+# for mutations
+input VerificationEvent_AccomplishedByTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+  behaviorType: VerificationEvent_AccomplishedByBehaviorType
+}
+input VerificationEvent_CategorizedByTarget_Input {
+  operation: MutationOperation!
+  categoryTarget: CategoryID_Input
+}
+input VerificationEvent_DocumentedByTarget_Input {
+  operation: MutationOperation!
+  documentTarget: DocumentID_Input
+}
+input VerificationEvent_IncludedInTarget_Input {
+  operation: MutationOperation!
+  verificationEventTarget: VerificationEventID_Input
+}
+input VerificationEvent_IncludesTarget_Input {
+  operation: MutationOperation!
+  verificationEventTarget: VerificationEventID_Input
+}
+input VerificationEvent_SpecifiedByTarget_Input {
+  operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+  governs: String
+}
+input VerificationEvent_UsesTarget_Input {
+  operation: MutationOperation!
+  definedTermTarget: DefinedTermID_Input
+}
+#########################################
 # VerificationRequirement definition
 #########################################
 type VerificationRequirement {
@@ -6627,6 +8263,11 @@ type VerificationRequirementREL {
   basedOn: [VerificationRequirement_BasedOnTarget]
 
   """
+  Basis of identifies the entities that fulfill one or more needs.
+  """
+  basisOf: [VerificationRequirement_BasisOfTarget]
+
+  """
   Categorized by identifies a grouping that includes this entity.
   """
   categorizedBy: [VerificationRequirement_CategorizedByTarget]
@@ -6663,6 +8304,7 @@ type VerificationRequirementREL {
 # for mutations
 input VerificationRequirementREL_Input {
   basedOn: [VerificationRequirement_BasedOnTarget_Input]
+  basisOf: [VerificationRequirement_BasisOfTarget_Input]
   categorizedBy: [VerificationRequirement_CategorizedByTarget_Input]
   documentedBy: [VerificationRequirement_DocumentedByTarget_Input]
   reportedBy: [VerificationRequirement_ReportedByTarget_Input]
@@ -6672,6 +8314,9 @@ input VerificationRequirementREL_Input {
 }
 type VerificationRequirement_BasedOnTarget {
   requirementTarget: RequirementID
+}
+type VerificationRequirement_BasisOfTarget {
+  testActivityTarget: TestActivityID
 }
 type VerificationRequirement_CategorizedByTarget {
   categoryTarget: CategoryID
@@ -6683,6 +8328,8 @@ type VerificationRequirement_ReportedByTarget {
   documentTarget: DocumentID
 }
 type VerificationRequirement_SpecifiesTarget {
+  testActivityTarget: TestActivityID
+  testItemTarget: TestItemID
   testConfigurationTarget: TestConfigurationID
   """
   The Governs relationship attribute identifies the Parameter attribute that is
@@ -6708,6 +8355,10 @@ input VerificationRequirement_BasedOnTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
 }
+input VerificationRequirement_BasisOfTarget_Input {
+  operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+}
 input VerificationRequirement_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
@@ -6722,6 +8373,8 @@ input VerificationRequirement_ReportedByTarget_Input {
 }
 input VerificationRequirement_SpecifiesTarget_Input {
   operation: MutationOperation!
+  testActivityTarget: TestActivityID_Input
+  testItemTarget: TestItemID_Input
   testConfigurationTarget: TestConfigurationID_Input
   governs: String
 }

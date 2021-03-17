@@ -50,12 +50,15 @@ namespace genesys_graphql
 
             // Select Project - from command line
             Repository repository = repositoryConfiguration.GetRepository();
+            // IProjectList projects = repository.GetProjects();
+
             IProject project = repository.GetProject(projectName);
             Console.WriteLine("Project Id: " + project.Id);
 
             schema = project.GetSchema();
             // IFacilityList facilityList = schema.GetFacilities();
-            // IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID
+            // IFacility facility = schema.GetFacility(new Guid("{a264d39c-5f1f-42ec-be19-bd835ef69184}")); // Essentials GUID
+            // IFacility facility = schema.GetFacility(new Guid("da424ed7-b58a-4496-af10-35adf696efd1")); // SE GUID 
             IFacility facility = schema.GetFacility(new Guid("8b0c834f-8039-4129-837a-98b8240a07ea")); // MA GUID
 
             Console.WriteLine("Facility: " + facility.Name + "  :" + facility.Id);
@@ -868,10 +871,19 @@ namespace genesys_graphql
                                 int relTargetCount = 0;
                                 indent += 2;
 
-                                //foreach (IEntity relationTarget in entity.GetRelationshipTargets(relation))
                                 foreach (IRelationship relationship in entity.GetRelationships(relation))
                                 {
-                                    IEntity relationTarget = relationship.GetTarget();
+                                    IEntity relationTarget;
+                                    // Determine 'target' of relationship based on the context of the current entity.
+                                    if (entity.Id == relationship.TargetId)
+                                    {
+                                        relationTarget = relationship.GetSource();
+                                    }
+                                    else
+                                    {
+                                        relationTarget = relationship.GetTarget();
+                                    }
+
                                     if (sortedEntityDefinitionList.Contains(relationTarget.GetEntityDefinition().Name))
                                     {
                                         // Only include Target EntityType if included in selected "Facility"
