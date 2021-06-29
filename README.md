@@ -3,7 +3,7 @@
 ## About the paper
 
 Georgios Bakirtzis, Tim Sherburne, Stephen Adams, Barry M. Horowitz, Peter A. Beling, and Cody H. Fleming 
-"[An Ontological Metamodel for Cyber-Physical System Safety, Security, and Resilience Coengineering](https://doi.org/10.1007/s10270-021-00892-z)", Software and Systems Modeling
+"[An Ontological Metamodel for Cyber-Physical System Safety, Security, and Resilience Coengineering](https://doi.org/10.1007/s10270-021-00892-z)", Software & Systems Modeling (2021)
 
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-context.png)
