@@ -3,8 +3,7 @@
 ## About the paper
 
 Georgios Bakirtzis, Tim Sherburne, Stephen Adams, Barry M. Horowitz, Peter A. Beling, and Cody H. Fleming 
-"An Ontological Metamodel for Cyber-Physical System Safety, Security, and Resilience Coengineering",
-[preprint](https://arxiv.org/pdf/2006.05304.pdf)
+"[An Ontological Metamodel for Cyber-Physical System Safety, Security, and Resilience Coengineering](https://doi.org/10.1007/s10270-021-00892-z)", Software and Systems Modeling
 
 ## Mission Aware Inputs
 ![MA-Systemigraph](/images/ma-context.png)
@@ -21,8 +20,8 @@ A representation of critical systems engineering concepts and their interrelatio
 ![MA Model](/images/ma-mbse.png)
 
 ### References
-* [SERC Overview Slides](/presentation/MissionAwareOverview.pdf)
-* [Journal Paper](https://github.com/coordinated-systems-lab/cps-metamodel)
+* [SERC overview slides](/presentation/MissionAwareOverview.pdf)
+* [Application for journal paper](https://github.com/coordinated-systems-lab/cps-metamodel)
 
 ## CPS Schema
 <img src="images/graphql.png" width="200">
