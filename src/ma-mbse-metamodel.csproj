@@ -1,0 +1,133 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{E60627B4-55A0-4A8E-90E9-22ACB49EC4BA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>ma_mbse_metamodel</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Vitech.Genesys">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Client">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Client.Simulation">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Client.Simulation.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Common">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.License">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.License.Provider">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.License.Provider.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Logging">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Random">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Random.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Script.Engine">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Script.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Script.Runtime">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Script.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Windows.Common">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Windows.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Windows.Diagrams">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Windows.Diagrams.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Windows.Diagrams.Behavioral">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Windows.Diagrams.Behavioral.dll</HintPath>
+    </Reference>
+    <Reference Include="Vitech.Genesys.Windows.Diagrams.Block">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Vitech\GENESYS 2021 Collaborative Edition\Vitech.Genesys.Windows.Diagrams.Block.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GenesysQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".vs\slnx.sqlite" />
+    <None Include=".vs\src\v16\.suo" />
+    <None Include=".vs\VSWorkspaceState.json" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="apidsp_windows.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="apidsp_windows_x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="hasp_net_windows.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="hasp_windows_82194.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="hasp_windows_x64_82194.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".vs\ma-mbse-metamodel\v16\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

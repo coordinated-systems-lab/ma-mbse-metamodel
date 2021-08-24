@@ -704,7 +704,7 @@ namespace genesys_graphql
         {
             var project = Connect(projectName);
             // Write Project header
-            dataFile = new System.IO.StreamWriter(@"..\..\..\sample\" + outFileName, false);
+            dataFile = new System.IO.StreamWriter(@"..\..\..\json\" + outFileName, false);
             dataFile.WriteLine("".PadLeft(indent) + "{");
             indent += 2;
             dataFile.WriteLine("".PadLeft(indent) + @"""data"": {");

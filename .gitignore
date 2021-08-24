@@ -1,15 +1,9 @@
 *.dll
 .DS_Store
 src/.vs/
-src/App.config
 src/GlobalSuppressions.cs
 src/Properties/
 src/bin/
-src/genesys-graphql.csproj
-src/genesys-graphql.csproj.user
-src/genesys-graphql.sln
-src/genesys-graphql_TemporaryKey.pfx
 src/obj/
-src/packages.config
 src/packages/
-sample/
+json/
