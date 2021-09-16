@@ -1097,6 +1097,7 @@ namespace genesys_graphql
                     case "Vitech.Genesys.Common.DateTimeTypeDefinition":
                     case "Vitech.Genesys.Common.DateTypeDefinition":
                     case "Vitech.Genesys.Common.HierarchicalNumberTypeDefinition":
+                    case "Vitech.Genesys.Common.EntityReferenceTypeDefinition":
                         schemaFile.WriteLine("  " + attributeDefinitionName + ": String");
                         break;
                     case "Vitech.Genesys.Common.BooleanTypeDefinition":
@@ -1194,7 +1195,8 @@ namespace genesys_graphql
                         relationNameParts[i].Substring(1);
                 }
             }
-            return camelRelationName;
+            // Remove any colon from name (ma:)
+            return camelRelationName.Replace(":", "");
         }
         static string LowerFirst(string input)
         {

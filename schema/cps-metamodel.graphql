@@ -455,12 +455,12 @@ type AttackPatternREL {
   """
   An Attack initiates Attack Vectors.
   """
-  initiates: [AttackPattern_InitiatesTarget]
+  maInitiates: [AttackPattern_MaInitiatesTarget]
 
   """
   An attack pattern is motivation for hygiene practice.
   """
-  motivationFor: [AttackPattern_MotivationForTarget]
+  maMotivationFor: [AttackPattern_MaMotivationForTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -472,8 +472,8 @@ type AttackPatternREL {
 input AttackPatternREL_Input {
   categorizedBy: [AttackPattern_CategorizedByTarget_Input]
   documentedBy: [AttackPattern_DocumentedByTarget_Input]
-  initiates: [AttackPattern_InitiatesTarget_Input]
-  motivationFor: [AttackPattern_MotivationForTarget_Input]
+  maInitiates: [AttackPattern_MaInitiatesTarget_Input]
+  maMotivationFor: [AttackPattern_MaMotivationForTarget_Input]
   uses: [AttackPattern_UsesTarget_Input]
 }
 type AttackPattern_CategorizedByTarget {
@@ -482,10 +482,10 @@ type AttackPattern_CategorizedByTarget {
 type AttackPattern_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type AttackPattern_InitiatesTarget {
+type AttackPattern_MaInitiatesTarget {
   attackVectorTarget: AttackVectorID
 }
-type AttackPattern_MotivationForTarget {
+type AttackPattern_MaMotivationForTarget {
   hygienePracticeTarget: HygienePracticeID
 }
 type AttackPattern_UsesTarget {
@@ -500,11 +500,11 @@ input AttackPattern_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input AttackPattern_InitiatesTarget_Input {
+input AttackPattern_MaInitiatesTarget_Input {
   operation: MutationOperation!
   attackVectorTarget: AttackVectorID_Input
 }
-input AttackPattern_MotivationForTarget_Input {
+input AttackPattern_MaMotivationForTarget_Input {
   operation: MutationOperation!
   hygienePracticeTarget: HygienePracticeID_Input
 }
@@ -594,33 +594,33 @@ type AttackVectorREL {
   """
   An Attack Vector is initiated by an Attack.
   """
-  initiatedBy: [AttackVector_InitiatedByTarget]
+  maInitiatedBy: [AttackVector_MaInitiatedByTarget]
 
   """
   A Loss Scenario is protected by a Sentinel.    A Loss, Hazard, Loss Scenario, or
   Attack Vector is protected by a Remediation.
   """
-  isProtectedBy: [AttackVector_IsProtectedByTarget]
+  maIsProtectedBy: [AttackVector_MaIsProtectedByTarget]
+
+  """
+  Identifies Entities that can be violated by an Attack.
+  """
+  maViolates: [AttackVector_MaViolatesTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
   """
   uses: [AttackVector_UsesTarget]
 
-  """
-  Identifies Entities that can be violated by an Attack.
-  """
-  violates: [AttackVector_ViolatesTarget]
-
 }
 # for mutations
 input AttackVectorREL_Input {
   categorizedBy: [AttackVector_CategorizedByTarget_Input]
   documentedBy: [AttackVector_DocumentedByTarget_Input]
-  initiatedBy: [AttackVector_InitiatedByTarget_Input]
-  isProtectedBy: [AttackVector_IsProtectedByTarget_Input]
+  maInitiatedBy: [AttackVector_MaInitiatedByTarget_Input]
+  maIsProtectedBy: [AttackVector_MaIsProtectedByTarget_Input]
+  maViolates: [AttackVector_MaViolatesTarget_Input]
   uses: [AttackVector_UsesTarget_Input]
-  violates: [AttackVector_ViolatesTarget_Input]
 }
 type AttackVector_CategorizedByTarget {
   categoryTarget: CategoryID
@@ -628,18 +628,18 @@ type AttackVector_CategorizedByTarget {
 type AttackVector_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type AttackVector_InitiatedByTarget {
+type AttackVector_MaInitiatedByTarget {
   attackPatternTarget: AttackPatternID
 }
-type AttackVector_IsProtectedByTarget {
+type AttackVector_MaIsProtectedByTarget {
   remediationTarget: RemediationID
+}
+type AttackVector_MaViolatesTarget {
+  componentTarget: ComponentID
+  linkTarget: LinkID
 }
 type AttackVector_UsesTarget {
   definedTermTarget: DefinedTermID
-}
-type AttackVector_ViolatesTarget {
-  linkTarget: LinkID
-  componentTarget: ComponentID
 }
 # for mutations
 input AttackVector_CategorizedByTarget_Input {
@@ -650,22 +650,22 @@ input AttackVector_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input AttackVector_InitiatedByTarget_Input {
+input AttackVector_MaInitiatedByTarget_Input {
   operation: MutationOperation!
   attackPatternTarget: AttackPatternID_Input
 }
-input AttackVector_IsProtectedByTarget_Input {
+input AttackVector_MaIsProtectedByTarget_Input {
   operation: MutationOperation!
   remediationTarget: RemediationID_Input
+}
+input AttackVector_MaViolatesTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
+  linkTarget: LinkID_Input
 }
 input AttackVector_UsesTarget_Input {
   operation: MutationOperation!
   definedTermTarget: DefinedTermID_Input
-}
-input AttackVector_ViolatesTarget_Input {
-  operation: MutationOperation!
-  linkTarget: LinkID_Input
-  componentTarget: ComponentID_Input
 }
 #########################################
 # Category definition
@@ -737,8 +737,8 @@ input CategoryREL_Input {
   uses: [Category_UsesTarget_Input]
 }
 type Category_CategorizesTarget {
-  documentTarget: DocumentID
   definedTermTarget: DefinedTermID
+  documentTarget: DocumentID
 }
 type Category_IncludedInTarget {
   categoryTarget: CategoryID
@@ -752,8 +752,8 @@ type Category_UsesTarget {
 # for mutations
 input Category_CategorizesTarget_Input {
   operation: MutationOperation!
-  documentTarget: DocumentID_Input
   definedTermTarget: DefinedTermID_Input
+  documentTarget: DocumentID_Input
 }
 input Category_IncludedInTarget_Input {
   operation: MutationOperation!
@@ -851,11 +851,6 @@ type ComponentATTR {
   purpose: String
 
   """
-  Cost is the expense associated with an entity.
-  """
-  cost: Float
-
-  """
   Receptions describe asynchronous interactions where the requestor can continue
   without waiting for a reply. This attribute identifies a subset of the allocated
   behavior that is critical to highlight on SysML representations.
@@ -922,7 +917,6 @@ input ComponentATTR_Input {
   operations: [String]
   puid: String
   purpose: String
-  cost: Float
   receptions: [String]
   abbreviation: String
   title: String
@@ -971,11 +965,6 @@ type ComponentREL {
   documentedBy: [Component_DocumentedByTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [Component_EnablesDetectionOfTarget]
-
-  """
   Exhibits identifies characteristics of the entity.
   """
   exhibits: [Component_ExhibitsTarget]
@@ -993,20 +982,31 @@ type ComponentREL {
   generalizationOf: [Component_GeneralizationOfTarget]
 
   """
-  Identifies Attack Patterns that may violate an Entity.
-  """
-  isViolatedBy: [Component_IsViolatedByTarget]
-
-  """
   Kind of indicates classification. This relationship is often referred to as the
   "is a" relationship (i.e., a car "is a" vehicle).
   """
   kindOf: [Component_KindOfTarget]
 
   """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [Component_MaEnablesDetectionOfTarget]
+
+  """
+  Identifies Attack Patterns that may violate an Entity.
+  """
+  maIsViolatedBy: [Component_MaIsViolatedByTarget]
+
+  """
   The component operation is altered in some way by the resilient mode.
   """
-  operationAlteredBy: [Component_OperationAlteredByTarget]
+  maOperationAlteredBy: [Component_MaOperationAlteredByTarget]
+
+  """
+  A Sentinel protects against one or more Loss Scenarios.    A Remediation
+  protects against a Loss, Hazard, Loss Scenario, or Attack Vector.
+  """
+  maProtectsAgainst: [Component_MaProtectsAgainstTarget]
 
   """
   An entity’s parameter is being referenced by a ConstraintDefinition.
@@ -1024,21 +1024,10 @@ type ComponentREL {
   performs: [Component_PerformsTarget]
 
   """
-  A Sentinel protects against one or more Loss Scenarios.    A Remediation
-  protects against a Loss, Hazard, Loss Scenario, or Attack Vector.
-  """
-  protectsAgainst: [Component_ProtectsAgainstTarget]
-
-  """
   Reported by identifies the documentation entity of which the entity is the
   primary subject.
   """
   reportedBy: [Component_ReportedByTarget]
-
-  """
-  A Threat Simulator simulates one or more Loss Scenarios.
-  """
-  simulates: [Component_SimulatesTarget]
 
   """
   Specified by identifies constraint and/or performance requirements that this
@@ -1067,19 +1056,18 @@ input ComponentREL_Input {
   constrainedBy: [Component_ConstrainedByTarget_Input]
   describedBy: [Component_DescribedByTarget_Input]
   documentedBy: [Component_DocumentedByTarget_Input]
-  enablesDetectionOf: [Component_EnablesDetectionOfTarget_Input]
   exhibits: [Component_ExhibitsTarget_Input]
   forms: [Component_FormsTarget_Input]
   generalizationOf: [Component_GeneralizationOfTarget_Input]
-  isViolatedBy: [Component_IsViolatedByTarget_Input]
   kindOf: [Component_KindOfTarget_Input]
-  operationAlteredBy: [Component_OperationAlteredByTarget_Input]
+  maEnablesDetectionOf: [Component_MaEnablesDetectionOfTarget_Input]
+  maIsViolatedBy: [Component_MaIsViolatedByTarget_Input]
+  maOperationAlteredBy: [Component_MaOperationAlteredByTarget_Input]
+  maProtectsAgainst: [Component_MaProtectsAgainstTarget_Input]
   parameterUsedIn: [Component_ParameterUsedInTarget_Input]
   participatesIn: [Component_ParticipatesInTarget_Input]
   performs: [Component_PerformsTarget_Input]
-  protectsAgainst: [Component_ProtectsAgainstTarget_Input]
   reportedBy: [Component_ReportedByTarget_Input]
-  simulates: [Component_SimulatesTarget_Input]
   specifiedBy: [Component_SpecifiedByTarget_Input]
   uses: [Component_UsesTarget_Input]
   verifiedBy: [Component_VerifiedByTarget_Input]
@@ -1162,14 +1150,6 @@ type Component_DescribedByTarget {
 type Component_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Component_EnablesDetectionOfTarget {
-  lossScenarioTarget: LossScenarioID
-  """
-  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
-  """
-  constraint: [String]
-
-}
 type Component_ExhibitsTarget {
   stateTarget: StateID
   """
@@ -1201,9 +1181,6 @@ enum Component_GeneralizationOfType {
   Inheritance
   Instance
 }
-type Component_IsViolatedByTarget {
-  attackVectorTarget: AttackVectorID
-}
 type Component_KindOfTarget {
   componentTarget: ComponentID
   """
@@ -1219,8 +1196,22 @@ enum Component_KindOfType {
   Inheritance
   Instance
 }
-type Component_OperationAlteredByTarget {
+type Component_MaEnablesDetectionOfTarget {
+  lossScenarioTarget: LossScenarioID
+  """
+  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  """
+  constraint: [String]
+
+}
+type Component_MaIsViolatedByTarget {
+  attackVectorTarget: AttackVectorID
+}
+type Component_MaOperationAlteredByTarget {
   resilientModeTarget: ResilientModeID
+}
+type Component_MaProtectsAgainstTarget {
+  lossScenarioTarget: LossScenarioID
 }
 type Component_ParameterUsedInTarget {
   constraintDefinitionTarget: ConstraintDefinitionID
@@ -1249,14 +1240,8 @@ enum Component_PerformsBehaviorType {
   Integrated_Root
   Thread
 }
-type Component_ProtectsAgainstTarget {
-  lossScenarioTarget: LossScenarioID
-}
 type Component_ReportedByTarget {
   documentTarget: DocumentID
-}
-type Component_SimulatesTarget {
-  lossScenarioTarget: LossScenarioID
 }
 type Component_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -1311,11 +1296,6 @@ input Component_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Component_EnablesDetectionOfTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
-  constraint: [String]
-}
 input Component_ExhibitsTarget_Input {
   operation: MutationOperation!
   stateTarget: StateID_Input
@@ -1330,18 +1310,27 @@ input Component_GeneralizationOfTarget_Input {
   componentTarget: ComponentID_Input
   type: Component_GeneralizationOfType
 }
-input Component_IsViolatedByTarget_Input {
-  operation: MutationOperation!
-  attackVectorTarget: AttackVectorID_Input
-}
 input Component_KindOfTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
   type: Component_KindOfType
 }
-input Component_OperationAlteredByTarget_Input {
+input Component_MaEnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Component_MaIsViolatedByTarget_Input {
+  operation: MutationOperation!
+  attackVectorTarget: AttackVectorID_Input
+}
+input Component_MaOperationAlteredByTarget_Input {
   operation: MutationOperation!
   resilientModeTarget: ResilientModeID_Input
+}
+input Component_MaProtectsAgainstTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
 }
 input Component_ParameterUsedInTarget_Input {
   operation: MutationOperation!
@@ -1357,17 +1346,9 @@ input Component_PerformsTarget_Input {
   functionTarget: FunctionID_Input
   behaviorType: Component_PerformsBehaviorType
 }
-input Component_ProtectsAgainstTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
-}
 input Component_ReportedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
-}
-input Component_SimulatesTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
 }
 input Component_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -1499,7 +1480,7 @@ type ConstraintDefinition_DocumentedByTarget {
 type ConstraintDefinition_IncludedInConstraintDefinitionTarget {
   constraintDefinitionTarget: ConstraintDefinitionID
   """
-  : Mappings identifies the parameters associated with the included constraint
+  Mappings identifies the parameters associated with the included constraint
   definition relationship. The mappings relationship attribute shows how the
   parameter maps to the variable used.
   """
@@ -1509,7 +1490,7 @@ type ConstraintDefinition_IncludedInConstraintDefinitionTarget {
 type ConstraintDefinition_IncludesConstraintDefinitionTarget {
   constraintDefinitionTarget: ConstraintDefinitionID
   """
-  : Mappings identifies the parameters associated with the included constraint
+  Mappings identifies the parameters associated with the included constraint
   definition relationship. The mappings relationship attribute shows how the
   parameter maps to the variable used.
   """
@@ -1691,14 +1672,19 @@ type ContextREL {
   documentedBy: [Context_DocumentedByTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [Context_EnablesDetectionOfTarget]
-
-  """
   Input to identifies the processing unit that transforms this entity.
   """
   inputTo: [Context_InputToTarget]
+
+  """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [Context_MaEnablesDetectionOfTarget]
+
+  """
+  Context (process model) for unsafe action.
+  """
+  maProvidesProcessModelFor: [Context_MaProvidesProcessModelForTarget]
 
   """
   Output from identifies the processing unit that produces this entity.
@@ -1709,11 +1695,6 @@ type ContextREL {
   An entity’s parameter is being referenced by a ConstraintDefinition.
   """
   parameterUsedIn: [Context_ParameterUsedInTarget]
-
-  """
-  Context (process model) for unsafe action.
-  """
-  providesProcessModelFor: [Context_ProvidesProcessModelForTarget]
 
   """
   Specified by identifies constraint and/or performance requirements that this
@@ -1753,11 +1734,11 @@ input ContextREL_Input {
   decomposedBy: [Context_DecomposedByTarget_Input]
   decomposes: [Context_DecomposesTarget_Input]
   documentedBy: [Context_DocumentedByTarget_Input]
-  enablesDetectionOf: [Context_EnablesDetectionOfTarget_Input]
   inputTo: [Context_InputToTarget_Input]
+  maEnablesDetectionOf: [Context_MaEnablesDetectionOfTarget_Input]
+  maProvidesProcessModelFor: [Context_MaProvidesProcessModelForTarget_Input]
   outputFrom: [Context_OutputFromTarget_Input]
   parameterUsedIn: [Context_ParameterUsedInTarget_Input]
-  providesProcessModelFor: [Context_ProvidesProcessModelForTarget_Input]
   specifiedBy: [Context_SpecifiedByTarget_Input]
   transferredBy: [Context_TransferredByTarget_Input]
   triggers: [Context_TriggersTarget_Input]
@@ -1784,7 +1765,22 @@ type Context_DecomposesTarget {
 type Context_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Context_EnablesDetectionOfTarget {
+type Context_InputToTarget {
+  functionTarget: FunctionID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: Context_InputToQueueType
+
+}
+enum Context_InputToQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type Context_MaEnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
   """
   constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
@@ -1792,8 +1788,14 @@ type Context_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
-type Context_InputToTarget {
-  functionTarget: FunctionID
+type Context_MaProvidesProcessModelForTarget {
+  hazardousActionTarget: HazardousActionID
+  """
+  The process model attributes and values that define the "context" for the unsafe
+  control action.
+  """
+  processModelAttributes: [String]
+
 }
 type Context_OutputFromTarget {
   functionTarget: FunctionID
@@ -1806,15 +1808,6 @@ type Context_ParameterUsedInTarget {
   to the variable used.
   """
   mappings: [String]
-
-}
-type Context_ProvidesProcessModelForTarget {
-  hazardousActionTarget: HazardousActionID
-  """
-  The process model attributes and values that define the "context" for the unsafe
-  control action.
-  """
-  processModelAttributes: [String]
 
 }
 type Context_SpecifiedByTarget {
@@ -1873,14 +1866,20 @@ input Context_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Context_EnablesDetectionOfTarget_Input {
+input Context_InputToTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  queueType: Context_InputToQueueType
+}
+input Context_MaEnablesDetectionOfTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
 }
-input Context_InputToTarget_Input {
+input Context_MaProvidesProcessModelForTarget_Input {
   operation: MutationOperation!
-  functionTarget: FunctionID_Input
+  hazardousActionTarget: HazardousActionID_Input
+  processModelAttributes: [String]
 }
 input Context_OutputFromTarget_Input {
   operation: MutationOperation!
@@ -1890,11 +1889,6 @@ input Context_ParameterUsedInTarget_Input {
   operation: MutationOperation!
   constraintDefinitionTarget: ConstraintDefinitionID_Input
   mappings: [String]
-}
-input Context_ProvidesProcessModelForTarget_Input {
-  operation: MutationOperation!
-  hazardousActionTarget: HazardousActionID_Input
-  processModelAttributes: [String]
 }
 input Context_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -2067,24 +2061,24 @@ type ControlActionREL {
   documentedBy: [ControlAction_DocumentedByTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [ControlAction_EnablesDetectionOfTarget]
-
-  """
-  Entity may have analysis variations.
-  """
-  hasVariation: [ControlAction_HasVariationTarget]
-
-  """
   Input to identifies the processing unit that transforms this entity.
   """
   inputTo: [ControlAction_InputToTarget]
 
   """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [ControlAction_MaEnablesDetectionOfTarget]
+
+  """
+  Entity may have analysis variations.
+  """
+  maHasVariation: [ControlAction_MaHasVariationTarget]
+
+  """
   The control action which manages (enable / disable  test) the resilient mode.
   """
-  manages: [ControlAction_ManagesTarget]
+  maManages: [ControlAction_MaManagesTarget]
 
   """
   Output from identifies the processing unit that produces this entity.
@@ -2134,10 +2128,10 @@ input ControlActionREL_Input {
   decomposedBy: [ControlAction_DecomposedByTarget_Input]
   decomposes: [ControlAction_DecomposesTarget_Input]
   documentedBy: [ControlAction_DocumentedByTarget_Input]
-  enablesDetectionOf: [ControlAction_EnablesDetectionOfTarget_Input]
-  hasVariation: [ControlAction_HasVariationTarget_Input]
   inputTo: [ControlAction_InputToTarget_Input]
-  manages: [ControlAction_ManagesTarget_Input]
+  maEnablesDetectionOf: [ControlAction_MaEnablesDetectionOfTarget_Input]
+  maHasVariation: [ControlAction_MaHasVariationTarget_Input]
+  maManages: [ControlAction_MaManagesTarget_Input]
   outputFrom: [ControlAction_OutputFromTarget_Input]
   parameterUsedIn: [ControlAction_ParameterUsedInTarget_Input]
   specifiedBy: [ControlAction_SpecifiedByTarget_Input]
@@ -2166,7 +2160,22 @@ type ControlAction_DecomposesTarget {
 type ControlAction_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type ControlAction_EnablesDetectionOfTarget {
+type ControlAction_InputToTarget {
+  functionTarget: FunctionID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: ControlAction_InputToQueueType
+
+}
+enum ControlAction_InputToQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type ControlAction_MaEnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
   """
   constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
@@ -2174,21 +2183,18 @@ type ControlAction_EnablesDetectionOfTarget {
   constraint: [String]
 
 }
-type ControlAction_HasVariationTarget {
+type ControlAction_MaHasVariationTarget {
   hazardousActionTarget: HazardousActionID
 }
-type ControlAction_InputToTarget {
-  functionTarget: FunctionID
-}
-type ControlAction_ManagesTarget {
+type ControlAction_MaManagesTarget {
   resilientModeTarget: ResilientModeID
   """
   The management action type for the resilient mode.
   """
-  actionType: ControlAction_ManagesActionType
+  actionType: ControlAction_MaManagesActionType
 
 }
-enum ControlAction_ManagesActionType {
+enum ControlAction_MaManagesActionType {
   nil
   activate
   deactivate
@@ -2263,23 +2269,24 @@ input ControlAction_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input ControlAction_EnablesDetectionOfTarget_Input {
+input ControlAction_InputToTarget_Input {
+  operation: MutationOperation!
+  functionTarget: FunctionID_Input
+  queueType: ControlAction_InputToQueueType
+}
+input ControlAction_MaEnablesDetectionOfTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
 }
-input ControlAction_HasVariationTarget_Input {
+input ControlAction_MaHasVariationTarget_Input {
   operation: MutationOperation!
   hazardousActionTarget: HazardousActionID_Input
 }
-input ControlAction_InputToTarget_Input {
-  operation: MutationOperation!
-  functionTarget: FunctionID_Input
-}
-input ControlAction_ManagesTarget_Input {
+input ControlAction_MaManagesTarget_Input {
   operation: MutationOperation!
   resilientModeTarget: ResilientModeID_Input
-  actionType: ControlAction_ManagesActionType
+  actionType: ControlAction_MaManagesActionType
 }
 input ControlAction_OutputFromTarget_Input {
   operation: MutationOperation!
@@ -3069,14 +3076,14 @@ type FeedbackREL {
   documentedBy: [Feedback_DocumentedByTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [Feedback_EnablesDetectionOfTarget]
-
-  """
   Input to identifies the processing unit that transforms this entity.
   """
   inputTo: [Feedback_InputToTarget]
+
+  """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [Feedback_MaEnablesDetectionOfTarget]
 
   """
   Output from identifies the processing unit that produces this entity.
@@ -3126,8 +3133,8 @@ input FeedbackREL_Input {
   decomposedBy: [Feedback_DecomposedByTarget_Input]
   decomposes: [Feedback_DecomposesTarget_Input]
   documentedBy: [Feedback_DocumentedByTarget_Input]
-  enablesDetectionOf: [Feedback_EnablesDetectionOfTarget_Input]
   inputTo: [Feedback_InputToTarget_Input]
+  maEnablesDetectionOf: [Feedback_MaEnablesDetectionOfTarget_Input]
   outputFrom: [Feedback_OutputFromTarget_Input]
   parameterUsedIn: [Feedback_ParameterUsedInTarget_Input]
   specifiedBy: [Feedback_SpecifiedByTarget_Input]
@@ -3156,16 +3163,28 @@ type Feedback_DecomposesTarget {
 type Feedback_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Feedback_EnablesDetectionOfTarget {
+type Feedback_InputToTarget {
+  functionTarget: FunctionID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: Feedback_InputToQueueType
+
+}
+enum Feedback_InputToQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type Feedback_MaEnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
   """
   constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   """
   constraint: [String]
 
-}
-type Feedback_InputToTarget {
-  functionTarget: FunctionID
 }
 type Feedback_OutputFromTarget {
   functionTarget: FunctionID
@@ -3236,14 +3255,15 @@ input Feedback_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Feedback_EnablesDetectionOfTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
-  constraint: [String]
-}
 input Feedback_InputToTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
+  queueType: Feedback_InputToQueueType
+}
+input Feedback_MaEnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
 }
 input Feedback_OutputFromTarget_Input {
   operation: MutationOperation!
@@ -3418,11 +3438,6 @@ type FunctionREL {
   elaborates: [Function_ElaboratesTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [Function_EnablesDetectionOfTarget]
-
-  """
   Exits by identifies the set of mutually exclusive exits for this entity.
   """
   exitsBy: [Function_ExitsByTarget]
@@ -3439,14 +3454,19 @@ type FunctionREL {
   inputs: [Function_InputsTarget]
 
   """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [Function_MaEnablesDetectionOfTarget]
+
+  """
   A failed / cyber attacked "system" Function is recovered by a ReslientMode.
   """
-  isRecoveredBy: [Function_IsRecoveredByTarget]
+  maIsRecoveredBy: [Function_MaIsRecoveredByTarget]
 
   """
   The control action which manages (enable / disable  test) the resilient mode.
   """
-  manages: [Function_ManagesTarget]
+  maManages: [Function_MaManagesTarget]
 
   """
   Outputs identifies the products of the transformation carried out by this
@@ -3524,12 +3544,12 @@ input FunctionREL_Input {
   decomposes: [Function_DecomposesTarget_Input]
   documentedBy: [Function_DocumentedByTarget_Input]
   elaborates: [Function_ElaboratesTarget_Input]
-  enablesDetectionOf: [Function_EnablesDetectionOfTarget_Input]
   exitsBy: [Function_ExitsByTarget_Input]
   incorporatedBy: [Function_IncorporatedByTarget_Input]
   inputs: [Function_InputsTarget_Input]
-  isRecoveredBy: [Function_IsRecoveredByTarget_Input]
-  manages: [Function_ManagesTarget_Input]
+  maEnablesDetectionOf: [Function_MaEnablesDetectionOfTarget_Input]
+  maIsRecoveredBy: [Function_MaIsRecoveredByTarget_Input]
+  maManages: [Function_MaManagesTarget_Input]
   outputs: [Function_OutputsTarget_Input]
   parameterUsedIn: [Function_ParameterUsedInTarget_Input]
   produces: [Function_ProducesTarget_Input]
@@ -3623,14 +3643,6 @@ enum Function_ElaboratesFlowType {
   Alternate
   Primary
 }
-type Function_EnablesDetectionOfTarget {
-  lossScenarioTarget: LossScenarioID
-  """
-  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
-  """
-  constraint: [String]
-
-}
 type Function_ExitsByTarget {
   exitTarget: ExitID
   """
@@ -3669,8 +3681,28 @@ enum Function_IncorporatedByBehaviorType {
 }
 type Function_InputsTarget {
   itemTarget: ItemID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: Function_InputsQueueType
+
 }
-type Function_IsRecoveredByTarget {
+enum Function_InputsQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type Function_MaEnablesDetectionOfTarget {
+  lossScenarioTarget: LossScenarioID
+  """
+  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  """
+  constraint: [String]
+
+}
+type Function_MaIsRecoveredByTarget {
   resilientModeTarget: ResilientModeID
   """
   A collection of calculated values: "measured" (via system evaluation /
@@ -3683,16 +3715,16 @@ type Function_IsRecoveredByTarget {
   recoveryRatio: [String]
 
 }
-type Function_ManagesTarget {
+type Function_MaManagesTarget {
   lossScenarioTarget: LossScenarioID
   resilientModeTarget: ResilientModeID
   """
   The management action type for the resilient mode.
   """
-  actionType: Function_ManagesActionType
+  actionType: Function_MaManagesActionType
 
 }
-enum Function_ManagesActionType {
+enum Function_MaManagesActionType {
   nil
   activate
   deactivate
@@ -3729,8 +3761,8 @@ type Function_RelatesToTarget {
   domainSetTarget: DomainSetID
 }
 type Function_ServicesTarget {
-  transitionTarget: TransitionID
   linkTarget: LinkID
+  transitionTarget: TransitionID
 }
 type Function_SpecifiedByTarget {
   requirementTarget: RequirementID
@@ -3812,11 +3844,6 @@ input Function_ElaboratesTarget_Input {
   useCaseTarget: UseCaseID_Input
   flowType: Function_ElaboratesFlowType
 }
-input Function_EnablesDetectionOfTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
-  constraint: [String]
-}
 input Function_ExitsByTarget_Input {
   operation: MutationOperation!
   exitTarget: ExitID_Input
@@ -3831,17 +3858,23 @@ input Function_IncorporatedByTarget_Input {
 input Function_InputsTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
+  queueType: Function_InputsQueueType
 }
-input Function_IsRecoveredByTarget_Input {
+input Function_MaEnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Function_MaIsRecoveredByTarget_Input {
   operation: MutationOperation!
   resilientModeTarget: ResilientModeID_Input
   recoveryRatio: [String]
 }
-input Function_ManagesTarget_Input {
+input Function_MaManagesTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   resilientModeTarget: ResilientModeID_Input
-  actionType: Function_ManagesActionType
+  actionType: Function_MaManagesActionType
 }
 input Function_OutputsTarget_Input {
   operation: MutationOperation!
@@ -3871,8 +3904,8 @@ input Function_RelatesToTarget_Input {
 }
 input Function_ServicesTarget_Input {
   operation: MutationOperation!
-  transitionTarget: TransitionID_Input
   linkTarget: LinkID_Input
+  transitionTarget: TransitionID_Input
 }
 input Function_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -3944,26 +3977,20 @@ type HazardREL {
   documentedBy: [Hazard_DocumentedByTarget]
 
   """
-  A Use Case, Hazard, Unsafe Action enables the elicitation of requirements from
-  stakeholders.
-  """
-  elicits: [Hazard_ElicitsTarget]
-
-  """
   Indicates causality of entity.
   """
-  isCausedBy: [Hazard_IsCausedByTarget]
+  maIsCausedBy: [Hazard_MaIsCausedByTarget]
 
   """
   A Loss Scenario is protected by a Sentinel.    A Loss, Hazard, Loss Scenario, or
   Attack Vector is protected by a Remediation.
   """
-  isProtectedBy: [Hazard_IsProtectedByTarget]
+  maIsProtectedBy: [Hazard_MaIsProtectedByTarget]
 
   """
   Indicates factors leading to entity.
   """
-  leadsTo: [Hazard_LeadsToTarget]
+  maLeadsTo: [Hazard_MaLeadsToTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -3975,10 +4002,9 @@ type HazardREL {
 input HazardREL_Input {
   categorizedBy: [Hazard_CategorizedByTarget_Input]
   documentedBy: [Hazard_DocumentedByTarget_Input]
-  elicits: [Hazard_ElicitsTarget_Input]
-  isCausedBy: [Hazard_IsCausedByTarget_Input]
-  isProtectedBy: [Hazard_IsProtectedByTarget_Input]
-  leadsTo: [Hazard_LeadsToTarget_Input]
+  maIsCausedBy: [Hazard_MaIsCausedByTarget_Input]
+  maIsProtectedBy: [Hazard_MaIsProtectedByTarget_Input]
+  maLeadsTo: [Hazard_MaLeadsToTarget_Input]
   uses: [Hazard_UsesTarget_Input]
 }
 type Hazard_CategorizedByTarget {
@@ -3987,16 +4013,13 @@ type Hazard_CategorizedByTarget {
 type Hazard_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Hazard_ElicitsTarget {
-  requirementTarget: RequirementID
-}
-type Hazard_IsCausedByTarget {
+type Hazard_MaIsCausedByTarget {
   hazardousActionTarget: HazardousActionID
 }
-type Hazard_IsProtectedByTarget {
+type Hazard_MaIsProtectedByTarget {
   remediationTarget: RemediationID
 }
-type Hazard_LeadsToTarget {
+type Hazard_MaLeadsToTarget {
   lossTarget: LossID
 }
 type Hazard_UsesTarget {
@@ -4011,19 +4034,15 @@ input Hazard_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Hazard_ElicitsTarget_Input {
-  operation: MutationOperation!
-  requirementTarget: RequirementID_Input
-}
-input Hazard_IsCausedByTarget_Input {
+input Hazard_MaIsCausedByTarget_Input {
   operation: MutationOperation!
   hazardousActionTarget: HazardousActionID_Input
 }
-input Hazard_IsProtectedByTarget_Input {
+input Hazard_MaIsProtectedByTarget_Input {
   operation: MutationOperation!
   remediationTarget: RemediationID_Input
 }
-input Hazard_LeadsToTarget_Input {
+input Hazard_MaLeadsToTarget_Input {
   operation: MutationOperation!
   lossTarget: LossID_Input
 }
@@ -4115,47 +4134,40 @@ type HazardousActionREL {
   documentedBy: [HazardousAction_DocumentedByTarget]
 
   """
-  A Use Case, Hazard, Unsafe Action enables the elicitation of requirements from
-  stakeholders.
-  """
-  elicits: [HazardousAction_ElicitsTarget]
-
-  """
   Unsafe control action context (process model).
   """
-  hasProcessModel: [HazardousAction_HasProcessModelTarget]
+  maHasProcessModel: [HazardousAction_MaHasProcessModelTarget]
 
   """
   Indicates causality of entity.
   """
-  isCausedBy: [HazardousAction_IsCausedByTarget]
+  maIsCausedBy: [HazardousAction_MaIsCausedByTarget]
 
   """
   Indicates factors leading to entity.
   """
-  leadsTo: [HazardousAction_LeadsToTarget]
+  maLeadsTo: [HazardousAction_MaLeadsToTarget]
+
+  """
+  Entity is an analysis variation.
+  """
+  maVariationOf: [HazardousAction_MaVariationOfTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
   """
   uses: [HazardousAction_UsesTarget]
 
-  """
-  Entity is an analysis variation.
-  """
-  variationOf: [HazardousAction_VariationOfTarget]
-
 }
 # for mutations
 input HazardousActionREL_Input {
   categorizedBy: [HazardousAction_CategorizedByTarget_Input]
   documentedBy: [HazardousAction_DocumentedByTarget_Input]
-  elicits: [HazardousAction_ElicitsTarget_Input]
-  hasProcessModel: [HazardousAction_HasProcessModelTarget_Input]
-  isCausedBy: [HazardousAction_IsCausedByTarget_Input]
-  leadsTo: [HazardousAction_LeadsToTarget_Input]
+  maHasProcessModel: [HazardousAction_MaHasProcessModelTarget_Input]
+  maIsCausedBy: [HazardousAction_MaIsCausedByTarget_Input]
+  maLeadsTo: [HazardousAction_MaLeadsToTarget_Input]
+  maVariationOf: [HazardousAction_MaVariationOfTarget_Input]
   uses: [HazardousAction_UsesTarget_Input]
-  variationOf: [HazardousAction_VariationOfTarget_Input]
 }
 type HazardousAction_CategorizedByTarget {
   categoryTarget: CategoryID
@@ -4163,10 +4175,7 @@ type HazardousAction_CategorizedByTarget {
 type HazardousAction_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type HazardousAction_ElicitsTarget {
-  requirementTarget: RequirementID
-}
-type HazardousAction_HasProcessModelTarget {
+type HazardousAction_MaHasProcessModelTarget {
   contextTarget: ContextID
   """
   The process model attributes and values that define the "context" for the unsafe
@@ -4175,17 +4184,17 @@ type HazardousAction_HasProcessModelTarget {
   processModelAttributes: [String]
 
 }
-type HazardousAction_IsCausedByTarget {
+type HazardousAction_MaIsCausedByTarget {
   lossScenarioTarget: LossScenarioID
 }
-type HazardousAction_LeadsToTarget {
+type HazardousAction_MaLeadsToTarget {
   hazardTarget: HazardID
+}
+type HazardousAction_MaVariationOfTarget {
+  controlActionTarget: ControlActionID
 }
 type HazardousAction_UsesTarget {
   definedTermTarget: DefinedTermID
-}
-type HazardousAction_VariationOfTarget {
-  controlActionTarget: ControlActionID
 }
 # for mutations
 input HazardousAction_CategorizedByTarget_Input {
@@ -4196,30 +4205,26 @@ input HazardousAction_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input HazardousAction_ElicitsTarget_Input {
-  operation: MutationOperation!
-  requirementTarget: RequirementID_Input
-}
-input HazardousAction_HasProcessModelTarget_Input {
+input HazardousAction_MaHasProcessModelTarget_Input {
   operation: MutationOperation!
   contextTarget: ContextID_Input
   processModelAttributes: [String]
 }
-input HazardousAction_IsCausedByTarget_Input {
+input HazardousAction_MaIsCausedByTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
 }
-input HazardousAction_LeadsToTarget_Input {
+input HazardousAction_MaLeadsToTarget_Input {
   operation: MutationOperation!
   hazardTarget: HazardID_Input
+}
+input HazardousAction_MaVariationOfTarget_Input {
+  operation: MutationOperation!
+  controlActionTarget: ControlActionID_Input
 }
 input HazardousAction_UsesTarget_Input {
   operation: MutationOperation!
   definedTermTarget: DefinedTermID_Input
-}
-input HazardousAction_VariationOfTarget_Input {
-  operation: MutationOperation!
-  controlActionTarget: ControlActionID_Input
 }
 #########################################
 # HygienePractice definition
@@ -4288,12 +4293,12 @@ type HygienePracticeREL {
   """
   A hygiene practice may be implemented as a remediation.
   """
-  implementedAs: [HygienePractice_ImplementedAsTarget]
+  maImplementedAs: [HygienePractice_MaImplementedAsTarget]
 
   """
   A hygiene practice is motivated by attack pattern.
   """
-  motivatedBy: [HygienePractice_MotivatedByTarget]
+  maMotivatedBy: [HygienePractice_MaMotivatedByTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -4305,8 +4310,8 @@ type HygienePracticeREL {
 input HygienePracticeREL_Input {
   categorizedBy: [HygienePractice_CategorizedByTarget_Input]
   documentedBy: [HygienePractice_DocumentedByTarget_Input]
-  implementedAs: [HygienePractice_ImplementedAsTarget_Input]
-  motivatedBy: [HygienePractice_MotivatedByTarget_Input]
+  maImplementedAs: [HygienePractice_MaImplementedAsTarget_Input]
+  maMotivatedBy: [HygienePractice_MaMotivatedByTarget_Input]
   uses: [HygienePractice_UsesTarget_Input]
 }
 type HygienePractice_CategorizedByTarget {
@@ -4315,10 +4320,10 @@ type HygienePractice_CategorizedByTarget {
 type HygienePractice_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type HygienePractice_ImplementedAsTarget {
+type HygienePractice_MaImplementedAsTarget {
   remediationTarget: RemediationID
 }
-type HygienePractice_MotivatedByTarget {
+type HygienePractice_MaMotivatedByTarget {
   attackPatternTarget: AttackPatternID
 }
 type HygienePractice_UsesTarget {
@@ -4333,11 +4338,11 @@ input HygienePractice_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input HygienePractice_ImplementedAsTarget_Input {
+input HygienePractice_MaImplementedAsTarget_Input {
   operation: MutationOperation!
   remediationTarget: RemediationID_Input
 }
-input HygienePractice_MotivatedByTarget_Input {
+input HygienePractice_MaMotivatedByTarget_Input {
   operation: MutationOperation!
   attackPatternTarget: AttackPatternID_Input
 }
@@ -4494,14 +4499,14 @@ type ItemREL {
   documentedBy: [Item_DocumentedByTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [Item_EnablesDetectionOfTarget]
-
-  """
   Input to identifies the processing unit that transforms this entity.
   """
   inputTo: [Item_InputToTarget]
+
+  """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [Item_MaEnablesDetectionOfTarget]
 
   """
   Output from identifies the processing unit that produces this entity.
@@ -4551,8 +4556,8 @@ input ItemREL_Input {
   decomposedBy: [Item_DecomposedByTarget_Input]
   decomposes: [Item_DecomposesTarget_Input]
   documentedBy: [Item_DocumentedByTarget_Input]
-  enablesDetectionOf: [Item_EnablesDetectionOfTarget_Input]
   inputTo: [Item_InputToTarget_Input]
+  maEnablesDetectionOf: [Item_MaEnablesDetectionOfTarget_Input]
   outputFrom: [Item_OutputFromTarget_Input]
   parameterUsedIn: [Item_ParameterUsedInTarget_Input]
   specifiedBy: [Item_SpecifiedByTarget_Input]
@@ -4581,16 +4586,28 @@ type Item_DecomposesTarget {
 type Item_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Item_EnablesDetectionOfTarget {
+type Item_InputToTarget {
+  functionTarget: FunctionID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: Item_InputToQueueType
+
+}
+enum Item_InputToQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
+}
+type Item_MaEnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
   """
   constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
   """
   constraint: [String]
 
-}
-type Item_InputToTarget {
-  functionTarget: FunctionID
 }
 type Item_OutputFromTarget {
   functionTarget: FunctionID
@@ -4661,14 +4678,15 @@ input Item_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Item_EnablesDetectionOfTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
-  constraint: [String]
-}
 input Item_InputToTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
+  queueType: Item_InputToQueueType
+}
+input Item_MaEnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
 }
 input Item_OutputFromTarget_Input {
   operation: MutationOperation!
@@ -4741,6 +4759,11 @@ type LinkATTR {
   protocol: String
 
   """
+  Type is the physical category of this entity.
+  """
+  type: LinkType
+
+  """
   Is the Link out of scope for the system Attack Analysis?
   """
   outOfScopeAttackAnalysis: Boolean
@@ -4789,10 +4812,22 @@ type LinkATTR {
   description: String
 
 }
+enum LinkType {
+  nil
+  Data
+  Fluid
+  Electrical
+  Human
+  Mechanical
+  Power
+  Structural
+  Thermal
+}
 # for mutations
 input LinkATTR_Input {
   outOfScopeJustification: String
   protocol: String
+  type: LinkType
   outOfScopeAttackAnalysis: Boolean
   delay: String
   capacity: String
@@ -4828,11 +4863,6 @@ type LinkREL {
   documentedBy: [Link_DocumentedByTarget]
 
   """
-  The Function / Link / Item enables detection of Loss Scenario.
-  """
-  enablesDetectionOf: [Link_EnablesDetectionOfTarget]
-
-  """
   Forms identifies the test configurations in which this entity is used.
   """
   forms: [Link_FormsTarget]
@@ -4848,9 +4878,14 @@ type LinkREL {
   includes: [Link_IncludesTarget]
 
   """
+  The Function / Link / Item enables detection of Loss Scenario.
+  """
+  maEnablesDetectionOf: [Link_MaEnablesDetectionOfTarget]
+
+  """
   Identifies Attack Patterns that may violate an Entity.
   """
-  isViolatedBy: [Link_IsViolatedByTarget]
+  maIsViolatedBy: [Link_MaIsViolatedByTarget]
 
   """
   An entity’s parameter is being referenced by a ConstraintDefinition.
@@ -4898,11 +4933,11 @@ input LinkREL_Input {
   connectsTo: [Link_ConnectsToTarget_Input]
   constrainedBy: [Link_ConstrainedByTarget_Input]
   documentedBy: [Link_DocumentedByTarget_Input]
-  enablesDetectionOf: [Link_EnablesDetectionOfTarget_Input]
   forms: [Link_FormsTarget_Input]
   includedIn: [Link_IncludedInTarget_Input]
   includes: [Link_IncludesTarget_Input]
-  isViolatedBy: [Link_IsViolatedByTarget_Input]
+  maEnablesDetectionOf: [Link_MaEnablesDetectionOfTarget_Input]
+  maIsViolatedBy: [Link_MaIsViolatedByTarget_Input]
   parameterUsedIn: [Link_ParameterUsedInTarget_Input]
   reportedBy: [Link_ReportedByTarget_Input]
   servicedBy: [Link_ServicedByTarget_Input]
@@ -4934,14 +4969,6 @@ type Link_ConstrainedByTarget {
 type Link_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Link_EnablesDetectionOfTarget {
-  lossScenarioTarget: LossScenarioID
-  """
-  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
-  """
-  constraint: [String]
-
-}
 type Link_FormsTarget {
   testConfigurationTarget: TestConfigurationID
 }
@@ -4951,7 +4978,15 @@ type Link_IncludedInTarget {
 type Link_IncludesTarget {
   linkTarget: LinkID
 }
-type Link_IsViolatedByTarget {
+type Link_MaEnablesDetectionOfTarget {
+  lossScenarioTarget: LossScenarioID
+  """
+  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  """
+  constraint: [String]
+
+}
+type Link_MaIsViolatedByTarget {
   attackVectorTarget: AttackVectorID
 }
 type Link_ParameterUsedInTarget {
@@ -5008,11 +5043,6 @@ input Link_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Link_EnablesDetectionOfTarget_Input {
-  operation: MutationOperation!
-  lossScenarioTarget: LossScenarioID_Input
-  constraint: [String]
-}
 input Link_FormsTarget_Input {
   operation: MutationOperation!
   testConfigurationTarget: TestConfigurationID_Input
@@ -5025,7 +5055,12 @@ input Link_IncludesTarget_Input {
   operation: MutationOperation!
   linkTarget: LinkID_Input
 }
-input Link_IsViolatedByTarget_Input {
+input Link_MaEnablesDetectionOfTarget_Input {
+  operation: MutationOperation!
+  lossScenarioTarget: LossScenarioID_Input
+  constraint: [String]
+}
+input Link_MaIsViolatedByTarget_Input {
   operation: MutationOperation!
   attackVectorTarget: AttackVectorID_Input
 }
@@ -5128,13 +5163,13 @@ type LossREL {
   """
   Indicates causality of entity.
   """
-  isCausedBy: [Loss_IsCausedByTarget]
+  maIsCausedBy: [Loss_MaIsCausedByTarget]
 
   """
   A Loss Scenario is protected by a Sentinel.    A Loss, Hazard, Loss Scenario, or
   Attack Vector is protected by a Remediation.
   """
-  isProtectedBy: [Loss_IsProtectedByTarget]
+  maIsProtectedBy: [Loss_MaIsProtectedByTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -5146,8 +5181,8 @@ type LossREL {
 input LossREL_Input {
   categorizedBy: [Loss_CategorizedByTarget_Input]
   documentedBy: [Loss_DocumentedByTarget_Input]
-  isCausedBy: [Loss_IsCausedByTarget_Input]
-  isProtectedBy: [Loss_IsProtectedByTarget_Input]
+  maIsCausedBy: [Loss_MaIsCausedByTarget_Input]
+  maIsProtectedBy: [Loss_MaIsProtectedByTarget_Input]
   uses: [Loss_UsesTarget_Input]
 }
 type Loss_CategorizedByTarget {
@@ -5156,10 +5191,10 @@ type Loss_CategorizedByTarget {
 type Loss_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Loss_IsCausedByTarget {
+type Loss_MaIsCausedByTarget {
   hazardTarget: HazardID
 }
-type Loss_IsProtectedByTarget {
+type Loss_MaIsProtectedByTarget {
   remediationTarget: RemediationID
 }
 type Loss_UsesTarget {
@@ -5174,11 +5209,11 @@ input Loss_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Loss_IsCausedByTarget_Input {
+input Loss_MaIsCausedByTarget_Input {
   operation: MutationOperation!
   hazardTarget: HazardID_Input
 }
-input Loss_IsProtectedByTarget_Input {
+input Loss_MaIsProtectedByTarget_Input {
   operation: MutationOperation!
   remediationTarget: RemediationID_Input
 }
@@ -5292,16 +5327,6 @@ type LossScenarioREL {
   categorizedBy: [LossScenario_CategorizedByTarget]
 
   """
-  The Loss Scenario is detected by monitoring:  Item – Control Action / Feedback /
-  Context​  "Field" value tampered​  size tampered​  order modified  Function 
-  Input / Trigger – injected / spoofed​  Output – incorrect value  Exit (Error
-  logic)​  Resource (too much / too little)​  Attribute: Duration (too long / too
-  short)  Attribute: Timeout (too long / too short)  Link  Attribute: Capacity
-  (too much / too little)​  Attribute: Delay (too long / too short)
-  """
-  detectedByMonitoring: [LossScenario_DetectedByMonitoringTarget]
-
-  """
   Documented by identifies the source document which specifies and/or enhances the
   definition of this entity.
   """
@@ -5314,30 +5339,41 @@ type LossScenarioREL {
   elaboratedBy: [LossScenario_ElaboratedByTarget]
 
   """
+  A Use Case, Hazard, Unsafe Action enables the elicitation of requirements from
+  stakeholders.
+  """
+  elicits: [LossScenario_ElicitsTarget]
+
+  """
+  The Loss Scenario is detected by monitoring:  Item – Control Action / Feedback /
+  Context​  "Field" value tampered​  size tampered​  order modified  Function 
+  Input / Trigger – injected / spoofed​  Output – incorrect value  Exit (Error
+  logic)​  Resource (too much / too little)​  Attribute: Duration (too long / too
+  short)  Attribute: Timeout (too long / too short)  Link  Attribute: Capacity
+  (too much / too little)​  Attribute: Delay (too long / too short)
+  """
+  maDetectedByMonitoring: [LossScenario_MaDetectedByMonitoringTarget]
+
+  """
   A Loss Scenario is protected by a Sentinel.    A Loss, Hazard, Loss Scenario, or
   Attack Vector is protected by a Remediation.
   """
-  isProtectedBy: [LossScenario_IsProtectedByTarget]
-
-  """
-  A Loss Scenario is simulated by a Threat Simulator.
-  """
-  isSimulatedBy: [LossScenario_IsSimulatedByTarget]
+  maIsProtectedBy: [LossScenario_MaIsProtectedByTarget]
 
   """
   Indicates factors leading to entity.
   """
-  leadsTo: [LossScenario_LeadsToTarget]
+  maLeadsTo: [LossScenario_MaLeadsToTarget]
 
   """
   The resilient mode is managed (enabled / disabled / tested) by control action.
   """
-  managedBy: [LossScenario_ManagedByTarget]
+  maManagedBy: [LossScenario_MaManagedByTarget]
 
   """
   The loss scenarios reconfigures using resilient mode.
   """
-  reconfiguresUsing: [LossScenario_ReconfiguresUsingTarget]
+  maReconfiguresUsing: [LossScenario_MaReconfiguresUsingTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -5354,31 +5390,19 @@ type LossScenarioREL {
 # for mutations
 input LossScenarioREL_Input {
   categorizedBy: [LossScenario_CategorizedByTarget_Input]
-  detectedByMonitoring: [LossScenario_DetectedByMonitoringTarget_Input]
   documentedBy: [LossScenario_DocumentedByTarget_Input]
   elaboratedBy: [LossScenario_ElaboratedByTarget_Input]
-  isProtectedBy: [LossScenario_IsProtectedByTarget_Input]
-  isSimulatedBy: [LossScenario_IsSimulatedByTarget_Input]
-  leadsTo: [LossScenario_LeadsToTarget_Input]
-  managedBy: [LossScenario_ManagedByTarget_Input]
-  reconfiguresUsing: [LossScenario_ReconfiguresUsingTarget_Input]
+  elicits: [LossScenario_ElicitsTarget_Input]
+  maDetectedByMonitoring: [LossScenario_MaDetectedByMonitoringTarget_Input]
+  maIsProtectedBy: [LossScenario_MaIsProtectedByTarget_Input]
+  maLeadsTo: [LossScenario_MaLeadsToTarget_Input]
+  maManagedBy: [LossScenario_MaManagedByTarget_Input]
+  maReconfiguresUsing: [LossScenario_MaReconfiguresUsingTarget_Input]
   uses: [LossScenario_UsesTarget_Input]
   verifiedBy: [LossScenario_VerifiedByTarget_Input]
 }
 type LossScenario_CategorizedByTarget {
   categoryTarget: CategoryID
-}
-type LossScenario_DetectedByMonitoringTarget {
-  componentTarget: ComponentID
-  functionTarget: FunctionID
-  resourceTarget: ResourceID
-  itemTarget: ItemID
-  linkTarget: LinkID
-  """
-  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
-  """
-  constraint: [String]
-
 }
 type LossScenario_DocumentedByTarget {
   documentTarget: DocumentID
@@ -5396,31 +5420,43 @@ enum LossScenario_ElaboratedByFlowType {
   Alternate
   Primary
 }
-type LossScenario_IsProtectedByTarget {
+type LossScenario_ElicitsTarget {
+  requirementTarget: RequirementID
+}
+type LossScenario_MaDetectedByMonitoringTarget {
+  resourceTarget: ResourceID
+  itemTarget: ItemID
+  linkTarget: LinkID
+  componentTarget: ComponentID
+  functionTarget: FunctionID
+  """
+  constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
+  """
+  constraint: [String]
+
+}
+type LossScenario_MaIsProtectedByTarget {
+  componentTarget: ComponentID
   remediationTarget: RemediationID
-  componentTarget: ComponentID
 }
-type LossScenario_IsSimulatedByTarget {
-  componentTarget: ComponentID
-}
-type LossScenario_LeadsToTarget {
+type LossScenario_MaLeadsToTarget {
   hazardousActionTarget: HazardousActionID
 }
-type LossScenario_ManagedByTarget {
+type LossScenario_MaManagedByTarget {
   functionTarget: FunctionID
   """
   The management action type for the resilient mode.
   """
-  actionType: LossScenario_ManagedByActionType
+  actionType: LossScenario_MaManagedByActionType
 
 }
-enum LossScenario_ManagedByActionType {
+enum LossScenario_MaManagedByActionType {
   nil
   activate
   deactivate
   selfTest
 }
-type LossScenario_ReconfiguresUsingTarget {
+type LossScenario_MaReconfiguresUsingTarget {
   resilientModeTarget: ResilientModeID
 }
 type LossScenario_UsesTarget {
@@ -5434,15 +5470,6 @@ input LossScenario_CategorizedByTarget_Input {
   operation: MutationOperation!
   categoryTarget: CategoryID_Input
 }
-input LossScenario_DetectedByMonitoringTarget_Input {
-  operation: MutationOperation!
-  componentTarget: ComponentID_Input
-  functionTarget: FunctionID_Input
-  resourceTarget: ResourceID_Input
-  itemTarget: ItemID_Input
-  linkTarget: LinkID_Input
-  constraint: [String]
-}
 input LossScenario_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
@@ -5452,25 +5479,34 @@ input LossScenario_ElaboratedByTarget_Input {
   functionTarget: FunctionID_Input
   flowType: LossScenario_ElaboratedByFlowType
 }
-input LossScenario_IsProtectedByTarget_Input {
+input LossScenario_ElicitsTarget_Input {
   operation: MutationOperation!
+  requirementTarget: RequirementID_Input
+}
+input LossScenario_MaDetectedByMonitoringTarget_Input {
+  operation: MutationOperation!
+  resourceTarget: ResourceID_Input
+  itemTarget: ItemID_Input
+  linkTarget: LinkID_Input
+  componentTarget: ComponentID_Input
+  functionTarget: FunctionID_Input
+  constraint: [String]
+}
+input LossScenario_MaIsProtectedByTarget_Input {
+  operation: MutationOperation!
+  componentTarget: ComponentID_Input
   remediationTarget: RemediationID_Input
-  componentTarget: ComponentID_Input
 }
-input LossScenario_IsSimulatedByTarget_Input {
-  operation: MutationOperation!
-  componentTarget: ComponentID_Input
-}
-input LossScenario_LeadsToTarget_Input {
+input LossScenario_MaLeadsToTarget_Input {
   operation: MutationOperation!
   hazardousActionTarget: HazardousActionID_Input
 }
-input LossScenario_ManagedByTarget_Input {
+input LossScenario_MaManagedByTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
-  actionType: LossScenario_ManagedByActionType
+  actionType: LossScenario_MaManagedByActionType
 }
-input LossScenario_ReconfiguresUsingTarget_Input {
+input LossScenario_MaReconfiguresUsingTarget_Input {
   operation: MutationOperation!
   resilientModeTarget: ResilientModeID_Input
 }
@@ -5568,13 +5604,13 @@ type RemediationREL {
   """
   A remediation may be an implementation of a hygiene practice.
   """
-  isImplementationOf: [Remediation_IsImplementationOfTarget]
+  maIsImplementationOf: [Remediation_MaIsImplementationOfTarget]
 
   """
   A Sentinel protects against one or more Loss Scenarios.    A Remediation
   protects against a Loss, Hazard, Loss Scenario, or Attack Vector.
   """
-  protectsAgainst: [Remediation_ProtectsAgainstTarget]
+  maProtectsAgainst: [Remediation_MaProtectsAgainstTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -5587,8 +5623,8 @@ input RemediationREL_Input {
   categorizedBy: [Remediation_CategorizedByTarget_Input]
   documentedBy: [Remediation_DocumentedByTarget_Input]
   elicits: [Remediation_ElicitsTarget_Input]
-  isImplementationOf: [Remediation_IsImplementationOfTarget_Input]
-  protectsAgainst: [Remediation_ProtectsAgainstTarget_Input]
+  maIsImplementationOf: [Remediation_MaIsImplementationOfTarget_Input]
+  maProtectsAgainst: [Remediation_MaProtectsAgainstTarget_Input]
   uses: [Remediation_UsesTarget_Input]
 }
 type Remediation_CategorizedByTarget {
@@ -5600,14 +5636,14 @@ type Remediation_DocumentedByTarget {
 type Remediation_ElicitsTarget {
   requirementTarget: RequirementID
 }
-type Remediation_IsImplementationOfTarget {
+type Remediation_MaIsImplementationOfTarget {
   hygienePracticeTarget: HygienePracticeID
 }
-type Remediation_ProtectsAgainstTarget {
-  attackVectorTarget: AttackVectorID
-  hazardTarget: HazardID
-  lossTarget: LossID
+type Remediation_MaProtectsAgainstTarget {
   lossScenarioTarget: LossScenarioID
+  hazardTarget: HazardID
+  attackVectorTarget: AttackVectorID
+  lossTarget: LossID
 }
 type Remediation_UsesTarget {
   definedTermTarget: DefinedTermID
@@ -5625,16 +5661,16 @@ input Remediation_ElicitsTarget_Input {
   operation: MutationOperation!
   requirementTarget: RequirementID_Input
 }
-input Remediation_IsImplementationOfTarget_Input {
+input Remediation_MaIsImplementationOfTarget_Input {
   operation: MutationOperation!
   hygienePracticeTarget: HygienePracticeID_Input
 }
-input Remediation_ProtectsAgainstTarget_Input {
+input Remediation_MaProtectsAgainstTarget_Input {
   operation: MutationOperation!
-  attackVectorTarget: AttackVectorID_Input
-  hazardTarget: HazardID_Input
-  lossTarget: LossID_Input
   lossScenarioTarget: LossScenarioID_Input
+  hazardTarget: HazardID_Input
+  attackVectorTarget: AttackVectorID_Input
+  lossTarget: LossID_Input
 }
 input Remediation_UsesTarget_Input {
   operation: MutationOperation!
@@ -5889,10 +5925,9 @@ type Requirement_DocumentedByTarget {
   documentTarget: DocumentID
 }
 type Requirement_ElicitedByTarget {
-  hazardousActionTarget: HazardousActionID
-  remediationTarget: RemediationID
+  lossScenarioTarget: LossScenarioID
   useCaseTarget: UseCaseID
-  hazardTarget: HazardID
+  remediationTarget: RemediationID
 }
 type Requirement_EstablishesTarget {
   testActivityTarget: TestActivityID
@@ -5905,9 +5940,9 @@ type Requirement_RefinesTarget {
 }
 type Requirement_SpecifiesTarget {
   itemTarget: ItemID
-  verificationEventTarget: VerificationEventID
-  stateTarget: StateID
   functionTarget: FunctionID
+  stateTarget: StateID
+  verificationEventTarget: VerificationEventID
   """
   The Governs relationship attribute identifies the Parameter attribute that is
   associated in both the Requirement entity and Component entity joined by the
@@ -5940,10 +5975,9 @@ input Requirement_DocumentedByTarget_Input {
 }
 input Requirement_ElicitedByTarget_Input {
   operation: MutationOperation!
-  hazardousActionTarget: HazardousActionID_Input
-  remediationTarget: RemediationID_Input
+  lossScenarioTarget: LossScenarioID_Input
   useCaseTarget: UseCaseID_Input
-  hazardTarget: HazardID_Input
+  remediationTarget: RemediationID_Input
 }
 input Requirement_EstablishesTarget_Input {
   operation: MutationOperation!
@@ -5960,9 +5994,9 @@ input Requirement_RefinesTarget_Input {
 input Requirement_SpecifiesTarget_Input {
   operation: MutationOperation!
   itemTarget: ItemID_Input
-  verificationEventTarget: VerificationEventID_Input
-  stateTarget: StateID_Input
   functionTarget: FunctionID_Input
+  stateTarget: StateID_Input
+  verificationEventTarget: VerificationEventID_Input
   governs: String
 }
 input Requirement_UsesTarget_Input {
@@ -6079,23 +6113,23 @@ type ResilientModeREL {
   """
   The resilient mode is managed (enabled / disabled / tested) by control action.
   """
-  managedBy: [ResilientMode_ManagedByTarget]
+  maManagedBy: [ResilientMode_MaManagedByTarget]
 
   """
   The resilient mode, in some way, provides an alternate operation for the
   component.
   """
-  providesAlternateOperationFor: [ResilientMode_ProvidesAlternateOperationForTarget]
+  maProvidesAlternateOperationFor: [ResilientMode_MaProvidesAlternateOperationForTarget]
 
   """
   The resilient mode provides reconfiguration for loss scenarios.
   """
-  providesReconfigurationFor: [ResilientMode_ProvidesReconfigurationForTarget]
+  maProvidesReconfigurationFor: [ResilientMode_MaProvidesReconfigurationForTarget]
 
   """
   A ResilentMode recovers a failed / cyber attacked "system" Function.
   """
-  recovers: [ResilientMode_RecoversTarget]
+  maRecovers: [ResilientMode_MaRecoversTarget]
 
   """
   Specified by identifies constraint and/or performance requirements that this
@@ -6115,10 +6149,10 @@ input ResilientModeREL_Input {
   documentedBy: [ResilientMode_DocumentedByTarget_Input]
   encompasses: [ResilientMode_EncompassesTarget_Input]
   forms: [ResilientMode_FormsTarget_Input]
-  managedBy: [ResilientMode_ManagedByTarget_Input]
-  providesAlternateOperationFor: [ResilientMode_ProvidesAlternateOperationForTarget_Input]
-  providesReconfigurationFor: [ResilientMode_ProvidesReconfigurationForTarget_Input]
-  recovers: [ResilientMode_RecoversTarget_Input]
+  maManagedBy: [ResilientMode_MaManagedByTarget_Input]
+  maProvidesAlternateOperationFor: [ResilientMode_MaProvidesAlternateOperationForTarget_Input]
+  maProvidesReconfigurationFor: [ResilientMode_MaProvidesReconfigurationForTarget_Input]
+  maRecovers: [ResilientMode_MaRecoversTarget_Input]
   specifiedBy: [ResilientMode_SpecifiedByTarget_Input]
   uses: [ResilientMode_UsesTarget_Input]
 }
@@ -6134,28 +6168,28 @@ type ResilientMode_EncompassesTarget {
 type ResilientMode_FormsTarget {
   testConfigurationTarget: TestConfigurationID
 }
-type ResilientMode_ManagedByTarget {
+type ResilientMode_MaManagedByTarget {
   controlActionTarget: ControlActionID
   functionTarget: FunctionID
   """
   The management action type for the resilient mode.
   """
-  actionType: ResilientMode_ManagedByActionType
+  actionType: ResilientMode_MaManagedByActionType
 
 }
-enum ResilientMode_ManagedByActionType {
+enum ResilientMode_MaManagedByActionType {
   nil
   activate
   deactivate
   selfTest
 }
-type ResilientMode_ProvidesAlternateOperationForTarget {
+type ResilientMode_MaProvidesAlternateOperationForTarget {
   componentTarget: ComponentID
 }
-type ResilientMode_ProvidesReconfigurationForTarget {
+type ResilientMode_MaProvidesReconfigurationForTarget {
   lossScenarioTarget: LossScenarioID
 }
-type ResilientMode_RecoversTarget {
+type ResilientMode_MaRecoversTarget {
   functionTarget: FunctionID
   """
   A collection of calculated values: "measured" (via system evaluation /
@@ -6198,21 +6232,21 @@ input ResilientMode_FormsTarget_Input {
   operation: MutationOperation!
   testConfigurationTarget: TestConfigurationID_Input
 }
-input ResilientMode_ManagedByTarget_Input {
+input ResilientMode_MaManagedByTarget_Input {
   operation: MutationOperation!
   controlActionTarget: ControlActionID_Input
   functionTarget: FunctionID_Input
-  actionType: ResilientMode_ManagedByActionType
+  actionType: ResilientMode_MaManagedByActionType
 }
-input ResilientMode_ProvidesAlternateOperationForTarget_Input {
+input ResilientMode_MaProvidesAlternateOperationForTarget_Input {
   operation: MutationOperation!
   componentTarget: ComponentID_Input
 }
-input ResilientMode_ProvidesReconfigurationForTarget_Input {
+input ResilientMode_MaProvidesReconfigurationForTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
 }
-input ResilientMode_RecoversTarget_Input {
+input ResilientMode_MaRecoversTarget_Input {
   operation: MutationOperation!
   functionTarget: FunctionID_Input
   recoveryRatio: [String]
@@ -6312,7 +6346,7 @@ type ResourceREL {
   """
   The Function / Link / Item enables detection of Loss Scenario.
   """
-  enablesDetectionOf: [Resource_EnablesDetectionOfTarget]
+  maEnablesDetectionOf: [Resource_MaEnablesDetectionOfTarget]
 
   """
   Uses identifies a term or acronym employed in the generated document.
@@ -6324,7 +6358,7 @@ type ResourceREL {
 input ResourceREL_Input {
   categorizedBy: [Resource_CategorizedByTarget_Input]
   documentedBy: [Resource_DocumentedByTarget_Input]
-  enablesDetectionOf: [Resource_EnablesDetectionOfTarget_Input]
+  maEnablesDetectionOf: [Resource_MaEnablesDetectionOfTarget_Input]
   uses: [Resource_UsesTarget_Input]
 }
 type Resource_CategorizedByTarget {
@@ -6333,7 +6367,7 @@ type Resource_CategorizedByTarget {
 type Resource_DocumentedByTarget {
   documentTarget: DocumentID
 }
-type Resource_EnablesDetectionOfTarget {
+type Resource_MaEnablesDetectionOfTarget {
   lossScenarioTarget: LossScenarioID
   """
   constraint (=,<,>) for Item, Function, Link, Resource monitored by Sentinel
@@ -6353,7 +6387,7 @@ input Resource_DocumentedByTarget_Input {
   operation: MutationOperation!
   documentTarget: DocumentID_Input
 }
-input Resource_EnablesDetectionOfTarget_Input {
+input Resource_MaEnablesDetectionOfTarget_Input {
   operation: MutationOperation!
   lossScenarioTarget: LossScenarioID_Input
   constraint: [String]
@@ -6934,6 +6968,18 @@ enum TestActivity_ExitsByType {
 }
 type TestActivity_InputsTarget {
   testItemTarget: TestItemID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: TestActivity_InputsQueueType
+
+}
+enum TestActivity_InputsQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
 }
 type TestActivity_OutputsTarget {
   testItemTarget: TestItemID
@@ -7053,6 +7099,7 @@ input TestActivity_ExitsByTarget_Input {
 input TestActivity_InputsTarget_Input {
   operation: MutationOperation!
   testItemTarget: TestItemID_Input
+  queueType: TestActivity_InputsQueueType
 }
 input TestActivity_OutputsTarget_Input {
   operation: MutationOperation!
@@ -7179,9 +7226,9 @@ type TestConfiguration_EmployedByTarget {
   testActivityTarget: TestActivityID
 }
 type TestConfiguration_FormedByTarget {
-  componentTarget: ComponentID
   linkTarget: LinkID
   resilientModeTarget: ResilientModeID
+  componentTarget: ComponentID
 }
 type TestConfiguration_SpecifiedByTarget {
   verificationRequirementTarget: VerificationRequirementID
@@ -7211,9 +7258,9 @@ input TestConfiguration_EmployedByTarget_Input {
 }
 input TestConfiguration_FormedByTarget_Input {
   operation: MutationOperation!
-  componentTarget: ComponentID_Input
   linkTarget: LinkID_Input
   resilientModeTarget: ResilientModeID_Input
+  componentTarget: ComponentID_Input
 }
 input TestConfiguration_SpecifiedByTarget_Input {
   operation: MutationOperation!
@@ -7403,6 +7450,18 @@ type TestItem_DocumentedByTarget {
 }
 type TestItem_InputToTarget {
   testActivityTarget: TestActivityID
+  """
+  Queue Type specifies how the input entities should be ordered at the receiving
+  unit.
+  """
+  queueType: TestItem_InputToQueueType
+
+}
+enum TestItem_InputToQueueType {
+  FIFO
+  LIFO
+  Priority
+  Reverse_Priority
 }
 type TestItem_OutputFromTarget {
   testActivityTarget: TestActivityID
@@ -7470,6 +7529,7 @@ input TestItem_DocumentedByTarget_Input {
 input TestItem_InputToTarget_Input {
   operation: MutationOperation!
   testActivityTarget: TestActivityID_Input
+  queueType: TestItem_InputToQueueType
 }
 input TestItem_OutputFromTarget_Input {
   operation: MutationOperation!
@@ -8329,8 +8389,8 @@ type VerificationRequirement_ReportedByTarget {
 }
 type VerificationRequirement_SpecifiesTarget {
   testActivityTarget: TestActivityID
-  testItemTarget: TestItemID
   testConfigurationTarget: TestConfigurationID
+  testItemTarget: TestItemID
   """
   The Governs relationship attribute identifies the Parameter attribute that is
   associated in both the Requirement entity and Component entity joined by the
@@ -8343,12 +8403,12 @@ type VerificationRequirement_UsesTarget {
   definedTermTarget: DefinedTermID
 }
 type VerificationRequirement_VerifiesTarget {
-  functionTarget: FunctionID
-  requirementTarget: RequirementID
-  lossScenarioTarget: LossScenarioID
+  linkTarget: LinkID
   componentTarget: ComponentID
   itemTarget: ItemID
-  linkTarget: LinkID
+  lossScenarioTarget: LossScenarioID
+  requirementTarget: RequirementID
+  functionTarget: FunctionID
 }
 # for mutations
 input VerificationRequirement_BasedOnTarget_Input {
@@ -8374,8 +8434,8 @@ input VerificationRequirement_ReportedByTarget_Input {
 input VerificationRequirement_SpecifiesTarget_Input {
   operation: MutationOperation!
   testActivityTarget: TestActivityID_Input
-  testItemTarget: TestItemID_Input
   testConfigurationTarget: TestConfigurationID_Input
+  testItemTarget: TestItemID_Input
   governs: String
 }
 input VerificationRequirement_UsesTarget_Input {
@@ -8384,12 +8444,12 @@ input VerificationRequirement_UsesTarget_Input {
 }
 input VerificationRequirement_VerifiesTarget_Input {
   operation: MutationOperation!
-  functionTarget: FunctionID_Input
-  requirementTarget: RequirementID_Input
-  lossScenarioTarget: LossScenarioID_Input
+  linkTarget: LinkID_Input
   componentTarget: ComponentID_Input
   itemTarget: ItemID_Input
-  linkTarget: LinkID_Input
+  lossScenarioTarget: LossScenarioID_Input
+  requirementTarget: RequirementID_Input
+  functionTarget: FunctionID_Input
 }
 type CallStructure {
   function: FunctionID
